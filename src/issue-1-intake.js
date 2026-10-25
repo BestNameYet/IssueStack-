@@ -1,7 +1,8 @@
 'use strict';
 
-// The record and named object types are loaded from the current Issue #1 body.
-const {readDefinition, nullRecord, validateShape, validateIntake} = require('./record-type-validator.js');
+// The record template is in Issue #1; named types are in src/types/.
+const {readDefinition, validateShape, validateIntake} = require('./record-type-validator.js');
+const {splitComment, addError} = require('./comment-error-tags.js');
 const INTAKE_ISSUE = 1;
 const QUEUE_ISSUE = 2;
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -39,8 +40,9 @@ async function run({github, context, core}) {
 
   const issue=(await github.rest.issues.get({owner,repo,issue_number:INTAKE_ISSUE})).data;
   const {template, registry}=readDefinition(issue.body);
+  const {recordText, hasErrorTag} = splitComment(source.body);
   let candidate,error;
-  try {candidate=JSON.parse(source.body);}
+  try {candidate=JSON.parse(recordText);}
   catch {error='Invalid JSON';}
   if (!error) error=validateIntake(candidate,template,registry);
 
@@ -66,19 +68,26 @@ async function run({github, context, core}) {
       const confirmed=(await github.rest.issues.getComment({owner,repo,comment_id:existing.comment.id})).data;
       if (confirmed.body!==body) throw new Error('Unable to verify blocked queue job');
     }
-    const body=JSON.stringify(nullRecord(template),null,2);
+    const body=addError(source.body,error);
     if (source.body!==body) {
       await github.rest.issues.updateComment({owner,repo,comment_id:commentId,body});
       const confirmed=(await github.rest.issues.getComment({owner,repo,comment_id:commentId})).data;
-      if (confirmed.body!==body) throw new Error('Unable to verify null-reset intake record');
+      if (confirmed.body!==body) throw new Error('Unable to verify tagged validation error');
     }
-    core.info('Rejected Issue #1 comment '+commentId+': '+error);
+    core.info('Rejected Issue #1 comment '+commentId+': '+error+' (original entry retained).');
     return;
   }
 
   const existing=sameSource[0];
   if (existing && !['pending','blocked'].includes(statusOf(existing.job))) {
-    core.info('Existing job is active or terminal; preserving queued record '+existing.comment.id);
+    const message='Queue job '+existing.comment.id+' is '+statusOf(existing.job)+'; source edits cannot replace active or completed work.';
+    const body=addError(source.body,message);
+    if (source.body!==body) {
+      await github.rest.issues.updateComment({owner,repo,comment_id:commentId,body});
+      const confirmed=(await github.rest.issues.getComment({owner,repo,comment_id:commentId})).data;
+      if (confirmed.body!==body) throw new Error('Unable to verify tagged job-state warning');
+    }
+    core.info(message);
     return;
   }
   const job=clone(candidate);
@@ -98,6 +107,12 @@ async function run({github, context, core}) {
   }
   const verified=(await github.rest.issues.getComment({owner,repo,comment_id:queuedId})).data;
   if (verified.body!==body) throw new Error('Failed to verify queue publication');
+  if (hasErrorTag) {
+    // A corrected instruction no longer carries an obsolete validator diagnostic.
+    await github.rest.issues.updateComment({owner,repo,comment_id:commentId,body:recordText});
+    const cleaned=(await github.rest.issues.getComment({owner,repo,comment_id:commentId})).data;
+    if (cleaned.body!==recordText) throw new Error('Unable to verify stale error tag removal');
+  }
   core.info('Accepted '+commentId+' as Issue #2 job '+queuedId+' ('+template['schema[string]']+').');
 }
 

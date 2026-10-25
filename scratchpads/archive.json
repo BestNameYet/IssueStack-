@@ -24,6 +24,14 @@
       "status": "succeeded",
       "archived_at": "2026-10-25T04:04:39.436Z",
       "content": "# Job 6393231376 scratchpad\n\n<!-- ISSUESTACK_PAD_JOB:6393231376 -->\n\nJob: https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6393231376\nNonce: issuestack-document-task-completion-20261024-v1\n\n## Working notes\n\nRecord reasoning summaries, decisions, attempts, test results, blockers, and handoffs here. Retain the identity marker.\n\n## Documentation task — verified outcomes\n\n- Job: Issue #2 comment `6393231376`, nonce `issuestack-document-task-completion-20261024-v1`.\n- Scope: Update root `AGENTS.md` with the required task-completion procedure; no workflow or task-schema changes.\n- Commit: `52349f3076c06e880a119eb328e03fb4aa5e8cb9`.\n- Read-back: `AGENTS.md` blob `93ba00629716aab563ae184fc5772639a83c3953`.\n- Verification: Completion section exists with six ordered steps, typed v3 evidence and receipt fields, success/failure gates, Issue #3 usage, archival/index read-back.\n- The workflow moved the instruction from Issue #1 comment 6392297975 to Issue #2 job 6393231376; the Issue #1 slot returned to `Please enter instruction.`\n- Shared scratchpad mapping: Issue #2 comment 1 links this job to Issue #3 comment 6393231610.\n- No local-only scratchpad is being used as the task's durable state.\n"
+    },
+    {
+      "job_comment_id": 6393355626,
+      "scratchpad_comment_id": 6393355850,
+      "nonce": "issuestack-issue2-body-v3-documentation-20261024-01",
+      "status": "succeeded",
+      "archived_at": "2026-10-25T04:19:32.904Z",
+      "content": "# Job 6393355626 scratchpad\n\n<!-- ISSUESTACK_PAD_JOB:6393355626 -->\n\nJob: https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6393355626\nNonce: issuestack-issue2-body-v3-documentation-20261024-01\n\n## Working notes\n\nRecord reasoning summaries, decisions, attempts, test results, blockers, and handoffs here. Retain the identity marker.\n\n## Issue #2 v3 documentation correction — verification\n\n- Updated the Issue #2 body; live page: https://github.com/BestNameYet/IssueStack-/issues/2\n- Declared `issuestack.task.v3` as current and Issue #2 as the active execution/completion queue.\n- Clearly labeled `issuestack.job.v1`/v2 job formats as historical; linked the Issue #1 template and `src/types/issuestack.task.v3.json`.\n- Documented the status lifecycle, requirements evidence, first-comment scratchpad index (6392250512), Issue #3 linkage, and common archive.\n- Removed the inaccurate claim that the intake listener and publisher are unimplemented.\n- Read-back verified the updated 6,934-character Issue #2 body, with the historical job comments and mapping index unchanged.\n- No code, worker behavior, type definitions, or historical job records were rewritten.\n"
     }
   ]
 }

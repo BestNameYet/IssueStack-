@@ -57,7 +57,9 @@ function validateDeclaration(d){
       if(typeof step.instruction!=='string'||!step.instruction.trim()||step.instruction.length>12000)throw Error('Empty or excessive instruction at step '+step.id);
       typeDefinition(step.returns,'steps['+i+'].returns');
     });
-    if(JSON.stringify(d).length>60000)throw Error('Procedure document exceeds 60 KB');
+    const encoded=JSON.stringify(d);
+    if(encoded.length>60000)throw Error('Procedure document exceeds 60 KB');
+    if(encoded.includes('<!--')||encoded.includes('-->')||encoded.includes('ISSUESTACK_PROCEDURE_STATE_END'))throw Error('Procedure contains reserved HTML or state delimiter');
     return null;
   }catch(e){return e.message;}
 }
@@ -195,9 +197,25 @@ async function processEdit({github,owner,repo,comment,previousBody,core}){
   // GitHub Actions GITHUB_TOKEN bot writes do not retrigger this workflow.
   // For an owner edit, GitHub's event changes.body.from is the pre-edit body.
   if(typeof previousBody!=='string')throw Error('Cannot verify previous comment version');
+  const prior=parseComment(previousBody);
   if(normalizeAnswer(previousBody)===null||
-     normalizeAnswer(previousBody)!==normalizeAnswer(comment.body))throw Error('Edited bot-owned section; only the agent answer is writable');
-  const prior=parseComment(previousBody),current=parseComment(comment.body);
+     normalizeAnswer(previousBody)!==normalizeAnswer(comment.body)){
+    // GitHub cannot prevent the edit, but immediately restoring the prior
+    // durable state makes the bot-owned region effectively read-only to this
+    // workflow's authorized editor.
+    await verifiedUpdate(github,owner,repo,comment.id,previousBody);
+    core?.warning?.('Restored tampered bot-owned procedure region: '+comment.id);
+    return;
+  }
+  let current;
+  try{current=parseComment(comment.body);}
+  catch(error){
+    const next=JSON.parse(JSON.stringify(prior.state));
+    next.last_error='Invalid procedure answer JSON: '+error.message;
+    await verifiedUpdate(github,owner,repo,comment.id,render(next));
+    core?.warning?.(next.last_error);
+    return;
+  }
   if(JSON.stringify(current.state)!==JSON.stringify(prior.state))throw Error('Procedure state was modified');
   if(Object.keys(current.answer).length===0)return;
   const error=validateSubmission(current.answer,prior.state);
@@ -220,8 +238,8 @@ async function run({github,context,core}){
   const {owner,repo}=context.repo;
   if(context.actor!==owner){core?.info?.('Non-owner procedure edit ignored: '+context.actor);return;}
   const current=(await github.rest.issues.getComment({owner,repo,comment_id:context.payload.comment.id})).data;
-  if(!current.body.includes(ID_START))return; // historical demo comments are not new declarations
   const prev=context.payload.changes?.body?.from;
+  if(!current.body.includes(ID_START)&&!String(prev||'').includes(ID_START))return; // preserve historical demos
   await processEdit({github,owner,repo,comment:current,previousBody:prev,core});
 }
 module.exports={ISSUE,DECLARATION,STATE_VERSION,BOT_START,BOT_END,ANSWER_START,ANSWER_END,STATE_START,STATE_END,

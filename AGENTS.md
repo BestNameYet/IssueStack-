@@ -9,88 +9,49 @@ These instructions govern all agents operating in `BestNameYet/IssueStack-` and 
 
 Route **user instruction → one JSON record comment in Issue #1 → validated, deduplicated queue comment in Issue #2 → execution and verified result in Issue #2**. Do not bypass intake or equate queue publication with completed execution. The *body* of Issue #2 need not mirror the current task schema; it documents the job surface, while each queued comment carries its own `schema` version.
 
-## Active record schema
+## Current task schema: `issuestack.task.v3`
 
-**For all new instructions, the canonical schema is `issuestack.task.v2`**, as defined in the current Issue #1 body. Historical `issuestack.job.v1` records and receipts remain valid historical records; do not silently rewrite them or misinterpret v1 as the current intake contract. Issue #2 may contain records of both versions. Never coerce one into the other without an explicit, auditable migration.
+Issue #1 is the authoritative source for the **current** record template and named object type registry. Read both JSON blocks in the current Issue #1 body before creating a record. The latest schema uses **literal bracket-annotated key names**. `issuestack.job.v1` and `issuestack.task.v2` records remain historical; preserve them without automatic conversion. The body of Issue #2 defines the job scope and does not need to be rewritten for every schema version.
 
-Issue #1 currently defines this initial JSON template (the authoritative definition is the live Issue #1 body):
+**Mandatory exact-type invariant:** Every JSON object must have exactly its named type's keys, with zero missing and zero additional keys; every value must have the type declared by its field's bracket suffix. This is recursive at every level, including objects contained in arrays. Keys with different literal names identify different object types, even when their values share the same primitive types. Only the current `schema[string]` version is accepted on new intake comments.
+
+Examples of the notation:
+
+```text
+schema[string]
+source[object<Source>]
+requirements[array<Requirement>]
+receipt[object<Receipt>|null]
+```
+
+The type of an array element is **one named object type**, not merely `object`:
 
 ```json
 {
-  "schema": "issuestack.task.v2",
-  "nonce": "<unique-nonce>",
-  "ordinal": null,
-  "source": {
-    "issue": 1,
-    "comment_id": null
-  },
-  "interpretation": {
-    "revised_instruction": "<faithful, readable instruction; not verbatim>",
-    "user_intent": {
-      "goal": "<why>",
-      "expected_outcome": "<definition of success>",
-      "requested_abstraction_level": "<requested level>",
-      "requested_action_scope": "<full scope of requested actions>"
-    }
-  },
-  "requirements": [],
-  "constraints": [],
-  "decomposition": [],
-  "planning": {
-    "status": "not_started",
-    "method": "Requirement-first: identify observable obligations and acceptance tests; plan atomic, verifiable steps with dependencies; validate outputs and preserve scope.",
-    "sources": []
-  },
-  "execution": {
-    "status": "pending",
-    "enqueued_at": null,
-    "started_at": null,
-    "finished_at": null,
-    "worker": null
-  },
-  "completion": {
-    "by_requirement": [],
-    "remaining_requirement_ids": [],
-    "success": null,
-    "summary": null,
-    "artifacts": [],
-    "validation": [],
-    "errors": [],
-    "receipt": null
-  },
-  "unrequested_changes": {
-    "additions_outside_requirements": [],
-    "revisions_outside_requirements": [],
-    "additional_constraints": [],
-    "scope_reductions": [],
-    "abstraction_level_changes": [],
-    "abstraction_mismatches": [],
-    "action_scope_minimizations": []
-  }
+  "id[string]": "R1",
+  "description[string]": "Implement a verifiable requirement",
+  "acceptance_criteria[array<AcceptanceCriterion>]": [
+    {"text[string]": "A concrete acceptance condition must be satisfied"}
+  ]
 }
 ```
 
-A new instruction comment must contain **one bare JSON object**, not a Markdown code block.
+That example is one `Requirement` object, not an entire task record. The `Requirement` type defines the exact three field declarations shown; `AcceptanceCriterion` defines `text[string]`. A different field name, an omitted field, an added field, or an incorrect JSON value type is a hard validation failure. An empty array is valid structurally but every present item must match its declared named object type. For scalar lists, use typed object wrappers such as `Reference` with `id[string]`; untyped arrays and mixed-type arrays are prohibited.
 
-## Agent workflow and field ownership
+New instruction comments must contain one **bare JSON object** in the active format, without Markdown fences. Null is permitted only when the declaration explicitly says `null` or `|null`. For invalid records, the intake listener replaces the entire comment with the full current record key tree whose leaf values are null. That replacement is an error/reset artifact and intentionally **not** a valid instruction.
 
-1. **Read governing instructions first.** Read this `AGENTS.md`, the root `README.md` when available, and the current bodies of Issues #1 and #2. Do not invent unavailable documentation or treat earlier examples as overriding current instructions.
-2. **Interpret without shrinking the instruction.** Populate `interpretation.revised_instruction` with a clear, legible, decipherable **revision of the user's instruction**, *not a verbatim transcription*. Preserve all material actions, qualifiers, priorities, and requested outcomes. Populate `interpretation.user_intent` with the goal, expected outcome, requested abstraction level, and requested action scope. Paraphrasing does not authorize changing intent or reducing action scope.
-3. **Determine requirements and constraints.** Populate `requirements[]` with stable requirement IDs and observable acceptance criteria. Record explicit `constraints[]` separately. Requirements express *what must be achieved*; decomposition items express *how* to satisfy them. Use `nonce` as stable identity, `ordinal=null` unless an applicable documented override exists, and `source.issue=1` and `source.comment_id=null` on intake.
-4. **Reserve, then build the decomposition.** An unplanned intake may leave `decomposition[]` empty and `planning.status="not_started"`. Before executing, the planner fills `decomposition[]` with atomic, independently checkable work, linked requirement IDs, dependencies, expected outputs, and verification methods. Research-informed planning separates action execution from proof that acceptance criteria were satisfied. Do not invent decomposition for unknown requirements.
-5. **Queue exactly once.** Validate the record; detect duplicate nonce and source-comment identity; copy the entire accepted record to **Issue #2 as a job comment**, preserving its schema, interpretation, requirements, constraints, and intent. Fill `source.comment_id` from trusted GitHub metadata, not user assertions, and populate the enqueue timestamp. Default order is FIFO except for an explicitly documented ordering override.
-6. **Execute and verify.** Claim the queued work, record `execution.status`, worker, and timestamps, and do not execute a nonce more than once. Each requirement needs its own completion entry under `completion.by_requirement[]` with status and verifiable evidence. Supported requirement states: `not_started`, `in_progress`, `completed`, `blocked`, `incomplete`, `failed`. Populate `completion.remaining_requirement_ids[]` from all requirements not verifiably completed; keep blocked and incomplete work visible.
-7. **Audit deviations.** Record every assistant- or worker-introduced change not included in requirements under `unrequested_changes`, specifically:
-   - `additions_outside_requirements[]`
-   - `revisions_outside_requirements[]`
-   - `additional_constraints[]`
-   - `scope_reductions[]`
-   - `abstraction_level_changes[]`
-   - `abstraction_mismatches[]`
-   - `action_scope_minimizations[]`
+## Agent procedure and field ownership
 
-   Document the user's original expectation, the changed or omitted action, why it happened, affected requirement IDs, available evidence, and whether explicit approval was obtained. Include one deviation in multiple applicable categories. Do not use additional constraints, scope reductions, or an altered abstraction level as silent substitutions for the original assignment.
-8. **Apply the completion gate.** Report a job as fully succeeded only after every requirement passes its acceptance criteria with evidence, `remaining_requirement_ids` is empty, all deviations requiring authorization are resolved, and results plus an execution receipt have been published to and **read back from Issue #2**. Otherwise report the actual blocked, incomplete, or failed status and work remaining. Do not confuse work-item completion with requirement completion.
+1. Read this file, the current repository README when available, and the up-to-date bodies of Issue #1 (template **and registry**) and Issue #2 (job scope).
+2. Capture user requests as an intelligible **rewritten instruction** in `interpretation[object<Interpretation>].revised_instruction[string]`, not verbatim text. Under `user_intent[object<UserIntent>]`, preserve the goal, expected outcome, requested abstraction level, and full requested action scope.
+3. Define each required outcome as a `Requirement` object in `requirements[array<Requirement>]`, with an ID, description, and individually typed acceptance criteria. Track separate typed `Constraint` objects in `constraints[array<Constraint>]`.
+4. At intake, leave `decomposition[array<WorkItem>]` empty and `planning[object<Planning>].status[string]` equal to `not_started`. The Issue #2 planner decomposes requirements into atomic, independently verified actions, linking them by `Reference` objects. A completed work item does not imply a completed requirement.
+5. Copy a validated record exactly once from Issue #1 into Issue #2, preserving its version, nonce, interpretation, and requirements. Populate trusted GitHub source comment ID and enqueue timestamp only in the queue copy. Maintain FIFO acceptance ordering unless an approved ordering rule applies.
+6. Workers update `execution[object<Execution>]` and `completion[object<Completion>]`. Each `RequirementCompletion` item records a requirement ID, state, and evidence. All not-yet-verified requirement IDs remain in typed `remaining_requirement_ids[array<Reference>]`, including blocked, incomplete, and failed work.
+7. Audit unrequested additions, modifications, extra constraints, scope reductions, abstraction changes/mismatches, and action-scope minimizations under `unrequested_changes[object<DeviationAudit>]`. Each `Deviation` object must have the exact fields specified by the named type catalog and document the original expectation, actual change, rationale, affected IDs, approval state, and evidence.
+8. Report success only after all requirements have verified completion evidence, no remaining requirements, approvals for all material deviations, and a published/read-back execution receipt. Otherwise report the actual incomplete, blocked, or failed state, not a fabricated success.
+
+Never add undocumented keys to the record to accommodate new work. Define a new named object type and **increment the version** before accepting new fields; do not silently loosen versioned validation.
 
 ## Mandatory GitHub Actions workflow modification mechanism
 

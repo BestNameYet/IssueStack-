@@ -1,0 +1,29 @@
+name: IssueStack Issue 1 Intake
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+permissions:
+  contents: read
+  issues: write
+
+# Serialize queue publication to prevent concurrent duplicate inserts.
+concurrency:
+  group: issuestack-issue-1-intake
+  cancel-in-progress: false
+
+jobs:
+  validate-and-transfer:
+    if: ${{ github.event.issue.number == 1 && !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out listener source
+        uses: actions/checkout@v4
+      - name: Validate, null-reset, or transfer instruction
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const intake = require('./src/issue-1-intake.js');
+            await intake.run({ github, context, core });

@@ -1,4 +1,13 @@
 {
   "schema": "issuestack.scratchpad.archive.v1",
-  "entries": []
+  "entries": [
+    {
+      "job_comment_id": 6392956620,
+      "scratchpad_comment_id": 6392956798,
+      "nonce": "issuestack-scratchpad-live-test-20261024-01",
+      "status": "succeeded",
+      "archived_at": "2026-10-25T03:28:53.271Z",
+      "content": "# Job 6392956620 scratchpad\n\n<!-- ISSUESTACK_PAD_JOB:6392956620 -->\n\nJob: https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6392956620\nNonce: issuestack-scratchpad-live-test-20261024-01\n\n## Working notes\n\nRecord reasoning summaries, decisions, attempts, test results, blockers, and handoffs here. Retain the identity marker.\n\n## Archive integration test\n\nLIVE_ARCHIVE_PROOF_6392956620: Verified that scratchpad notes survive Issue #2 terminal status and are copied exactly into the shared repository archive.\n"
+    }
+  ]
 }

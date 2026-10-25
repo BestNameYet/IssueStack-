@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Check out listener source
         uses: actions/checkout@v4
-      - name: Validate, null-reset, or transfer instruction
+      - name: Validate, annotate errors, or transfer instruction
         uses: actions/github-script@v7
         with:
           script: |

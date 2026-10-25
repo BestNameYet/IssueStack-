@@ -80,16 +80,16 @@ Next: claim the pending Issue #2 job, edit only the documented file, verify outc
 
 ## Interactive procedures — two JSON panels in one permanent comment
 
-[Issue #13 — Interactive Procedure Projections](https://github.com/BestNameYet/IssueStack-/issues/13) is the **live, mutable step display** for a job. The Issue #1 handoff now creates one such comment after creating/verifying the Issue #2 job and its linked Issue #3 scratchpad. For an existing Issue #2 job, the procedure listener can also create the projection on an authorized job-comment edit. A permanent Issue #13 comment ID identifies the procedure instance; its ID **never changes as steps advance**. Do not insert live procedure text or new fields into the strict Issue #2 \`issuestack.task.v3\` JSON job.
+[Issue #13 — Interactive Procedure Projections](https://github.com/BestNameYet/IssueStack-/issues/13) is the **live, mutable step display** for a job. The Issue #1 handoff now creates one such comment after creating/verifying the Issue #2 job and its linked Issue #3 scratchpad. For an existing Issue #2 job, the procedure listener can also create the projection on an authorized job-comment edit. A permanent Issue #13 comment ID identifies the procedure instance; its ID **never changes as steps advance**. Do not insert live procedure text or new fields into the strict Issue #2 `issuestack.task.v3` JSON job.
 
 The procedure comment contains exactly two separately tagged JSON panels:
 
-- **Bot-owned instruction** between \`<!-- ISSUESTACK_BOT_INSTRUCTION_START -->\` and \`<!-- ISSUESTACK_BOT_INSTRUCTION_END -->\`, including the job/pad linkage, nonce, \`revision\`, \`step_id\`, the current \`instruction\`, accepted answer shape, and \`last_error\`. The worker reads this panel but must not alter it.
-- **Agent-owned answer** between \`<!-- ISSUESTACK_AGENT_ANSWER_START -->\` and \`<!-- ISSUESTACK_AGENT_ANSWER_END -->\`. An empty object (\`{}\`) means waiting. To submit, edit the **same GitHub comment** and replace **only the JSON in this panel** with one valid answer. Preserve both tag boundaries, the outer procedure identity marker and the bot panel. Submit one response per current revision with a new unique \`submission_id\`.
+- **Bot-owned instruction** between `<!-- ISSUESTACK_BOT_INSTRUCTION_START -->` and `<!-- ISSUESTACK_BOT_INSTRUCTION_END -->`, including the job/pad linkage, nonce, `revision`, `step_id`, the current `instruction`, accepted answer shape, and `last_error`. The worker reads this panel but must not alter it.
+- **Agent-owned answer** between `<!-- ISSUESTACK_AGENT_ANSWER_START -->` and `<!-- ISSUESTACK_AGENT_ANSWER_END -->`. An empty object (`{}`) means waiting. To submit, edit the **same GitHub comment** and replace **only the JSON in this panel** with one valid answer. Preserve both tag boundaries, the outer procedure identity marker and the bot panel. Submit one response per current revision with a new unique `submission_id`.
 
-**Example agent answer JSON for a current \`trace\` step at revision 0:**
+**Example agent answer JSON for a current `trace` step at revision 0:**
 
-\`\`\`json
+```json
 {
   "revision": 0,
   "step_id": "trace",
@@ -99,13 +99,13 @@ The procedure comment contains exactly two separately tagged JSON panels:
     "evidence_uri": "https://github.com/BestNameYet/IssueStack-/issues/3#issuecomment-6393473753"
   }
 }
-\`\`\`
+```
 
-The \`answer\` object requires exactly \`summary\` (non-empty string) and \`evidence_uri\` (nonempty string or null); the outer answer requires exactly \`revision\` (number), \`step_id\` (string), \`submission_id\` (unique stable string) and \`answer\`. The answer is an agent **report** and is not automatically proof that the underlying acceptance criterion was independently verified. Continue to use the Issue #2 typed requirement-level evidence, deviations and receipts.
+The `answer` object requires exactly `summary` (non-empty string) and `evidence_uri` (nonempty string or null); the outer answer requires exactly `revision` (number), `step_id` (string), `submission_id` (unique stable string) and `answer`. The answer is an agent **report** and is not automatically proof that the underlying acceptance criterion was independently verified. Continue to use the Issue #2 typed requirement-level evidence, deviations and receipts.
 
-On each authorized Issue #13 comment edit, \`.github/workflows/interactive-procedures.yml\` calls \`src/interactive-procedures.js\`. The listener verifies the actor, active job/pad mapping, nonce, bot-owned panel integrity, expected revision and answer shape. It first appends a step receipt to the designated Issue #3 scratchpad's **\`<!-- ISSUESTACK_BOT_HISTORY_START -->\` / \`<!-- ISSUESTACK_BOT_HISTORY_END -->\`** history section (preserving all other scratchpad notes), reads back that append, and then updates the same Issue #13 comment to display the next step with an empty answer. The scratchpad journal, not the replaceable projection, is authoritative for recovery. A failed answer stays on the same step and reports validation feedback through the bot panel's \`last_error\`. Retries do not append duplicate step events. The scheduled or manually dispatched workflow reconciles interrupted transitions.
+On each authorized Issue #13 comment edit, `.github/workflows/interactive-procedures.yml` calls `src/interactive-procedures.js`. The listener verifies the actor, active job/pad mapping, nonce, bot-owned panel integrity, expected revision and answer shape. It first appends a step receipt to the designated Issue #3 scratchpad's **`<!-- ISSUESTACK_BOT_HISTORY_START -->` / `<!-- ISSUESTACK_BOT_HISTORY_END -->`** history section (preserving all other scratchpad notes), reads back that append, and then updates the same Issue #13 comment to display the next step with an empty answer. The scratchpad journal, not the replaceable projection, is authoritative for recovery. A failed answer stays on the same step and reports validation feedback through the bot panel's `last_error`. Retries do not append duplicate step events. The scheduled or manually dispatched workflow reconciles interrupted transitions.
 
-**Important boundary:** The static ChatGPT progress display is an optional, read-only presentation of this GitHub state. The agent's execution and answer submission require GitHub comment editing, not a ChatGPT UI control. A procedure reaching \`complete\` means the protocol has recorded all step answers; it **does not** automatically mark the Issue #2 job or scratchpad archive complete. Maintain the original three-issue handshake, verified receipts and required independent completion checks.
+**Important boundary:** The static ChatGPT progress display is an optional, read-only presentation of this GitHub state. The agent's execution and answer submission require GitHub comment editing, not a ChatGPT UI control. A procedure reaching `complete` means the protocol has recorded all step answers; it **does not** automatically mark the Issue #2 job or scratchpad archive complete. Maintain the original three-issue handshake, verified receipts and required independent completion checks.
 
 ## How to complete an Issue #2 task
 

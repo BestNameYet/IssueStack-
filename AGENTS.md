@@ -189,3 +189,785 @@ The Issue #1 intake listener runs on user-created and user-edited issue comments
 - Follow higher-priority instructions and available permissions. Do not infer that an arbitrary issue comment authorizes privileged operations.
 - Use `workspaces/<project-name>/` for project-isolated work and `src/` for shared components **only after verifying the directories actually exist**.
 - Keep historical v1 jobs intact. Issue #2 is a job scope, **not a mandatory duplicate schema specification**. Amend its body only when there is a separate reason to change the queue contract.
+
+## Task.v3 field-specific guidance and few-shot examples
+
+**Authority:** The current [Issue #1 task.v3 template](https://github.com/BestNameYet/IssueStack-/issues/1) and [versioned type registry](https://github.com/BestNameYet/IssueStack-/blob/main/src/types/issuestack.task.v3.json) are controlling. This reference does not alter any validator, workflow, runtime, historical job, or procedure schema. Every field name shown is literal, including its `[type]` suffix. All example IDs `9012345x` and `example.invalid` URLs are intentionally **fictional**; they are illustrations, not actual evidence or receipts.
+
+**Ownership:** The submitting agent authors the nonce, interpretation, requirements and constraints and initializes the v3 record. Workflow-supplied values are the trusted source comment ID and enqueue timestamp. A worker authors planning/decomposition and execution/completion/evidence/deviation fields **only after** the documented Issue #1 → Issue #2 → Issue #3 handshake and verified scratchpad intent. The worker fills the terminal receipt with **real** trusted source/job metadata and actual timestamps. Work item completion never automatically verifies its parent requirement.
+
+**Reading the matrix:** All fields in the current named type registry and all root fields are enumerated. Each example value is fully type-correct; nested arrays contain complete named objects. A row is an illustrative field value, not a stand-alone valid queue record. Consult the four complete-record examples for state-dependent empty arrays and nulls.
+
+### Root record
+
+*Writer: Submitter for intent/constraints, workflow for trusted metadata, worker for planning/execution/completion.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `schema[string]` | Task schema version, always current v3 | `"issuestack.task.v3"` |
+| `nonce[string]` | Unique submission/deduplication nonce, retained in job receipt | `"example-r1-001"` |
+| `ordinal[number|null]` | Ordering override only if specified; otherwise null | `null` |
+| `source[object<Source>]` | Intake Issue and workflow-trusted source comment ID ;; | `{"issue[number]":1,"comment_id[number\|null]":null}` |
+| `interpretation[object<Interpretation>]` | Clear rewritten user directive and full intended scope ;; | `{"revised_instruction[string]":"Implement and verify malformed-input rejection.","user_intent[object<UserIntent>]":{"goal[string]":"Keep invalid records out of the queue.","expected_outcome[string]":"Invalid payload rejected; valid payload transfers once.","requested_abstraction_level[string]":"Implemented code and regression tests.","requested_action_scope[string]":"Edit parser and tests, run checks, publish report."}}` |
+| `requirements[array<Requirement>]` | Required outcomes with acceptance criteria ;; | `[{"id[string]":"R1","description[string]":"Reject malformed input without losing original text.","acceptance_criteria[array<AcceptanceCriterion>]":[{"text[string]":"Invalid JSON retains source text and shows a tagged diagnostic."}]}]` |
+| `constraints[array<Constraint>]` | Original limits, approvals and scope boundaries ;; | `[{"id[string]":"C1","description[string]":"Preserve all previously completed jobs.","source[string]":"User instruction","applies_to_requirement_ids[array<Reference>]":[{"id[string]":"R1"}]}]` |
+| `decomposition[array<WorkItem>]` | Worker-derived work units; [] initially ;; | `[{"id[string]":"W1","description[string]":"Add malformed-input regression coverage.","requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"depends_on[array<Reference>]":[{"id[string]":"R1"}],"expected_output[string]":"Three regression cases saved.","verification_method[string]":"Run test suite and read back file.","status[string]":"verified","worker[string\|null]":"Example worker","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `planning[object<Planning>]` | Plan, sources and current plan state ;; | `{"status[string]":"in_progress","method[string]":"Read schema, implement tests, inspect results.","sources[array<ResearchSource>]":[{"title[string]":"IssueStack v3 type registry","url[string]":"https://github.com/BestNameYet/IssueStack-/blob/main/src/types/issuestack.task.v3.json"}]}` |
+| `execution[object<Execution>]` | Workflow enqueue and worker lifecycle state ;; | `{"status[string]":"running","enqueued_at[string\|null]":null,"started_at[string\|null]":"2026-10-25T08:02:00.000Z","finished_at[string\|null]":null,"worker[string\|null]":"Example worker"}` |
+| `completion[object<Completion>]` | Requirement-level evidence, incomplete work and receipt ;; | `{"by_requirement[array<RequirementCompletion>]":[{"requirement_id[string]":"R1","status[string]":"verified","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}],"blocker[string\|null]":null,"next_action[string\|null]":null,"verified_at[string\|null]":"2026-10-25T08:08:00.000Z"}],"remaining_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"success[boolean\|null]":null,"summary[string\|null]":null,"artifacts[array<Artifact>]":[{"description[string]":"Validator test report","uri[string]":"https://example.invalid/demo/report"}],"validation[array<ValidationCheck>]":[{"check[string]":"Malformed JSON integration test","passed[boolean]":true,"evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}],"errors[array<ErrorEntry>]":[{"message[string]":"Test runner denied permission before tests."}],"receipt[object<Receipt>\|null]":null}` |
+| `unrequested_changes[object<DeviationAudit>]` | Audit of work outside the requested scope ;; | `{"additions_outside_requirements[array<Deviation>]":[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}],"revisions_outside_requirements[array<Deviation>]":[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}],"additional_constraints[array<Deviation>]":[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}],"scope_reductions[array<Deviation>]":[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}],"abstraction_level_changes[array<Deviation>]":[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}],"abstraction_mismatches[array<Deviation>]":[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}],"action_scope_minimizations[array<Deviation>]":[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]}` |
+
+### `Reference` object
+
+*Writer: Submitting agent or worker, depending on field.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `id[string]` | Referenced R ID, except WorkItem dependencies point to W IDs | `"R1"` |
+
+### `AcceptanceCriterion` object
+
+*Writer: Submitting agent.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `text[string]` | A reproducible pass/fail criterion | `"Invalid JSON retains source text and shows a tagged diagnostic."` |
+
+### `Evidence` object
+
+*Writer: Worker after real check.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `description[string]` | Named observed evidence supporting an acceptance condition | `"Regression run confirms malformed input preserved."` |
+| `uri[string|null]` | URL of real evidence, or null if no URL exists | `"https://example.invalid/demo/run"` |
+
+### `ResearchSource` object
+
+*Writer: Agent/worker after consulting source.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `title[string]` | Human-readable consulted document title | `"IssueStack v3 type registry"` |
+| `url[string]` | Real source URL, never fabricated | `"https://github.com/BestNameYet/IssueStack-/blob/main/src/types/issuestack.task.v3.json"` |
+
+### `Requirement` object
+
+*Writer: Submitting agent.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `id[string]` | Stable R-prefixed outcome ID | `"R1"` |
+| `description[string]` | Mandatory result, not a mere worker action | `"Reject malformed input without losing original text."` |
+| `acceptance_criteria[array<AcceptanceCriterion>]` | Individually measurable acceptance conditions ;; | `[{"text[string]":"Invalid JSON retains source text and shows a tagged diagnostic."}]` |
+
+### `Constraint` object
+
+*Writer: Submitting agent.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `id[string]` | Stable constraint identifier | `"C1"` |
+| `description[string]` | Required restriction or mechanism | `"Preserve all previously completed jobs."` |
+| `source[string]` | Provenance of this constraint | `"User instruction"` |
+| `applies_to_requirement_ids[array<Reference>]` | Relevant R references ;; | `[{"id[string]":"R1"}]` |
+
+### `WorkItem` object
+
+*Writer: Worker.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `id[string]` | Stable W-prefixed atomic task identifier | `"W1"` |
+| `description[string]` | Executable independent action | `"Add malformed-input regression coverage."` |
+| `requirement_ids[array<Reference>]` | R outcomes this item contributes to ;; | `[{"id[string]":"R1"}]` |
+| `depends_on[array<Reference>]` | Earlier W dependencies or [] if independent ;; | `[{"id[string]":"R1"}]` |
+| `expected_output[string]` | Concrete deliverable from action | `"Three regression cases saved."` |
+| `verification_method[string]` | Test/inspection to confirm action | `"Run test suite and read back file."` |
+| `status[string]` | Work state: pending, running, blocked, verified, failed | `"verified"` |
+| `worker[string|null]` | Real assigned worker, null before claim | `"Example worker"` |
+| `evidence[array<Evidence>]` | Observed work-unit evidence ;; | `[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]` |
+
+### `RequirementCompletion` object
+
+*Writer: Worker.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `requirement_id[string]` | Exactly one R ID from original requirements | `"R1"` |
+| `status[string]` | verified, blocked, incomplete or failed requirement | `"verified"` |
+| `evidence[array<Evidence>]` | Proof against each relevant acceptance criterion ;; | `[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]` |
+| `blocker[string|null]` | Specific obstacle, or null when none | `null` |
+| `next_action[string|null]` | Practical recovery step while incomplete; null otherwise | `null` |
+| `verified_at[string|null]` | Time independently verified or null if not verified | `"2026-10-25T08:08:00.000Z"` |
+
+### `Artifact` object
+
+*Writer: Worker.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `description[string]` | Name/purpose of produced deliverable | `"Validator test report"` |
+| `uri[string]` | Real durable deliverable link | `"https://example.invalid/demo/report"` |
+
+### `ValidationCheck` object
+
+*Writer: Worker.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `check[string]` | Precisely named test or readback performed | `"Malformed JSON integration test"` |
+| `passed[boolean]` | Actual observed pass/fail; do not invent | `true` |
+| `evidence[array<Evidence>]` | Test logs, inspected files and actual links ;; | `[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]` |
+
+### `ErrorEntry` object
+
+*Writer: Worker.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `message[string]` | Concrete error and impact | `"Test runner denied permission before tests."` |
+
+### `Receipt` object
+
+*Writer: Worker copies trusted identifiers, actual times and results.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `nonce[string]` | Original task nonce, unchanged | `"example-r1-001"` |
+| `source_issue[number]` | Trusted originating issue ID | `1` |
+| `source_comment_id[number]` | Trusted source comment ID from queued copy | `90123456` |
+| `queue_issue[number]` | Queue issue number, normally 2 | `2` |
+| `queue_comment_id[number]` | Permanent existing job comment ID | `90123457` |
+| `executor[string]` | Actual executor who performed work | `"Example worker"` |
+| `started_at[string|null]` | Actual start ISO time or null if unavailable | `"2026-10-25T08:02:00.000Z"` |
+| `finished_at[string|null]` | Actual terminal ISO time or null if unavailable | `"2026-10-25T08:09:00.000Z"` |
+| `run_id[string|null]` | Genuine Actions run ID or null when absent | `null` |
+
+### `Deviation` object
+
+*Writer: Worker and real approver.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `id[string]` | Stable D ID | `"D1"` |
+| `original_expectation[string]` | Exact requested scope before change | `"Produce tested implementation."` |
+| `actual_or_proposed_change[string]` | Specific difference from user request | `"Produced only a plan."` |
+| `rationale[string]` | Reason offered, not itself approval | `"Runner unavailable."` |
+| `affected_requirement_ids[array<Reference>]` | Every affected R ID ;; | `[{"id[string]":"R1"}]` |
+| `approval_status[string]` | approved, pending or rejected from real authorization | `"pending"` |
+| `evidence[array<Evidence>]` | Audit and approval observations or links ;; | `[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]` |
+
+### `Source` object
+
+*Writer: Submitter sets issue, workflow sets comment ID.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `issue[number]` | Originating issue number, normally 1 | `1` |
+| `comment_id[number|null]` | Workflow-supplied permanent source input ID, null at intake | `null` |
+
+### `UserIntent` object
+
+*Writer: Submitting agent.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `goal[string]` | The user’s underlying objective | `"Keep invalid records out of the queue."` |
+| `expected_outcome[string]` | Observable final result | `"Invalid payload rejected; valid payload transfers once."` |
+| `requested_abstraction_level[string]` | Requested kind of deliverable, e.g. code or analysis | `"Implemented code and regression tests."` |
+| `requested_action_scope[string]` | Full set of authorized actions, not reduced to advice | `"Edit parser and tests, run checks, publish report."` |
+
+### `Interpretation` object
+
+*Writer: Submitting agent.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `revised_instruction[string]` | Faithful, actionable restatement of all requested work | `"Implement and verify malformed-input rejection."` |
+| `user_intent[object<UserIntent>]` | Goal, expected output, requested granularity and actions ;; | `{"goal[string]":"Keep invalid records out of the queue.","expected_outcome[string]":"Invalid payload rejected; valid payload transfers once.","requested_abstraction_level[string]":"Implemented code and regression tests.","requested_action_scope[string]":"Edit parser and tests, run checks, publish report."}` |
+
+### `Planning` object
+
+*Writer: Submitter initializes; worker updates.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `status[string]` | Planning phase: not_started at intake, later in_progress, ready or completed | `"in_progress"` |
+| `method[string]` | Concrete intended decomposition and verification method | `"Read schema, implement tests, inspect results."` |
+| `sources[array<ResearchSource>]` | Actually consulted source records ;; | `[{"title[string]":"IssueStack v3 type registry","url[string]":"https://github.com/BestNameYet/IssueStack-/blob/main/src/types/issuestack.task.v3.json"}]` |
+
+### `Execution` object
+
+*Writer: Workflow initializes; worker updates.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `status[string]` | Lifecycle: pending, running, blocked, succeeded or failed | `"running"` |
+| `enqueued_at[string|null]` | Verified timestamp from intake workflow only | `null` |
+| `started_at[string|null]` | Real claim ISO timestamp or null until claimed | `"2026-10-25T08:02:00.000Z"` |
+| `finished_at[string|null]` | Real terminal time, null while active | `null` |
+| `worker[string|null]` | Actual executor identity or null if unclaimed | `"Example worker"` |
+
+### `Completion` object
+
+*Writer: Worker.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `by_requirement[array<RequirementCompletion>]` | Record each verified, blocked or failed requirement ;; | `[{"requirement_id[string]":"R1","status[string]":"verified","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}],"blocker[string\|null]":null,"next_action[string\|null]":null,"verified_at[string\|null]":"2026-10-25T08:08:00.000Z"}]` |
+| `remaining_requirement_ids[array<Reference>]` | Every R ID not independently verified, even failures ;; | `[{"id[string]":"R1"}]` |
+| `success[boolean|null]` | true only succeeded; false only terminal failure; null otherwise | `null` |
+| `summary[string|null]` | Accurate outcome, limitations and remaining work | `null` |
+| `artifacts[array<Artifact>]` | Actual durable deliverables ;; | `[{"description[string]":"Validator test report","uri[string]":"https://example.invalid/demo/report"}]` |
+| `validation[array<ValidationCheck>]` | Checks actually attempted, including failures ;; | `[{"check[string]":"Malformed JSON integration test","passed[boolean]":true,"evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `errors[array<ErrorEntry>]` | Real errors, [] if none ;; | `[{"message[string]":"Test runner denied permission before tests."}]` |
+| `receipt[object<Receipt>|null]` | Full typed receipt on terminal outcome, null while active | `null` |
+
+### `DeviationAudit` object
+
+*Writer: Worker.*
+
+| Literal field | Meaning and when to populate | Valid JSON example |
+|---|---|---|
+| `additions_outside_requirements[array<Deviation>]` | Extra work not requested ;; | `[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `revisions_outside_requirements[array<Deviation>]` | Changed unrelated content or behavior ;; | `[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `additional_constraints[array<Deviation>]` | Introduced boundaries not supplied by user ;; | `[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `scope_reductions[array<Deviation>]` | Missing or narrowed requested work ;; | `[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `abstraction_level_changes[array<Deviation>]` | Changed detail level ;; | `[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `abstraction_mismatches[array<Deviation>]` | Output level does not match user request ;; | `[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+| `action_scope_minimizations[array<Deviation>]` | Executable user action turned into proposal/partial step ;; | `[{"id[string]":"D1","original_expectation[string]":"Produce tested implementation.","actual_or_proposed_change[string]":"Produced only a plan.","rationale[string]":"Runner unavailable.","affected_requirement_ids[array<Reference>]":[{"id[string]":"R1"}],"approval_status[string]":"pending","evidence[array<Evidence>]":[{"description[string]":"Regression run confirms malformed input preserved.","uri[string\|null]":"https://example.invalid/demo/run"}]}]` |
+
+### Complete intake, before transfer
+
+Use the full original template. Decomposition is empty, trusted IDs and queue/worker timestamps are null, and unverified R1 stays in the remaining list.
+
+```json
+{
+  "schema[string]": "issuestack.task.v3",
+  "nonce[string]": "example-r1-001",
+  "ordinal[number|null]": null,
+  "source[object<Source>]": {
+    "issue[number]": 1,
+    "comment_id[number|null]": null
+  },
+  "interpretation[object<Interpretation>]": {
+    "revised_instruction[string]": "Implement and verify malformed-input rejection.",
+    "user_intent[object<UserIntent>]": {
+      "goal[string]": "Keep invalid records out of the queue.",
+      "expected_outcome[string]": "Invalid payload rejected; valid payload transfers once.",
+      "requested_abstraction_level[string]": "Implemented code and regression tests.",
+      "requested_action_scope[string]": "Edit parser and tests, run checks, publish report."
+    }
+  },
+  "requirements[array<Requirement>]": [
+    {
+      "id[string]": "R1",
+      "description[string]": "Reject malformed input without losing original text.",
+      "acceptance_criteria[array<AcceptanceCriterion>]": [
+        {
+          "text[string]": "Invalid JSON retains source text and shows a tagged diagnostic."
+        }
+      ]
+    }
+  ],
+  "constraints[array<Constraint>]": [
+    {
+      "id[string]": "C1",
+      "description[string]": "Preserve all previously completed jobs.",
+      "source[string]": "User instruction",
+      "applies_to_requirement_ids[array<Reference>]": [
+        {
+          "id[string]": "R1"
+        }
+      ]
+    }
+  ],
+  "decomposition[array<WorkItem>]": [],
+  "planning[object<Planning>]": {
+    "status[string]": "not_started",
+    "method[string]": "Read schema, implement tests, inspect results.",
+    "sources[array<ResearchSource>]": []
+  },
+  "execution[object<Execution>]": {
+    "status[string]": "pending",
+    "enqueued_at[string|null]": null,
+    "started_at[string|null]": null,
+    "finished_at[string|null]": null,
+    "worker[string|null]": null
+  },
+  "completion[object<Completion>]": {
+    "by_requirement[array<RequirementCompletion>]": [],
+    "remaining_requirement_ids[array<Reference>]": [
+      {
+        "id[string]": "R1"
+      }
+    ],
+    "success[boolean|null]": null,
+    "summary[string|null]": null,
+    "artifacts[array<Artifact>]": [],
+    "validation[array<ValidationCheck>]": [],
+    "errors[array<ErrorEntry>]": [],
+    "receipt[object<Receipt>|null]": null
+  },
+  "unrequested_changes[object<DeviationAudit>]": {
+    "additions_outside_requirements[array<Deviation>]": [],
+    "revisions_outside_requirements[array<Deviation>]": [],
+    "additional_constraints[array<Deviation>]": [],
+    "scope_reductions[array<Deviation>]": [],
+    "abstraction_level_changes[array<Deviation>]": [],
+    "abstraction_mismatches[array<Deviation>]": [],
+    "action_scope_minimizations[array<Deviation>]": []
+  }
+}
+```
+
+### Complete success record after verification
+
+All criteria verified, remaining IDs empty; `succeeded`/`true` pair, real receipt required, separate scratchpad archive check.
+
+```json
+{
+  "schema[string]": "issuestack.task.v3",
+  "nonce[string]": "example-r1-001",
+  "ordinal[number|null]": null,
+  "source[object<Source>]": {
+    "issue[number]": 1,
+    "comment_id[number|null]": 90123456
+  },
+  "interpretation[object<Interpretation>]": {
+    "revised_instruction[string]": "Implement and verify malformed-input rejection.",
+    "user_intent[object<UserIntent>]": {
+      "goal[string]": "Keep invalid records out of the queue.",
+      "expected_outcome[string]": "Invalid payload rejected; valid payload transfers once.",
+      "requested_abstraction_level[string]": "Implemented code and regression tests.",
+      "requested_action_scope[string]": "Edit parser and tests, run checks, publish report."
+    }
+  },
+  "requirements[array<Requirement>]": [
+    {
+      "id[string]": "R1",
+      "description[string]": "Reject malformed input without losing original text.",
+      "acceptance_criteria[array<AcceptanceCriterion>]": [
+        {
+          "text[string]": "Invalid JSON retains source text and shows a tagged diagnostic."
+        }
+      ]
+    }
+  ],
+  "constraints[array<Constraint>]": [
+    {
+      "id[string]": "C1",
+      "description[string]": "Preserve all previously completed jobs.",
+      "source[string]": "User instruction",
+      "applies_to_requirement_ids[array<Reference>]": [
+        {
+          "id[string]": "R1"
+        }
+      ]
+    }
+  ],
+  "decomposition[array<WorkItem>]": [
+    {
+      "id[string]": "W1",
+      "description[string]": "Add malformed-input regression coverage.",
+      "requirement_ids[array<Reference>]": [
+        {
+          "id[string]": "R1"
+        }
+      ],
+      "depends_on[array<Reference>]": [],
+      "expected_output[string]": "Three regression cases saved.",
+      "verification_method[string]": "Run test suite and read back file.",
+      "status[string]": "verified",
+      "worker[string|null]": "Example worker",
+      "evidence[array<Evidence>]": [
+        {
+          "description[string]": "Actual test showed rejection and original input retained.",
+          "uri[string|null]": "https://example.invalid/demo/run"
+        }
+      ]
+    }
+  ],
+  "planning[object<Planning>]": {
+    "status[string]": "completed",
+    "method[string]": "Read schema, implement tests, inspect results.",
+    "sources[array<ResearchSource>]": [
+      {
+        "title[string]": "IssueStack v3 type registry",
+        "url[string]": "https://github.com/BestNameYet/IssueStack-/blob/main/src/types/issuestack.task.v3.json"
+      }
+    ]
+  },
+  "execution[object<Execution>]": {
+    "status[string]": "succeeded",
+    "enqueued_at[string|null]": "2026-10-25T08:00:00.000Z",
+    "started_at[string|null]": "2026-10-25T08:02:00.000Z",
+    "finished_at[string|null]": "2026-10-25T08:09:00.000Z",
+    "worker[string|null]": "Example worker"
+  },
+  "completion[object<Completion>]": {
+    "by_requirement[array<RequirementCompletion>]": [
+      {
+        "requirement_id[string]": "R1",
+        "status[string]": "verified",
+        "evidence[array<Evidence>]": [
+          {
+            "description[string]": "Actual test showed rejection and original input retained.",
+            "uri[string|null]": "https://example.invalid/demo/run"
+          }
+        ],
+        "blocker[string|null]": null,
+        "next_action[string|null]": null,
+        "verified_at[string|null]": "2026-10-25T08:08:00.000Z"
+      }
+    ],
+    "remaining_requirement_ids[array<Reference>]": [],
+    "success[boolean|null]": true,
+    "summary[string|null]": "All criteria verified by actual test and readback.",
+    "artifacts[array<Artifact>]": [
+      {
+        "description[string]": "Validator test report",
+        "uri[string]": "https://example.invalid/demo/report"
+      }
+    ],
+    "validation[array<ValidationCheck>]": [
+      {
+        "check[string]": "Malformed-input integration test",
+        "passed[boolean]": true,
+        "evidence[array<Evidence>]": [
+          {
+            "description[string]": "Actual test showed rejection and original input retained.",
+            "uri[string|null]": "https://example.invalid/demo/run"
+          }
+        ]
+      }
+    ],
+    "errors[array<ErrorEntry>]": [],
+    "receipt[object<Receipt>|null]": {
+      "nonce[string]": "example-r1-001",
+      "source_issue[number]": 1,
+      "source_comment_id[number]": 90123456,
+      "queue_issue[number]": 2,
+      "queue_comment_id[number]": 90123457,
+      "executor[string]": "Example worker",
+      "started_at[string|null]": "2026-10-25T08:02:00.000Z",
+      "finished_at[string|null]": "2026-10-25T08:09:00.000Z",
+      "run_id[string|null]": null
+    }
+  },
+  "unrequested_changes[object<DeviationAudit>]": {
+    "additions_outside_requirements[array<Deviation>]": [],
+    "revisions_outside_requirements[array<Deviation>]": [],
+    "additional_constraints[array<Deviation>]": [],
+    "scope_reductions[array<Deviation>]": [],
+    "abstraction_level_changes[array<Deviation>]": [],
+    "abstraction_mismatches[array<Deviation>]": [],
+    "action_scope_minimizations[array<Deviation>]": []
+  }
+}
+```
+
+### Complete blocked record
+
+Unresolved R1 remains, blocker/next action captured, `blocked`/`null` pair and null terminal receipt; unapproved deviation is recorded rather than silently accepted.
+
+```json
+{
+  "schema[string]": "issuestack.task.v3",
+  "nonce[string]": "example-r1-001",
+  "ordinal[number|null]": null,
+  "source[object<Source>]": {
+    "issue[number]": 1,
+    "comment_id[number|null]": 90123456
+  },
+  "interpretation[object<Interpretation>]": {
+    "revised_instruction[string]": "Implement and verify malformed-input rejection.",
+    "user_intent[object<UserIntent>]": {
+      "goal[string]": "Keep invalid records out of the queue.",
+      "expected_outcome[string]": "Invalid payload rejected; valid payload transfers once.",
+      "requested_abstraction_level[string]": "Implemented code and regression tests.",
+      "requested_action_scope[string]": "Edit parser and tests, run checks, publish report."
+    }
+  },
+  "requirements[array<Requirement>]": [
+    {
+      "id[string]": "R1",
+      "description[string]": "Reject malformed input without losing original text.",
+      "acceptance_criteria[array<AcceptanceCriterion>]": [
+        {
+          "text[string]": "Invalid JSON retains source text and shows a tagged diagnostic."
+        }
+      ]
+    }
+  ],
+  "constraints[array<Constraint>]": [
+    {
+      "id[string]": "C1",
+      "description[string]": "Preserve all previously completed jobs.",
+      "source[string]": "User instruction",
+      "applies_to_requirement_ids[array<Reference>]": [
+        {
+          "id[string]": "R1"
+        }
+      ]
+    }
+  ],
+  "decomposition[array<WorkItem>]": [
+    {
+      "id[string]": "W1",
+      "description[string]": "Add malformed-input regression coverage.",
+      "requirement_ids[array<Reference>]": [
+        {
+          "id[string]": "R1"
+        }
+      ],
+      "depends_on[array<Reference>]": [],
+      "expected_output[string]": "Three regression cases saved.",
+      "verification_method[string]": "Run test suite and read back file.",
+      "status[string]": "blocked",
+      "worker[string|null]": "Example worker",
+      "evidence[array<Evidence>]": []
+    }
+  ],
+  "planning[object<Planning>]": {
+    "status[string]": "in_progress",
+    "method[string]": "Read schema, implement tests, inspect results.",
+    "sources[array<ResearchSource>]": [
+      {
+        "title[string]": "IssueStack v3 type registry",
+        "url[string]": "https://github.com/BestNameYet/IssueStack-/blob/main/src/types/issuestack.task.v3.json"
+      }
+    ]
+  },
+  "execution[object<Execution>]": {
+    "status[string]": "blocked",
+    "enqueued_at[string|null]": "2026-10-25T08:00:00.000Z",
+    "started_at[string|null]": "2026-10-25T08:02:00.000Z",
+    "finished_at[string|null]": null,
+    "worker[string|null]": "Example worker"
+  },
+  "completion[object<Completion>]": {
+    "by_requirement[array<RequirementCompletion>]": [
+      {
+        "requirement_id[string]": "R1",
+        "status[string]": "blocked",
+        "evidence[array<Evidence>]": [],
+        "blocker[string|null]": "CI token lacks read permission.",
+        "next_action[string|null]": "Restore access, rerun test, and inspect outputs.",
+        "verified_at[string|null]": null
+      }
+    ],
+    "remaining_requirement_ids[array<Reference>]": [
+      {
+        "id[string]": "R1"
+      }
+    ],
+    "success[boolean|null]": null,
+    "summary[string|null]": "Blocked; requirement not verified.",
+    "artifacts[array<Artifact>]": [],
+    "validation[array<ValidationCheck>]": [
+      {
+        "check[string]": "Malformed-input test",
+        "passed[boolean]": false,
+        "evidence[array<Evidence>]": []
+      }
+    ],
+    "errors[array<ErrorEntry>]": [
+      {
+        "message[string]": "Runner denied access before testing."
+      }
+    ],
+    "receipt[object<Receipt>|null]": null
+  },
+  "unrequested_changes[object<DeviationAudit>]": {
+    "additions_outside_requirements[array<Deviation>]": [],
+    "revisions_outside_requirements[array<Deviation>]": [],
+    "additional_constraints[array<Deviation>]": [],
+    "scope_reductions[array<Deviation>]": [],
+    "abstraction_level_changes[array<Deviation>]": [],
+    "abstraction_mismatches[array<Deviation>]": [],
+    "action_scope_minimizations[array<Deviation>]": [
+      {
+        "id[string]": "D1",
+        "original_expectation[string]": "Produce tested implementation.",
+        "actual_or_proposed_change[string]": "Produced only a plan.",
+        "rationale[string]": "Runner unavailable.",
+        "affected_requirement_ids[array<Reference>]": [
+          {
+            "id[string]": "R1"
+          }
+        ],
+        "approval_status[string]": "pending",
+        "evidence[array<Evidence>]": []
+      }
+    ]
+  }
+}
+```
+
+### Complete terminal failure record
+
+Unmet R1 stays in remaining list, failing test recorded, `failed`/`false` pair and typed terminal receipt. Failure is not successful execution.
+
+```json
+{
+  "schema[string]": "issuestack.task.v3",
+  "nonce[string]": "example-r1-001",
+  "ordinal[number|null]": null,
+  "source[object<Source>]": {
+    "issue[number]": 1,
+    "comment_id[number|null]": 90123456
+  },
+  "interpretation[object<Interpretation>]": {
+    "revised_instruction[string]": "Implement and verify malformed-input rejection.",
+    "user_intent[object<UserIntent>]": {
+      "goal[string]": "Keep invalid records out of the queue.",
+      "expected_outcome[string]": "Invalid payload rejected; valid payload transfers once.",
+      "requested_abstraction_level[string]": "Implemented code and regression tests.",
+      "requested_action_scope[string]": "Edit parser and tests, run checks, publish report."
+    }
+  },
+  "requirements[array<Requirement>]": [
+    {
+      "id[string]": "R1",
+      "description[string]": "Reject malformed input without losing original text.",
+      "acceptance_criteria[array<AcceptanceCriterion>]": [
+        {
+          "text[string]": "Invalid JSON retains source text and shows a tagged diagnostic."
+        }
+      ]
+    }
+  ],
+  "constraints[array<Constraint>]": [
+    {
+      "id[string]": "C1",
+      "description[string]": "Preserve all previously completed jobs.",
+      "source[string]": "User instruction",
+      "applies_to_requirement_ids[array<Reference>]": [
+        {
+          "id[string]": "R1"
+        }
+      ]
+    }
+  ],
+  "decomposition[array<WorkItem>]": [
+    {
+      "id[string]": "W1",
+      "description[string]": "Add malformed-input regression coverage.",
+      "requirement_ids[array<Reference>]": [
+        {
+          "id[string]": "R1"
+        }
+      ],
+      "depends_on[array<Reference>]": [],
+      "expected_output[string]": "Three regression cases saved.",
+      "verification_method[string]": "Run test suite and read back file.",
+      "status[string]": "failed",
+      "worker[string|null]": "Example worker",
+      "evidence[array<Evidence>]": []
+    }
+  ],
+  "planning[object<Planning>]": {
+    "status[string]": "in_progress",
+    "method[string]": "Read schema, implement tests, inspect results.",
+    "sources[array<ResearchSource>]": [
+      {
+        "title[string]": "IssueStack v3 type registry",
+        "url[string]": "https://github.com/BestNameYet/IssueStack-/blob/main/src/types/issuestack.task.v3.json"
+      }
+    ]
+  },
+  "execution[object<Execution>]": {
+    "status[string]": "failed",
+    "enqueued_at[string|null]": "2026-10-25T08:00:00.000Z",
+    "started_at[string|null]": "2026-10-25T08:02:00.000Z",
+    "finished_at[string|null]": "2026-10-25T08:09:00.000Z",
+    "worker[string|null]": "Example worker"
+  },
+  "completion[object<Completion>]": {
+    "by_requirement[array<RequirementCompletion>]": [
+      {
+        "requirement_id[string]": "R1",
+        "status[string]": "failed",
+        "evidence[array<Evidence>]": [],
+        "blocker[string|null]": "CI token lacks read permission.",
+        "next_action[string|null]": "Restore access, rerun test, and inspect outputs.",
+        "verified_at[string|null]": null
+      }
+    ],
+    "remaining_requirement_ids[array<Reference>]": [
+      {
+        "id[string]": "R1"
+      }
+    ],
+    "success[boolean|null]": false,
+    "summary[string|null]": "Terminal failure: R1 is still unmet.",
+    "artifacts[array<Artifact>]": [],
+    "validation[array<ValidationCheck>]": [
+      {
+        "check[string]": "Malformed-input test",
+        "passed[boolean]": false,
+        "evidence[array<Evidence>]": []
+      }
+    ],
+    "errors[array<ErrorEntry>]": [
+      {
+        "message[string]": "Runner denied access before testing."
+      }
+    ],
+    "receipt[object<Receipt>|null]": {
+      "nonce[string]": "example-r1-001",
+      "source_issue[number]": 1,
+      "source_comment_id[number]": 90123456,
+      "queue_issue[number]": 2,
+      "queue_comment_id[number]": 90123457,
+      "executor[string]": "Example worker",
+      "started_at[string|null]": "2026-10-25T08:02:00.000Z",
+      "finished_at[string|null]": "2026-10-25T08:09:00.000Z",
+      "run_id[string|null]": null
+    }
+  },
+  "unrequested_changes[object<DeviationAudit>]": {
+    "additions_outside_requirements[array<Deviation>]": [],
+    "revisions_outside_requirements[array<Deviation>]": [],
+    "additional_constraints[array<Deviation>]": [],
+    "scope_reductions[array<Deviation>]": [],
+    "abstraction_level_changes[array<Deviation>]": [],
+    "abstraction_mismatches[array<Deviation>]": [],
+    "action_scope_minimizations[array<Deviation>]": []
+  }
+}
+```
+
+### Contrasting field choices
+
+- A `Reference.id[string]` is an **R ID** in requirement/constraint/completion collections and a **W ID** only for `WorkItem.depends_on[array<Reference>]`. Use exactly the correct typed Reference object each time.
+- `Source.comment_id[number|null]` is null at intake, then workflow-supplied. `Execution.finished_at[string|null]` is null while active. `Completion.success[boolean|null]` and `Completion.receipt[object<Receipt>|null]` remain null for pending/running/blocked, then become truthfully terminal values. `Evidence.uri[string|null]` can be null when a genuine observed check has no link; `Artifact.uri[string]` is always a string for a real published output.
+- A verified `RequirementCompletion` has evidence and `verified_at`; a blocked entry has a concrete `blocker` and `next_action` but no verification time; a terminal failed entry records the failure and stays in remaining requirements.
+- **Proposed deviation:** a complete `Deviation` object with `approval_status[string] = "pending"`, affected R IDs and supporting evidence. **Approved deviation:** the same complete typed object but `"approved"` with actual approval evidence. A rationale alone does not confer approval. A rejected divergence has `"rejected"`. Success requires material deviations resolved, not merely documented.
+
+### Issue #3 scratchpad few shot (Markdown, not task JSON)
+
+```text
+# Job 90123457 scratchpad
+<!-- ISSUESTACK_PAD_JOB:90123457 -->
+Nonce: example-r1-001
+Handshake: Issue #1 source slot 90123456; ledger 6392246635;
+Issue #2 job 90123457; index 6392250512; Issue #3 pad 90123458.
+Verified nonce, ledger transfer and exact mapped pad marker.
+Intent before changes: create tests/validator.test.js to test malformed JSON.
+Read back this pad, then claim the job, work and verify acceptance criteria.
+Observed: runner permission denied; R1 is still pending verification.
+Next: restore runner access and retry; do not claim completion.
+```
+
+Use real mapped IDs, not these hypothetical ones. Preserve the identity marker and history, append amended intent **before** unexpected job/file edits, and verify each scratchpad write. Avoid secrets and private hidden reasoning.
+
+### Verification and completion rules
+
+1. Validate each JSON root/nested field name and value against Issue #1 and `src/types/issuestack.task.v3.json`; keep zero unknown or omitted keys and respect nullable declarations. The illustrative records above are *examples*, not real evidence.
+2. Do not remove an R ID from `completion.remaining_requirement_ids` until independent acceptance evidence exists. Record actual test failures, artifacts, blockers, scope differences, and approvals.
+3. Terminal success requires `execution.status = "succeeded"`, `completion.success = true`, no remaining R IDs, and a read-back terminal receipt. Terminal failure requires `"failed"`/`false`, unmet requirements recorded, and a receipt. In progress or blocked means null success/receipt.
+4. Update **the existing Issue #2 job comment**, fetch it again and verify all fields. The Issue #3 scratchpad archive and Issue #2 index must also be independently checked; terminal publication does not establish archival.
+

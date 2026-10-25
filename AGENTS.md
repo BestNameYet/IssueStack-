@@ -11,7 +11,7 @@ Route **user instruction → one JSON record comment in Issue #1 → validated, 
 
 ## Current task schema: `issuestack.task.v3`
 
-Issue #1 is the authoritative source for the **current** record template and named object type registry. Read both JSON blocks in the current Issue #1 body before creating a record. The latest schema uses **literal bracket-annotated key names**. `issuestack.job.v1` and `issuestack.task.v2` records remain historical; preserve them without automatic conversion. The body of Issue #2 defines the job scope and does not need to be rewritten for every schema version.
+Issue #1 defines the active record template, while named object types are stored in `src/types/issuestack.task.v3.json`; read both. The latest schema uses **literal bracket-annotated key names**. `issuestack.job.v1` and `issuestack.task.v2` records remain historical; preserve them without automatic conversion. The body of Issue #2 defines the job scope and does not need to be rewritten for every schema version.
 
 **Mandatory exact-type invariant:** Every JSON object must have exactly its named type's keys, with zero missing and zero additional keys; every value must have the type declared by its field's bracket suffix. This is recursive at every level, including objects contained in arrays. Keys with different literal names identify different object types, even when their values share the same primitive types. Only the current `schema[string]` version is accepted on new intake comments.
 
@@ -38,11 +38,11 @@ The type of an array element is **one named object type**, not merely `object`:
 
 That example is one `Requirement` object, not an entire task record. The `Requirement` type defines the exact three field declarations shown; `AcceptanceCriterion` defines `text[string]`. A different field name, an omitted field, an added field, or an incorrect JSON value type is a hard validation failure. An empty array is valid structurally but every present item must match its declared named object type. For scalar lists, use typed object wrappers such as `Reference` with `id[string]`; untyped arrays and mixed-type arrays are prohibited.
 
-New instruction comments must contain one **bare JSON object** in the active format, without Markdown fences. Null is permitted only when the declaration explicitly says `null` or `|null`. For invalid records, the intake listener replaces the entire comment with the full current record key tree whose leaf values are null. That replacement is an error/reset artifact and intentionally **not** a valid instruction.
+New instruction comments must contain one **bare JSON object** in the active format, without Markdown fences. Null is permitted only when the declaration explicitly says `null` or `|null`. When validation fails, preserve the original comment and append one visible diagnostic delimited by `!ISSUESTACK_ERROR_START` and `!ISSUESTACK_ERROR_END`. The handler does not parse the enclosed text and does not repeat identical bot edits. Corrected records have stale diagnostics removed after successful queue reconciliation; invalid edits still block matching pending jobs.
 
 ## Agent procedure and field ownership
 
-1. Read this file, the current repository README when available, and the up-to-date bodies of Issue #1 (template **and registry**) and Issue #2 (job scope).
+1. Read this file, the current repository README when available, and the current Issue #1 template, its versioned type registry in `src/types/`, and Issue #2's job scope.
 2. Capture user requests as an intelligible **rewritten instruction** in `interpretation[object<Interpretation>].revised_instruction[string]`, not verbatim text. Under `user_intent[object<UserIntent>]`, preserve the goal, expected outcome, requested abstraction level, and full requested action scope.
 3. Define each required outcome as a `Requirement` object in `requirements[array<Requirement>]`, with an ID, description, and individually typed acceptance criteria. Track separate typed `Constraint` objects in `constraints[array<Constraint>]`.
 4. At intake, leave `decomposition[array<WorkItem>]` empty and `planning[object<Planning>].status[string]` equal to `not_started`. The Issue #2 planner decomposes requirements into atomic, independently verified actions, linking them by `Reference` objects. A completed work item does not imply a completed requirement.

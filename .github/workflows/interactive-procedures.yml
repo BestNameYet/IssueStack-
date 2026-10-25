@@ -1,38 +1,38 @@
-name: IssueStack Interactive Procedures
+name: IssueStack Declared Procedures
 
 on:
   issue_comment:
-    types: [created, edited]
-  schedule:
-    - cron: '31 * * * *'
-  workflow_dispatch:
+    types: [edited]
   push:
     paths:
+      - 'src/procedure-documents.js'
       - 'src/interactive-procedures.js'
       - 'src/interactive-procedures.test.js'
+      - 'src/issue-1-intake.js'
       - '.github/workflows/interactive-procedures.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
   issues: write
 
 concurrency:
-  group: issuestack-procedure-transitions
+  group: issuestack-declared-procedure-transitions
   cancel-in-progress: false
 
 jobs:
   transition:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || (github.event_name == 'issue_comment' && (github.event.issue.number == 13 || github.event.issue.number == 2) && !github.event.issue.pull_request && github.actor != 'github-actions[bot]') }}
+    if: ${{ github.event_name == 'issue_comment' && github.event.issue.number == 13 && !github.event.issue.pull_request && github.actor == github.repository_owner }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Validate agent answer and project the next instruction
+      - name: Verify agent-only edit, check return type and commit next procedure state
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const processor = require('./src/interactive-procedures.js');
+            const processor = require('./src/procedure-documents.js');
             await processor.run({github, context, core});
 
   test:
@@ -44,5 +44,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Unit tests for tagged JSON and append-only transitions
+      - name: Validate declared-step syntax and state transitions
         run: node --test src/interactive-procedures.test.js

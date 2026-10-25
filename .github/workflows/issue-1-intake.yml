@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Check out listener source
         uses: actions/checkout@v4
-      - name: Validate, annotate errors, or transfer instruction
+      - name: Enforce pinned slots, publish verified transfer, and update ledger
         uses: actions/github-script@v7
         with:
           # GITHUB_TOKEN edits do not fire subsequent issue_comment workflow runs.

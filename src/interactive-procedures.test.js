@@ -87,8 +87,9 @@ test('editing hidden state or bot panel with answer is rejected',async()=>{
  const change=f.submit({subject:'ok',confirmed:true});
  change.now.body=change.now.body.replace('"revision": 0','"revision": 1');
  f.docs.set(f.id,change.now);
- await assert.rejects(f.process(change),/bot-owned section/);
- const parsed=p.parseComment(change.old);
+ await f.process(change);
+ assert.equal(f.docs.get(f.id).body,change.old);
+ const parsed=p.parseComment(f.docs.get(f.id).body);
  assert.equal(parsed.state.revision,0);
 });
 test('stale revision does not write prior results',async()=>{
@@ -110,4 +111,19 @@ test('procedure declaration can be provisioned once without Issue #2 job',async(
  const first=await p.ensureDeclaredProcedure({github:gh,owner:'BestNameYet',repo:'IssueStack-',declaration:d,sourceId:501,core:{}});
  const second=await p.ensureDeclaredProcedure({github:gh,owner:'BestNameYet',repo:'IssueStack-',declaration:d,sourceId:501,core:{}});
  assert.equal(first,second);assert.equal(created.length,1);
+});
+
+test('malformed answer JSON is restored with validation feedback',async()=>{
+ const f=fixture(),old=f.docs.get(f.id);
+ const body=old.body.replace(fence+'json\n{}\n'+fence+'\n'+p.ANSWER_END,
+  fence+'json\n{"oops":\n'+fence+'\n'+p.ANSWER_END);
+ assert.notEqual(body,old.body);
+ f.docs.set(f.id,{id:f.id,body});
+ await p.processEdit({github:f.github,owner:'BestNameYet',repo:'IssueStack-',comment:f.docs.get(f.id),previousBody:old.body,core:{}});
+ const r=p.parseComment(f.docs.get(f.id).body);
+ assert.equal(r.state.revision,0);assert.match(r.bot.last_error,/Invalid procedure answer JSON/);
+});
+test('intake rejects reserved HTML delimiters in procedure definition',()=>{
+ const d=clone(definition);d.steps[0].instruction='bad --> html termination';
+ assert.match(p.validateDeclaration(d),/reserved HTML/);
 });

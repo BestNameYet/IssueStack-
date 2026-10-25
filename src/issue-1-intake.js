@@ -3,6 +3,7 @@
 const {readDefinition, validateIntake} = require('./record-type-validator.js');
 const {splitComment, addError} = require('./comment-error-tags.js');
 const {ensureScratchpad} = require('./issue-3-scratchpads.js');
+const {ensureProcedure} = require('./interactive-procedures.js');
 
 const ISSUE_INTAKE = 1;
 const ISSUE_QUEUE = 2;
@@ -182,6 +183,9 @@ async function run({github, context, core}) {
     const scratchpadId=await ensureScratchpad({
       github,owner,repo,jobId:queueId,jobNonce:nonceOf(actual),core
     });
+    // Project the first interactive instruction into one persistent Issue #13
+    // comment. Keep it out of the strict Issue #2 v3 JSON record.
+    await ensureProcedure({github,owner,repo,jobId:queueId,padId:scratchpadId,core});
     const enqueued=actual['execution[object<Execution>]']?.['enqueued_at[string|null]'] || new Date().toISOString();
     await appendLedger(github,owner,repo,
       transferLine(slotNumber(commentId),commentId,nonceOf(actual),queueId,enqueued,owner+'/'+repo),

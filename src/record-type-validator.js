@@ -1,6 +1,6 @@
 'use strict';
 
-// Strict, versioned structural type declarations are embedded in Issue #1.
+// Strict, versioned named-object type declarations live in src/types/.
 // Every key is written as field[type], e.g. requirements[array<Requirement>].
 // A named object type is identified by its exact declared field names and types.
 const isObject = x => x !== null && typeof x === 'object' && !Array.isArray(x);
@@ -59,20 +59,19 @@ function validateDefinition(root, registry) {
   }
 }
 
-function readDefinition(body) {
-  const regex = new RegExp(fence + 'json\\s*([\\s\\S]*?)\\s*' + fence, 'gi');
-  const blocks = [...String(body || '').matchAll(regex)];
-  if (blocks.length < 2) throw new Error('Issue #1 must define both a JSON task template and a JSON named object type registry.');
-  let template, registry;
-  try {
-    template = JSON.parse(blocks[0][1]);
-    registry = JSON.parse(blocks[1][1]);
-  } catch (e) { throw new Error('Issue #1 task/type JSON cannot be parsed: ' + e.message); }
+funcfunction readDefinition(body) {
+  const regex = new RegExp(fence + 'json\\s*([\\s\\S]*?)\\s*' + fence, 'i');
+  const block = String(body || '').match(regex);
+  if (!block) throw new Error('Issue #1 has no JSON record template.');
+  const template = JSON.parse(block[1]);
+  if (template['schema[string]'] !== 'issuestack.task.v3') {
+    throw new Error('No type registry is installed for the declared version.');
+  }
+  const registry = require('./types/issuestack.task.v3.json');
   validateDefinition(template, registry);
   return {template, registry};
 }
-
-function nullRecord(model) {
+ction nullRecord(model) {
   if (isObject(model)) return Object.fromEntries(Object.keys(model).map(k => [k,nullRecord(model[k])]));
   return null;
 }

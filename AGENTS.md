@@ -53,6 +53,14 @@ New instruction comments must contain one **bare JSON object** in the active for
 
 Never add undocumented keys to the record to accommodate new work. Define a new named object type and **increment the version** before accepting new fields; do not silently loosen versioned validation.
 
+## Permanent Issue #1 comment slots
+
+Issue #1 uses exactly six **fixed GitHub comment IDs**. **Comment 1** (`6392246635`) is the transfer ledger, not an intake entry. **Comments 2–6** (`6392297975`, `6392352070`, `6392385256`, `6392425260`, `6392431658`) are the only reusable instruction inputs. Their GitHub IDs remain permanent even after other comments are deleted; never infer slots from a shifted position or accept comments with other IDs.
+
+When a typed record in a permitted slot passes validation, publish it to Issue #2, **read back and verify** the nonce and source ID, append its timestamp/source ID/queue comment ID to comment 1, verify the ledger update, and **only then** overwrite the original slot with `Please enter instruction.` The ledger records *completed transfers*, not completed execution jobs. A reused slot carries a new nonce; existing Issue #2 jobs stay intact. An invalid slot entry retains its tagged inline error until corrected.
+
+Any additional Issue #1 comments beyond those six IDs are rejected and deleted using the workflow's `GITHUB_TOKEN`, with a durable rejection entry in ledger comment 1 stating `Please use comments 2 through 6.` Do not create new Issue #1 comments for errors, confirmations, or rejection notices. Preserve historical completed-job records in Issue #2 when repurposing the original slot comments.
+
 ## GitHub Actions bot-authored comments
 
 The Issue #1 intake listener runs on user-created and user-edited issue comments only. It authenticates its own comment writes using the workflow's built-in `GITHUB_TOKEN`, explicitly passed to `actions/github-script`. GitHub does not create new workflow runs from the `issue_comment` events caused by writes authenticated with that token. Do not replace it with a PAT or GitHub App token for validator writebacks, as those credentials could create recursive workflow events. The workflow also excludes `github-actions[bot]` as a defensive actor guard. The tagged diagnostic parser must continue to ignore bot-maintained error sections for manually edited comments. Never substitute an artificial re-trigger for the required user-initiated edit event.

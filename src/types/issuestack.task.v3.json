@@ -1,0 +1,123 @@
+{
+  "Reference": {
+    "id[string]": ""
+  },
+  "AcceptanceCriterion": {
+    "text[string]": ""
+  },
+  "Evidence": {
+    "description[string]": "",
+    "uri[string|null]": null
+  },
+  "ResearchSource": {
+    "title[string]": "",
+    "url[string]": ""
+  },
+  "Requirement": {
+    "id[string]": "",
+    "description[string]": "",
+    "acceptance_criteria[array<AcceptanceCriterion>]": []
+  },
+  "Constraint": {
+    "id[string]": "",
+    "description[string]": "",
+    "source[string]": "",
+    "applies_to_requirement_ids[array<Reference>]": []
+  },
+  "WorkItem": {
+    "id[string]": "",
+    "description[string]": "",
+    "requirement_ids[array<Reference>]": [],
+    "depends_on[array<Reference>]": [],
+    "expected_output[string]": "",
+    "verification_method[string]": "",
+    "status[string]": "",
+    "worker[string|null]": null,
+    "evidence[array<Evidence>]": []
+  },
+  "RequirementCompletion": {
+    "requirement_id[string]": "",
+    "status[string]": "",
+    "evidence[array<Evidence>]": [],
+    "blocker[string|null]": null,
+    "next_action[string|null]": null,
+    "verified_at[string|null]": null
+  },
+  "Artifact": {
+    "description[string]": "",
+    "uri[string]": ""
+  },
+  "ValidationCheck": {
+    "check[string]": "",
+    "passed[boolean]": false,
+    "evidence[array<Evidence>]": []
+  },
+  "ErrorEntry": {
+    "message[string]": ""
+  },
+  "Receipt": {
+    "nonce[string]": "",
+    "source_issue[number]": 1,
+    "source_comment_id[number]": 1,
+    "queue_issue[number]": 2,
+    "queue_comment_id[number]": 1,
+    "executor[string]": "",
+    "started_at[string|null]": null,
+    "finished_at[string|null]": null,
+    "run_id[string|null]": null
+  },
+  "Deviation": {
+    "id[string]": "",
+    "original_expectation[string]": "",
+    "actual_or_proposed_change[string]": "",
+    "rationale[string]": "",
+    "affected_requirement_ids[array<Reference>]": [],
+    "approval_status[string]": "",
+    "evidence[array<Evidence>]": []
+  },
+  "Source": {
+    "issue[number]": 1,
+    "comment_id[number|null]": null
+  },
+  "UserIntent": {
+    "goal[string]": "",
+    "expected_outcome[string]": "",
+    "requested_abstraction_level[string]": "",
+    "requested_action_scope[string]": ""
+  },
+  "Interpretation": {
+    "revised_instruction[string]": "",
+    "user_intent[object<UserIntent>]": {}
+  },
+  "Planning": {
+    "status[string]": "",
+    "method[string]": "",
+    "sources[array<ResearchSource>]": []
+  },
+  "Execution": {
+    "status[string]": "",
+    "enqueued_at[string|null]": null,
+    "started_at[string|null]": null,
+    "finished_at[string|null]": null,
+    "worker[string|null]": null
+  },
+  "Completion": {
+    "by_requirement[array<RequirementCompletion>]": [],
+    "remaining_requirement_ids[array<Reference>]": [],
+    "success[boolean|null]": null,
+    "summary[string|null]": null,
+    "artifacts[array<Artifact>]": [],
+    "validation[array<ValidationCheck>]": [],
+    "errors[array<ErrorEntry>]": [],
+    "receipt[object<Receipt>|null]": null
+  },
+  "DeviationAudit": {
+    "additions_outside_requirements[array<Deviation>]": [],
+    "revisions_outside_requirements[array<Deviation>]": [],
+    "additional_constraints[array<Deviation>]": [],
+    "scope_reductions[array<Deviation>]": [],
+    "abstraction_level_changes[array<Deviation>]": [],
+    "abstraction_mismatches[array<Deviation>]": [],
+    "action_scope_minimizations[array<Deviation>]": []
+  }
+}

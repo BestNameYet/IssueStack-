@@ -1,0 +1,118 @@
+{
+  "schema": "issuestack.job.v1",
+  "nonce": "issuestack-bootstrap-10-issues-20261024-1818",
+  "ordinal": null,
+  "source": {
+    "issue": 1,
+    "comment_id": 6392246635
+  },
+  "instruction": {
+    "text": "Create ten more GitHub issues in BestNameYet/IssueStack-, with unspecified future purposes; use neutral placeholder titles and leave them unassigned. Preserve Issue #1 as instruction intake and Issue #2 as the job queue.",
+    "args": {
+      "count": 10,
+      "repository": "BestNameYet/IssueStack-",
+      "title_pattern": "Reserved Issue {number}",
+      "intent": "repository bootstrap"
+    }
+  },
+  "queue": {
+    "status": "succeeded",
+    "enqueued_at": "2026-10-25T02:03:51.731Z",
+    "started_at": "2026-10-25T02:04:03.965Z",
+    "finished_at": "2026-10-25T02:04:52.600Z",
+    "worker": "ChatGPT GitHub integration (manual bootstrap)"
+  },
+  "completion": {
+    "success": true,
+    "summary": "Created 10 unassigned placeholder issues (#3–#12) as a one-time, manually orchestrated bootstrap; read-back verified all 10.",
+    "output": {
+      "created": [
+        {
+          "issue": 3,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/3"
+        },
+        {
+          "issue": 4,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/4"
+        },
+        {
+          "issue": 5,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/5"
+        },
+        {
+          "issue": 6,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/6"
+        },
+        {
+          "issue": 7,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/7"
+        },
+        {
+          "issue": 8,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/8"
+        },
+        {
+          "issue": 9,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/9"
+        },
+        {
+          "issue": 10,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/10"
+        },
+        {
+          "issue": 11,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/11"
+        },
+        {
+          "issue": 12,
+          "url": "https://github.com/BestNameYet/IssueStack-/issues/12"
+        }
+      ],
+      "count": 10,
+      "mode": "manual via GitHub integration; no automatic job listener or executor implemented"
+    },
+    "artifacts": [
+      "https://github.com/BestNameYet/IssueStack-/issues/3",
+      "https://github.com/BestNameYet/IssueStack-/issues/4",
+      "https://github.com/BestNameYet/IssueStack-/issues/5",
+      "https://github.com/BestNameYet/IssueStack-/issues/6",
+      "https://github.com/BestNameYet/IssueStack-/issues/7",
+      "https://github.com/BestNameYet/IssueStack-/issues/8",
+      "https://github.com/BestNameYet/IssueStack-/issues/9",
+      "https://github.com/BestNameYet/IssueStack-/issues/10",
+      "https://github.com/BestNameYet/IssueStack-/issues/11",
+      "https://github.com/BestNameYet/IssueStack-/issues/12"
+    ],
+    "validation": [
+      {
+        "check": "Issue read-back",
+        "passed": true,
+        "verified_count": 10,
+        "details": "All 10 issues exist, are open, have the requested placeholder titles, and reference the originating intake instruction."
+      }
+    ],
+    "errors": [],
+    "receipt": {
+      "nonce": "issuestack-bootstrap-10-issues-20261024-1818",
+      "source_issue": 1,
+      "source_comment_id": 6392246635,
+      "queue_issue": 2,
+      "queue_comment_id": 6392250512,
+      "executor": "ChatGPT GitHub integration (manual bootstrap)",
+      "started_at": "2026-10-25T02:04:03.965Z",
+      "finished_at": "2026-10-25T02:04:52.600Z",
+      "created_issue_numbers": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  }
+}

@@ -7,13 +7,13 @@ These instructions govern all agents operating in `BestNameYet/IssueStack-` and 
 - **[Issue #1 — User Instruction Intake](https://github.com/BestNameYet/IssueStack-/issues/1)** is the authoritative instruction input and task-record contract.
 - **[Issue #2 — Job Queue and Completion Records](https://github.com/BestNameYet/IssueStack-/issues/2)** is the job scope: queued records, work performed, requirement-by-requirement completion, evidence, deviations, and receipts.
 
-Route **user instruction → one JSON record comment in Issue #1 → validated, deduplicated queue comment in Issue #2 → execution and verified result in Issue #2**. Do not bypass intake or equate queue publication with completed execution. The *body* of Issue #2 need not mirror the current task schema; it documents the job surface, while each queued comment carries its own `schema` version.
+Route **static instruction → one `issuestack.task.v3` JSON record in Issue #1 → validated, deduplicated job in Issue #2 → execution and verified result in Issue #2**. Route **pre-existing declared procedure → `issuestack.procedure.v1` JSON in Issue #1 → syntax-verified procedure comment in Issue #13 → stepwise typed returns in that same Issue #13 comment**, without publishing a procedure job to Issue #2. Do not bypass intake or equate queue publication with completed execution. The *body* of Issue #2 need not mirror the current task schema; it documents the job surface, while each queued comment carries its own `schema` version.
 
 ## Current task schema: `issuestack.task.v3`
 
 Issue #1 defines the active record template, while named object types are stored in `src/types/issuestack.task.v3.json`; read both. The latest schema uses **literal bracket-annotated key names**. `issuestack.job.v1` and `issuestack.task.v2` records remain historical; preserve them without automatic conversion. The body of Issue #2 defines the job scope and does not need to be rewritten for every schema version.
 
-**Mandatory exact-type invariant:** Every JSON object must have exactly its named type's keys, with zero missing and zero additional keys; every value must have the type declared by its field's bracket suffix. This is recursive at every level, including objects contained in arrays. Keys with different literal names identify different object types, even when their values share the same primitive types. Only the current `schema[string]` version is accepted on new intake comments.
+**Mandatory exact-type invariant:** Every JSON object must have exactly its named type's keys, with zero missing and zero additional keys; every value must have the type declared by its field's bracket suffix. This is recursive at every level, including objects contained in arrays. Keys with different literal names identify different object types, even when their values share the same primitive types. New **static task** comments use only the current `schema[string]` version. Declared procedures use the separate `schema: "issuestack.procedure.v1"` syntax below, and are never coerced into task.v3.
 
 Examples of the notation:
 
@@ -78,34 +78,67 @@ Before editing Issue #2 or writing files: publish this note and read back this p
 Next: claim the pending Issue #2 job, edit only the documented file, verify outcomes
 ```
 
-## Interactive procedures — two JSON panels in one permanent comment
+## Declared stepwise procedures — Issue #1 → Issue #13 only
 
-[Issue #13 — Interactive Procedure Projections](https://github.com/BestNameYet/IssueStack-/issues/13) is the **live, mutable step display** for a job. The Issue #1 handoff now creates one such comment after creating/verifying the Issue #2 job and its linked Issue #3 scratchpad. For an existing Issue #2 job, the procedure listener can also create the projection on an authorized job-comment edit. A permanent Issue #13 comment ID identifies the procedure instance; its ID **never changes as steps advance**. Do not insert live procedure text or new fields into the strict Issue #2 `issuestack.task.v3` JSON job.
+**The two instruction kinds are mutually exclusive.** Static `issuestack.task.v3` comments are queued to Issue #2 and get Issue #3 scratchpads; they **must not** automatically instantiate a procedure. A procedure is an independently authored, existing stepwise JSON document explicitly declared in one of Issue #1's five pinned input slots using literal `"schema": "issuestack.procedure.v1"`. Issue #1 validates the entire procedure syntax and each return-type declaration first, then publishes it **only to Issue #13** and appends a `PROCEDURE:<comment-id>` transfer receipt to Issue #1's ledger. No Issue #2 job is created for that procedure.
 
-The procedure comment contains exactly two separately tagged JSON panels:
+**Required intake format — submit one bare JSON object in an Issue #1 input slot (no Markdown code fence):**
 
-- **Bot-owned instruction** between `<!-- ISSUESTACK_BOT_INSTRUCTION_START -->` and `<!-- ISSUESTACK_BOT_INSTRUCTION_END -->`, including the job/pad linkage, nonce, `revision`, `step_id`, the current `instruction`, accepted answer shape, and `last_error`. The worker reads this panel but must not alter it.
-- **Agent-owned answer** between `<!-- ISSUESTACK_AGENT_ANSWER_START -->` and `<!-- ISSUESTACK_AGENT_ANSWER_END -->`. An empty object (`{}`) means waiting. To submit, edit the **same GitHub comment** and replace **only the JSON in this panel** with one valid answer. Preserve both tag boundaries, the outer procedure identity marker and the bot panel. Submit one response per current revision with a new unique `submission_id`.
+```json
+{
+  "schema": "issuestack.procedure.v1",
+  "nonce": "procedure-example-001",
+  "title": "Review a supplied result",
+  "steps": [
+    {
+      "id": "inspect",
+      "instruction": "Inspect the supplied item and report whether it passes.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "passed": { "type": "boolean" },
+          "notes": { "type": "string" }
+        },
+        "required": ["passed", "notes"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "scores",
+      "instruction": "Return integer scores from the completed inspection.",
+      "returns": {
+        "type": "array",
+        "items": { "type": "integer" }
+      }
+    }
+  ]
+}
+```
 
-**Example agent answer JSON for a current `trace` step at revision 0:**
+Each step is an object with **exactly** `id`, `instruction`, `returns`, in the supplied order. IDs must be distinct. A `returns` declaration supports `string`, `number`, `integer`, `boolean`, `null`, `array` (typed `items`) and `object` (typed `properties`, explicit `required`, and `additionalProperties: false`). Compound types can be nested. The intake processor rejects missing/extra fields, duplicate steps, malformed type declarations, excessive depth and invalid IDs; it preserves invalid input and annotates the Issue #1 slot instead of queuing an invalid procedure. Instructions and return types come from the submitted document, **not** from a hardcoded five-step lifecycle.
+
+**One permanent Issue #13 comment per declared procedure.** The comment contains:
+- Bot-owned step projection inside `<!-- ISSUESTACK_BOT_INSTRUCTION_START -->` / `<!-- ISSUESTACK_BOT_INSTRUCTION_END -->`, including the current instruction and its required `return_schema`.
+- Agent-owned response inside `<!-- ISSUESTACK_AGENT_ANSWER_START -->` / `<!-- ISSUESTACK_AGENT_ANSWER_END -->`. Edit **only its JSON object** and leave all other text unchanged.
+- Bot-owned *self-recording state* inside the **HTML comment** marked `ISSUESTACK_PROCEDURE_STATE_START` / `ISSUESTACK_PROCEDURE_STATE_END`. It contains the full original procedure definition, Issue #1 source comment ID, current revision, and all previous accepted step returns, submission IDs and timestamps. GitHub hides HTML comments from normal Markdown display, but they are **not private, immutable, or locked**; they remain visible/editable in raw Markdown. GitHub has no per-section or per-comment authoring lock that allows bots to edit hidden content while users can edit only the answer. The workflow enforces this boundary by comparing the old and new comment bodies on each owner-initiated edit and rejecting edits outside the answer region. Never store secrets in the hidden state.
+
+**Example agent response to the `inspect` step at revision 0:**
 
 ```json
 {
   "revision": 0,
-  "step_id": "trace",
-  "submission_id": "trace-20261025-001",
-  "answer": {
-    "summary": "Verified Issue #1 source, Issue #2 job and mapped Issue #3 scratchpad; wrote/read back intentions and proposed file changes before job edits.",
-    "evidence_uri": "https://github.com/BestNameYet/IssueStack-/issues/3#issuecomment-6393473753"
+  "step_id": "inspect",
+  "submission_id": "inspect-001",
+  "return_value": {
+    "passed": true,
+    "notes": "All acceptance checks passed."
   }
 }
 ```
 
-The `answer` object requires exactly `summary` (non-empty string) and `evidence_uri` (nonempty string or null); the outer answer requires exactly `revision` (number), `step_id` (string), `submission_id` (unique stable string) and `answer`. The answer is an agent **report** and is not automatically proof that the underlying acceptance criterion was independently verified. Continue to use the Issue #2 typed requirement-level evidence, deviations and receipts.
+The `return_value` must conform **recursively** to the current step's declared `returns` schema. For the `scores` step, an example return is `[3, 4, 5]`, not a string such as `"3, 4, 5"`. An incorrect type, stale revision or reused submission ID is rejected, retaining the same current step and adding validation feedback. An accepted answer atomically updates the **same Issue #13 comment ID**, appends a complete record to the hidden state's `returns` array, increments `revision`, and renders only the next declared step. The full history is preserved in the self-record without depending on Issue #2.
 
-On each authorized Issue #13 comment edit, `.github/workflows/interactive-procedures.yml` calls `src/interactive-procedures.js`. The listener verifies the actor, active job/pad mapping, nonce, bot-owned panel integrity, expected revision and answer shape. It first appends a step receipt to the designated Issue #3 scratchpad's **`<!-- ISSUESTACK_BOT_HISTORY_START -->` / `<!-- ISSUESTACK_BOT_HISTORY_END -->`** history section (preserving all other scratchpad notes), reads back that append, and then updates the same Issue #13 comment to display the next step with an empty answer. The scratchpad journal, not the replaceable projection, is authoritative for recovery. A failed answer stays on the same step and reports validation feedback through the bot panel's `last_error`. Retries do not append duplicate step events. The scheduled or manually dispatched workflow reconciles interrupted transitions.
-
-**Important boundary:** The static ChatGPT progress display is an optional, read-only presentation of this GitHub state. The agent's execution and answer submission require GitHub comment editing, not a ChatGPT UI control. A procedure reaching `complete` means the protocol has recorded all step answers; it **does not** automatically mark the Issue #2 job or scratchpad archive complete. Maintain the original three-issue handshake, verified receipts and required independent completion checks.
+The handler lives in `src/procedure-documents.js`; `.github/workflows/interactive-procedures.yml` processes authorized **Issue #13 edits only** and verifies writeback. Old historical Issue #13 demonstrations are preserved as historical comments but are not interpreted as new declared procedures. An optional ChatGPT progress view can read this projection; it must not be required for agent execution. End-of-procedure means all typed steps have returned, not that an unrelated Issue #2 job has been completed.
 
 ## How to complete an Issue #2 task
 

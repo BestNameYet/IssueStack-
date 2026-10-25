@@ -116,10 +116,15 @@ async function getJobContext(github,owner,repo,jobId,padId){
   if(typeof nonce!=='string'||!nonce)throw Error('Job nonce missing');
   const pad=(await github.rest.issues.getComment({owner,repo,comment_id:padId})).data;
   if(!pad.body.includes('ISSUESTACK_PAD_JOB:'+jobId))throw Error('Scratchpad marker mismatch');
-  return {nonce,job,pad};
+  return {nonce,job,pad,archived:index.body.includes('ISSUESTACK_MAP:'+jobId+':'+padId+':archived')};
 }
 async function ensureProcedure({github,owner,repo,jobId,padId,core}){
-  const {nonce}=await getJobContext(github,owner,repo,jobId,padId);
+  const {nonce,job,archived}=await getJobContext(github,owner,repo,jobId,padId);
+  const jobStatus=job['execution[object<Execution>]']?.['status[string]']??job.execution?.status??job.queue?.status;
+  if(archived||jobStatus==='succeeded'||jobStatus==='failed'){
+    core?.info?.('Skipping procedure creation for terminal job '+jobId);
+    return null;
+  }
   const comments=await github.paginate(github.rest.issues.listComments,{owner,repo,issue_number:ISSUE,per_page:100});
   const found=comments.filter(c=>String(c.body).includes(identity(jobId,padId)));
   if(found.length>1)throw Error('Duplicate procedure projections for job '+jobId);
@@ -133,7 +138,7 @@ async function ensureProcedure({github,owner,repo,jobId,padId,core}){
 }
 async function processComment({github,owner,repo,comment,core}){
   const {jobId,padId,bot,answer}=readProjection(comment.body);
-  const {nonce,pad}=await getJobContext(github,owner,repo,jobId,padId);
+  const {nonce,pad,archived}=await getJobContext(github,owner,repo,jobId,padId);
   const events=journalEvents(pad.body,comment.id),revision=events.length;
   if(revision>STEPS.length)throw Error('Too many procedure events');
   // The journal is authoritative on restart: recover projection after a
@@ -148,6 +153,11 @@ async function processComment({github,owner,repo,comment,core}){
   const expected=expectedBot(jobId,padId,nonce,revision,bot.last_error??null);
   if(JSON.stringify(bot)!==JSON.stringify(expected))throw Error('Bot-owned instruction panel was altered; refuse agent answer');
   if(Object.keys(answer).length===0)return;
+  if(archived){
+    await verifiedComment(github,owner,repo,comment.id,
+      render(jobId,padId,nonce,revision,answer,'This job scratchpad is already archived; no further procedure answers can be recorded.'));
+    return;
+  }
   const error=validateAnswer(answer,revision);
   if(error){
     await verifiedComment(github,owner,repo,comment.id,render(jobId,padId,nonce,revision,answer,error));

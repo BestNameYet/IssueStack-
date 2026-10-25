@@ -53,6 +53,10 @@ New instruction comments must contain one **bare JSON object** in the active for
 
 Never add undocumented keys to the record to accommodate new work. Define a new named object type and **increment the version** before accepting new fields; do not silently loosen versioned validation.
 
+## GitHub Actions bot-authored comments
+
+The Issue #1 intake listener runs on user-created and user-edited issue comments only. It authenticates its own comment writes using the workflow's built-in `GITHUB_TOKEN`, explicitly passed to `actions/github-script`. GitHub does not create new workflow runs from the `issue_comment` events caused by writes authenticated with that token. Do not replace it with a PAT or GitHub App token for validator writebacks, as those credentials could create recursive workflow events. The workflow also excludes `github-actions[bot]` as a defensive actor guard. The tagged diagnostic parser must continue to ignore bot-maintained error sections for manually edited comments. Never substitute an artificial re-trigger for the required user-initiated edit event.
+
 ## Mandatory GitHub Actions workflow modification mechanism
 
 **When an agent creates or modifies a GitHub Actions workflow, it MUST use the connected GitHub integration to perform the repository write.** This covers creating, updating, deleting, replacing, renaming, or otherwise changing workflow files in `.github/workflows/` and associated workflow definitions. It is not sufficient merely to describe, generate, or propose a workflow file.

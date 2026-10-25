@@ -1,0 +1,33 @@
+name: IssueStack Issue 2 Scratchpad Completion
+
+on:
+  issue_comment:
+    types: [created, edited]
+  schedule:
+    # Catch terminal job edits made with GITHUB_TOKEN, which suppress Actions events.
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: issuestack-scratchpad-archive
+  cancel-in-progress: false
+
+jobs:
+  archive-scratchpad:
+    if: ${{ github.event_name != 'issue_comment' || (github.event.issue.number == 2 && !github.event.issue.pull_request && github.event.comment.id != 6392250512 && github.actor != 'github-actions[bot]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out archive implementation
+        uses: actions/checkout@v4
+      - name: Archive terminal Issue 2 job scratchpad and update index
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const scratchpads = require('./src/issue-3-scratchpads.js');
+            await scratchpads.onJobCompletion({github, context, core});

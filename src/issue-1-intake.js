@@ -116,4 +116,4 @@ async function run({github, context, core}) {
   core.info('Accepted '+commentId+' as Issue #2 job '+queuedId+' ('+template['schema[string]']+').');
 }
 
-module.exports={run,readDefinition,nullRecord,validateShape,validateIntake};
+module.exports={run,readDefinition,validateShape,validateIntake};

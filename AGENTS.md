@@ -92,6 +92,15 @@ A new instruction comment must contain **one bare JSON object**, not a Markdown 
    Document the user's original expectation, the changed or omitted action, why it happened, affected requirement IDs, available evidence, and whether explicit approval was obtained. Include one deviation in multiple applicable categories. Do not use additional constraints, scope reductions, or an altered abstraction level as silent substitutions for the original assignment.
 8. **Apply the completion gate.** Report a job as fully succeeded only after every requirement passes its acceptance criteria with evidence, `remaining_requirement_ids` is empty, all deviations requiring authorization are resolved, and results plus an execution receipt have been published to and **read back from Issue #2**. Otherwise report the actual blocked, incomplete, or failed status and work remaining. Do not confuse work-item completion with requirement completion.
 
+## Mandatory GitHub Actions workflow modification mechanism
+
+**When an agent creates or modifies a GitHub Actions workflow, it MUST use the connected GitHub integration to perform the repository write.** This covers creating, updating, deleting, replacing, renaming, or otherwise changing workflow files in `.github/workflows/` and associated workflow definitions. It is not sufficient merely to describe, generate, or propose a workflow file.
+
+- Use the GitHub integration's supported repository-file operations to publish each authorized workflow change. **Do not substitute** shell commands, local Git, direct GitHub REST/GraphQL calls outside the integration, browser/UI edits, or the IssueStack issue-command surface for the workflow-file write.
+- Before changing a workflow, read the current repository documentation and the applicable file state through the connected integration. Follow the Issue #1 → Issue #2 instruction/job routing above; that routing does not replace the requirement that the actual workflow write use the integration.
+- After publication, retrieve the changed workflow through the GitHub integration and inspect the returned file contents, path and commit. Where execution behavior is relevant, run available documented tests and inspect execution receipts. A successful submission alone does not prove workflow correctness.
+- If the integration cannot complete or verify the write, report the operation as **blocked**, not completed; do not bypass the integration via an alternate write mechanism without a subsequent explicit change to this policy authorized by the user.
+
 ## Bootstrap and operational boundaries
 
 - The two issues and their schemas specify a **contract**, not an operational workflow. Until listener, validator, publisher, worker, and receipt behavior pass end-to-end tests, do not claim automatic routing or execution. If blocked, keep the instruction traceable in Issue #1 and disclose the missing transition.

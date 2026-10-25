@@ -2,6 +2,7 @@
 
 const {readDefinition, validateIntake} = require('./record-type-validator.js');
 const {splitComment, addError} = require('./comment-error-tags.js');
+const {ensureScratchpad} = require('./issue-3-scratchpads.js');
 
 const ISSUE_INTAKE = 1;
 const ISSUE_QUEUE = 2;
@@ -175,12 +176,18 @@ async function run({github, context, core}) {
     if(nonceOf(actual)!==record['nonce[string]'] || sourceId(actual)!==commentId) {
       throw new Error('Queue verification failed; source slot was not reset.');
     }
+    // In this SAME handoff run, create/verify the Issue #3 scratchpad and
+    // link its ID to the Issue #2 job ID in Issue #2 comment 1. A failure
+    // leaves the Issue #1 slot intact so a retry can recover both records.
+    const scratchpadId=await ensureScratchpad({
+      github,owner,repo,jobId:queueId,jobNonce:nonceOf(actual),core
+    });
     const enqueued=actual['execution[object<Execution>]']?.['enqueued_at[string|null]'] || new Date().toISOString();
     await appendLedger(github,owner,repo,
       transferLine(slotNumber(commentId),commentId,nonceOf(actual),queueId,enqueued,owner+'/'+repo),
       'TRANSFER:'+queueId);
     await writeVerified(github,owner,repo,commentId,SLOT_PROMPT);
-    core.info('Verified transfer '+queueId+'; reset Issue #1 slot '+slotNumber(commentId));
+    core.info('Verified transfer '+queueId+' with scratchpad '+scratchpadId+'; reset Issue #1 slot '+slotNumber(commentId));
     return;
   }
   core.info('Slot '+slotNumber(commentId)+' is available.');

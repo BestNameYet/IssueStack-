@@ -50,18 +50,24 @@ async function appendLedger(github, owner, repo, entry, receiptKey) {
   if (!ledger.body.startsWith(LEDGER_TITLE)) {
     throw new Error('Ledger comment 1 has not been initialized; refusal to overwrite historical content.');
   }
-  if (ledger.body.includes(receiptKey)) return;
+  // Verify the exact receipt line, not a substring of a different ID.
+  if (ledger.body.split('\n').some(line=>line.trimEnd().endsWith('| receipt: '+receiptKey))) return;
   const transferHeader='## Verified transfers';
   const rejectedHeader='## Rejected extra comments';
   const current=ledger.body.replace(/\s*$/,'');
   let body;
-  if (receiptKey.startsWith('TRANSFER:')) {
+  // A successfully installed Issue #13 procedure is a verified transfer, not
+  // a rejected overflow comment. It must already have been read back by
+  // ensureDeclaredProcedure before appendLedger is called.
+  if (receiptKey.startsWith('TRANSFER:') || receiptKey.startsWith('PROCEDURE:')) {
     const where=current.indexOf(rejectedHeader);
     if(where<0 || !current.includes(transferHeader)) throw new Error('Transfer ledger sections missing.');
     body=current.slice(0,where).trimEnd()+'\n'+entry+'\n\n'+current.slice(where).trimStart()+'\n';
-  } else {
+  } else if (receiptKey.startsWith('REJECT:')) {
     if (!current.includes(rejectedHeader)) throw new Error('Rejected comments section missing.');
     body=current+'\n'+entry+'\n';
+  } else {
+    throw new Error('Unknown ledger receipt category: '+receiptKey);
   }
   await writeVerified(github,owner,repo,LEDGER_ID,body);
 }
@@ -219,4 +225,4 @@ async function run({github, context, core}) {
   await pruneOverflow(github,owner,repo,core);
 }
 
-module.exports={run,slotNumber,initialLedger,transferLine,rejectedLine,LEDGER_ID,SLOT_IDS,SLOT_PROMPT};
+module.exports={run,appendLedger,slotNumber,initialLedger,transferLine,rejectedLine,LEDGER_ID,SLOT_IDS,SLOT_PROMPT};

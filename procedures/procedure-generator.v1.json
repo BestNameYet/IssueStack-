@@ -1,0 +1,209 @@
+{
+  "schema": "issuestack.procedure.v1",
+  "nonce": "procedure-generator-20261025-001",
+  "title": "Procedure Generator — substantive work to verified stepwise JSON",
+  "steps": [
+    {
+      "id": "define_target",
+      "instruction": "Identify the substantive objective for which a new executable IssueStack procedure must be generated. Use the objective supplied by the user. For the first run, absent another explicit target, use: \"Reconcile StateMachines and MCP Collaborator idea catalogs into a source-traceable appendix classifying fundamental categories, compatibility, contradictions, analogies, overlaps, and abstraction relationships.\" Read any available governing documentation and relevant source materials through authorized interfaces before claiming their contents. Preserve the entire requested scope, actual deliverables, constraints, input sources, and measurable acceptance criteria. Distinguish producing the target procedure from executing its target work. If an input is unavailable, identify it explicitly; do not invent findings. Return exactly the declared object.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "objective": {
+            "type": "string"
+          },
+          "deliverable": {
+            "type": "string"
+          },
+          "action_scope": {
+            "type": "string"
+          },
+          "input_sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "objective",
+          "deliverable",
+          "action_scope",
+          "input_sources",
+          "constraints",
+          "acceptance_criteria"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "derive_requirements",
+      "instruction": "Using the accepted define_target return, enumerate atomic requirements of the *new target procedure*, including actual work products, source traceability, verification and treatment of missing evidence. Capture dependencies and acceptance tests without reducing scope. Each item must carry a unique R-prefixed identifier. An empty array is not acceptable for a substantive objective. The evidence rule must distinguish independently observed results from an agent assertion. Return the required typed array.",
+      "returns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "outcome": {
+              "type": "string"
+            },
+            "acceptance_test": {
+              "type": "string"
+            },
+            "evidence_needed": {
+              "type": "string"
+            },
+            "source_or_rationale": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "outcome",
+            "acceptance_test",
+            "evidence_needed",
+            "source_or_rationale"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "id": "design_work_steps",
+      "instruction": "Design an ordered, finite sequence of executable steps for the *new target procedure*. Each step must do, produce, or verify material work; a list of generic status declarations is insufficient. For each step, provide a unique identifier starting with a letter, a direct imperative instruction, explicit dependencies on earlier step IDs (or empty array), referenced requirement IDs from derive_requirements, a real output description, and how the agent will verify the result. Include final deliverable production and a separate evidence/coverage check. When a required action can fail, instructions must demand reporting the failure instead of claiming success. Do not require undocumented IssueStack capabilities such as conditionals, retries, arbitrary JSON return types, tool invocation by the workflow, or automatic publishing. Return the typed array.",
+      "returns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "instruction": {
+              "type": "string"
+            },
+            "depends_on_step_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "covers_requirement_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "output": {
+              "type": "string"
+            },
+            "verification": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "instruction",
+            "depends_on_step_ids",
+            "covers_requirement_ids",
+            "output",
+            "verification"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "id": "specify_typed_returns",
+      "instruction": "For EVERY step from design_work_steps, define a concrete return schema in the syntax supported by src/procedure-documents.js: primitive type declarations use only {\"type\": \"string|number|integer|boolean|null\"}; arrays require exactly type and typed items; objects require exactly type, properties, required, and additionalProperties:false. Use only supported types; prohibit nullable unions, references, unconstrained objects, keywords other than the documented ones, or schemas deeper than the implementation allows. Supply returns_schema_json as a string containing JSON that can be parsed to the returns object, and example_value_json as a string containing a representative return value. A real validation outcome cannot be manufactured; examples are illustrative only. There must be exactly one item per designed step, with matching step IDs and no extras. Return the typed array.",
+      "returns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "step_id": {
+              "type": "string"
+            },
+            "returns_schema_json": {
+              "type": "string"
+            },
+            "example_value_json": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "step_id",
+            "returns_schema_json",
+            "example_value_json"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "id": "assemble_declaration",
+      "instruction": "Assemble a complete, standalone, JSON-encoded new procedure from the accepted design_work_steps and specify_typed_returns outputs. Return its entire text as one string, with no Markdown fence, prose wrapper, placeholders, or omitted properties. The PARSED document root must contain exactly schema=\"issuestack.procedure.v1\", a new unique nonce, a nonempty title, and steps in the designed order. Each step must have exactly id, instruction, returns; returns must be parsed JSON objects, NOT escaped strings. Every dependency, requirement acceptance gate, and verification action must appear in the appropriate step instruction, because the IssueStack declaration format has no separate fields for them. Do not register, publish, or execute the generated procedure at this stage.",
+      "returns": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "verify_and_release",
+      "instruction": "Verify and, if necessary, repair the declaration from assemble_declaration before returning the final candidate. Parse it as JSON; use the current authoritative validator src/procedure-documents.js validateDeclaration() via permitted mechanisms, and validateValue() on each illustrative return from specify_typed_returns, if runtime access permits. Check step IDs, order, nonempty instructions, unique nonce, 1-50 steps, size <=60000 JSON characters, required closed return schemas, coverage of EVERY requirement and acceptance criterion from derive_requirements, proper dependencies, independent evidence checks, and no unauthorized target scope changes. If you repair the declaration, rerun available checks on the repaired document. Return the exact final bare JSON text in declaration_json and a truthful validation report. Set ready_for_issue1=true ONLY when current-code structural validation actually passed, example-type checks passed, and requirements coverage passed; otherwise false with concrete errors or missing checks. Typed return acceptance by Issue 13 alone never proves substantive correctness. This step MUST NOT publish to Issue 1 or claim deployment without a separately authorized action.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "ready_for_issue1": {
+            "type": "boolean"
+          },
+          "declaration_json": {
+            "type": "string"
+          },
+          "structural_validator_passed": {
+            "type": "boolean"
+          },
+          "example_returns_passed": {
+            "type": "boolean"
+          },
+          "requirements_coverage_passed": {
+            "type": "boolean"
+          },
+          "validation_method": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "ready_for_issue1",
+          "declaration_json",
+          "structural_validator_passed",
+          "example_returns_passed",
+          "requirements_coverage_passed",
+          "validation_method",
+          "errors"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

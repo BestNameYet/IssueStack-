@@ -49,7 +49,18 @@ async function appendLedger(github, owner, repo, entry, receiptKey) {
     throw new Error('Ledger comment 1 has not been initialized; refusal to overwrite historical content.');
   }
   if (ledger.body.includes(receiptKey)) return;
-  const body = ledger.body.replace(/\s*$/,'') + '\n' + entry + '\n';
+  const transferHeader='## Verified transfers';
+  const rejectedHeader='## Rejected extra comments';
+  const current=ledger.body.replace(/\s*$/,'');
+  let body;
+  if (receiptKey.startsWith('TRANSFER:')) {
+    const where=current.indexOf(rejectedHeader);
+    if(where<0 || !current.includes(transferHeader)) throw new Error('Transfer ledger sections missing.');
+    body=current.slice(0,where).trimEnd()+'\n'+entry+'\n\n'+current.slice(where).trimStart()+'\n';
+  } else {
+    if (!current.includes(rejectedHeader)) throw new Error('Rejected comments section missing.');
+    body=current+'\n'+entry+'\n';
+  }
   await writeVerified(github,owner,repo,LEDGER_ID,body);
 }
 

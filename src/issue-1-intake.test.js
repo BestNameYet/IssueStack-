@@ -65,7 +65,7 @@ function makeIntake({failInstallationReadback=false}={}){
     return {data:{...item}};
    },
    async getComment({comment_id}){
-    if(failInstallationReadback&&comment_id>=900)throw Error('simulated installation readback failed');
+    if(failInstallationReadback&&procedures.some(p=>p.id===comment_id))throw Error('simulated installation readback failed');
     const item=docs.get(comment_id);if(!item)throw Error('missing '+comment_id);
     return {data:{...item}};
    },

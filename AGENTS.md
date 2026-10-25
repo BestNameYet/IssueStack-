@@ -2,6 +2,19 @@
 
 These instructions govern all agents operating in `BestNameYet/IssueStack-` and its subdirectories, unless a more specific `AGENTS.md` adds compatible obligations.
 
+## Mandatory ledger-first job discovery
+
+Use this sequence when asked to find, compare, claim, or resume IssueStack jobs. Do not first retrieve the full comment lists of Issues #1, #2, or #3.
+
+1. **Read transfers.** Through the connected GitHub integration's `fetch` operation, request `https://api.github.com/repos/BestNameYet/IssueStack-/issues/comments/6392246635`. Parse the returned comment JSON `body` for unique `TRANSFER:<job-id>` receipts, in ledger order, retaining nonce and source-slot ID. These mean **transferred**, not pending.
+2. **Read the completion/scratchpad index.** Use the same `fetch` operation for `https://api.github.com/repos/BestNameYet/IssueStack-/issues/comments/6392250512`. Parse `ISSUESTACK_MAP:<job-id>:<pad-id>:active` and `ISSUESTACK_MAP:<job-id>:<pad-id>:archived`. `archived` records archival, not necessarily task success; `active` records an unarchived mapping, not necessarily a pending job.
+3. **Compare IDs before fetching any jobs.** Form the outstanding candidate set as distinct transferred job IDs minus those with an archived index mapping. Keep separate exception sets for transferred jobs missing an index mapping and active index jobs not present in the transfer ledger (legacy/unreconciled). The ledgers do not guarantee that every historical job is indexed.
+4. **Fetch only candidate jobs, one at a time.** Use `GitHub.fetch({url: "https://api.github.com/repos/BestNameYet/IssueStack-/issues/comments/<JOB_ID>"})` (replace `<JOB_ID>` with the permanent numeric comment ID). Verify returned `id`, `issue_url` and nonce; parse comment `body` JSON. For current task.v3 inspect `execution[object<Execution>].status[string]`; for older records follow their original versioned status fields. Classify `pending`, `running`, `blocked`, `succeeded` or `failed` from the actual job. Only `pending` is unclaimed; do not re-claim running, blocked, or terminal tasks without authorization. Record concise ID/status summaries rather than loading all job bodies into working context.
+5. **Retrieve only the selected job's mapped pad.** From index comment 6392250512 get the selected job's exact pad ID. Fetch the individual Issue #3 pad with the same URL pattern and verify `ISSUESTACK_PAD_JOB:<JOB_ID>`, nonce, ledger receipt and source ID. Missing, duplicate or conflicting mapping **blocks** the three-issue handshake: do not guess or fabricate a pad.
+6. **Before making changes**, carry out the mandatory three-issue pre-change handshake below in the selected pad, read it back, and only then edit the existing job or repository files. After completion separately verify terminal receipt, `scratchpads/archive.json` and the corresponding archived index marker. Report missing evidence rather than assuming transfer, success, or archival.
+
+Single-comment URL example for job 6402493407: `https://api.github.com/repos/BestNameYet/IssueStack-/issues/comments/6402493407`; its indexed pad is comment 6402493637. These are historical examples, not tasks to re-run. The GitHub integration's generic `fetch` tool supports these specific URLs; `fetch_issue_comments` fetches all comments of an issue and must not be used for routine discovery. If single-comment fetching is unavailable, report the limitation and use an authorized targeted alternative, not an unannounced full-issue bulk read.
+
 ## Mandatory routing: instruction intake → job queue
 
 - **[Issue #1 — User Instruction Intake](https://github.com/BestNameYet/IssueStack-/issues/1)** is the authoritative instruction input and task-record contract.

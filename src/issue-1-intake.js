@@ -3,7 +3,7 @@
 const {readDefinition, validateIntake} = require('./record-type-validator.js');
 const {splitComment, addError} = require('./comment-error-tags.js');
 const {ensureScratchpad} = require('./issue-3-scratchpads.js');
-const {ensureProcedure} = require('./interactive-procedures.js');
+const {validateDeclaration,ensureDeclaredProcedure,DECLARATION} = require('./procedure-documents.js');
 
 const ISSUE_INTAKE = 1;
 const ISSUE_QUEUE = 2;
@@ -119,9 +119,32 @@ async function run({github, context, core}) {
 
   // A placeholder is a ready-to-edit slot, not malformed JSON.
   if (source.body.trim()!==SLOT_PROMPT) {
+    // Explicit schema-based dispatch. A pre-existing stepwise procedure is
+    // a different record kind: it goes straight to Issue #13, never Issue #2.
+    const {recordText}=splitComment(source.body);
+    let submitted;
+    try {submitted=JSON.parse(recordText);}catch{}
+    if (submitted?.schema===DECLARATION) {
+      const error=validateDeclaration(submitted);
+      if(error){
+        const annotated=addError(source.body,error);
+        if(annotated!==source.body)await writeVerified(github,owner,repo,commentId,annotated);
+        core.info('Invalid procedure declaration: '+error);
+        return;
+      }
+      const id=await ensureDeclaredProcedure({github,owner,repo,declaration:submitted,sourceId:commentId,core});
+      const when=new Date().toISOString();
+      const entry='- '+when+' | slot '+slotNumber(commentId)+' | source #'+commentId+
+        ' | nonce '+JSON.stringify(submitted.nonce)+
+        ' | [Issue #13 procedure #'+id+'](https://github.com/'+owner+'/'+repo+
+        '/issues/13#issuecomment-'+id+') | receipt: PROCEDURE:'+id;
+      await appendLedger(github,owner,repo,entry,'PROCEDURE:'+id);
+      await writeVerified(github,owner,repo,commentId,SLOT_PROMPT);
+      core.info('Verified declared-procedure transfer '+id+'; reset slot '+slotNumber(commentId));
+      return;
+    }
     const issue=(await github.rest.issues.get({owner,repo,issue_number:ISSUE_INTAKE})).data;
     const {template,registry}=readDefinition(issue.body);
-    const {recordText}=splitComment(source.body);
     let record,error;
     try {record=JSON.parse(recordText);}catch{error='Invalid JSON';}
     if (!error) error=validateIntake(record,template,registry);
@@ -183,9 +206,7 @@ async function run({github, context, core}) {
     const scratchpadId=await ensureScratchpad({
       github,owner,repo,jobId:queueId,jobNonce:nonceOf(actual),core
     });
-    // Project the first interactive instruction into one persistent Issue #13
-    // comment. Keep it out of the strict Issue #2 v3 JSON record.
-    await ensureProcedure({github,owner,repo,jobId:queueId,padId:scratchpadId,core});
+    // Static task records deliberately stop at Issue #2 plus their Issue #3 pad.
     const enqueued=actual['execution[object<Execution>]']?.['enqueued_at[string|null]'] || new Date().toISOString();
     await appendLedger(github,owner,repo,
       transferLine(slotNumber(commentId),commentId,nonceOf(actual),queueId,enqueued,owner+'/'+repo),

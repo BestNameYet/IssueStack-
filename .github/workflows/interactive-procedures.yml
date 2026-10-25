@@ -9,6 +9,7 @@ on:
       - 'src/interactive-procedures.js'
       - 'src/interactive-procedures.test.js'
       - 'src/issue-1-intake.js'
+      - 'src/issue-1-intake.test.js'
       - '.github/workflows/interactive-procedures.yml'
   workflow_dispatch:
 
@@ -45,4 +46,4 @@ jobs:
         with:
           node-version: '22'
       - name: Validate declared-step syntax and state transitions
-        run: node --test src/interactive-procedures.test.js
+        run: node --test src/interactive-procedures.test.js src/issue-1-intake.test.js

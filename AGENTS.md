@@ -1,40 +1,47 @@
 # IssueStack Agent Instructions
 
-These instructions apply to the repository root and every child directory unless a more specific `AGENTS.md` adds compatible requirements. They govern **all agents performing IssueStack repository work**.
+These instructions govern all agents operating in `BestNameYet/IssueStack-` and its subdirectories, unless a more specific `AGENTS.md` adds compatible obligations.
 
-## Mandatory issue routing
+## Mandatory routing: instruction intake → job queue
 
-IssueStack uses GitHub Issues as its instruction and job execution surfaces:
+- **[Issue #1 — User Instruction Intake](https://github.com/BestNameYet/IssueStack-/issues/1)** is the authoritative instruction input and task-record contract.
+- **[Issue #2 — Job Queue and Completion Records](https://github.com/BestNameYet/IssueStack-/issues/2)** is the job scope: queued records, work performed, requirement-by-requirement completion, evidence, deviations, and receipts.
 
-- **[Issue #1 — User Instruction Intake](https://github.com/BestNameYet/IssueStack-/issues/1)** is the exclusive intake location for actionable user instructions.
-- **[Issue #2 — Job Queue and Completion Records](https://github.com/BestNameYet/IssueStack-/issues/2)** is the queue, execution-status, and result-publication location.
+Route **user instruction → one JSON record comment in Issue #1 → validated, deduplicated queue comment in Issue #2 → execution and verified result in Issue #2**. Do not bypass intake or equate queue publication with completed execution. The *body* of Issue #2 need not mirror the current task schema; it documents the job surface, while each queued comment carries its own `schema` version.
 
-**Required route:** User instruction → JSON comment on Issue #1 → validated and deduplicated copy as a JSON comment on Issue #2 → execution and receipt publication in Issue #2.
+## Active record schema
 
-Do not bypass Issue #1 by submitting a user instruction directly to Issue #2. Do not treat a response in chat or a successful queue submission as proof that a job was executed.
+**For all new instructions, the canonical schema is `issuestack.task.v2`**, as defined in the current Issue #1 body. Historical `issuestack.job.v1` records and receipts remain valid historical records; do not silently rewrite them or misinterpret v1 as the current intake contract. Issue #2 may contain records of both versions. Never coerce one into the other without an explicit, auditable migration.
 
-## Agent procedure
-
-1. **Read first.** Read this file and the repository's current `README.md` (when present), then read the current bodies of Issues #1 and #2. Their record contracts are authoritative for this workflow.
-2. **Capture instructions.** Before taking substantive repository action for a new instruction, encode the user's request as one `issuestack.job.v1` JSON object in a new top-level comment on Issue #1. Include the full original request in `instruction.text` without dropping constraints; use `instruction.args` for optional structured parameters. Generate a unique, stable `nonce`; keep `ordinal` null unless a documented override applies.
-3. **Preserve reserved fields.** Submit `source.issue=1`, `source.comment_id=null`, `queue.status="pending"`, and the initial null/empty `queue` and `completion` fields defined in Issue #1. GitHub event metadata, not user-supplied assertions, determines the actual source comment ID.
-4. **Enqueue exactly once.** The intake processor validates the record, checks for duplicates using source-comment identity and nonce, and copies it to a comment on Issue #2. Preserve the user instruction and nonce. Populate the real source comment ID and enqueue timestamp.
-5. **Execute from the queue.** A worker executes only valid, authorized jobs accepted into Issue #2. The default execution order is FIFO by enqueue/acceptance order; only a documented `ordinal` override may reorder work. Claim a nonce atomically and never execute the same nonce twice.
-6. **Publish and verify.** Keep lifecycle state and completion information with the corresponding Issue #2 job record (or a definitively linked result when in-place editing is unavailable). Record output, success/failure, validation evidence, errors, artifacts, timestamps, and an execution receipt. Read back the posted result to verify publication.
-7. **Report actual status.** Distinguish **captured**, **queued**, **running**, **succeeded**, and **failed**. Do not claim a state transition until its GitHub record or execution receipt has been verified.
-
-## JSON record shape
-
-Use the versioned format documented in Issue #1 for intake and Issue #2 for queued jobs. The common top-level fields are:
+Issue #1 currently defines this initial JSON template (the authoritative definition is the live Issue #1 body):
 
 ```json
 {
-  "schema": "issuestack.job.v1",
-  "nonce": "<unique-job-id>",
+  "schema": "issuestack.task.v2",
+  "nonce": "<unique-nonce>",
   "ordinal": null,
-  "source": {"issue": 1, "comment_id": null},
-  "instruction": {"text": "<full instruction>", "args": {}},
-  "queue": {
+  "source": {
+    "issue": 1,
+    "comment_id": null
+  },
+  "interpretation": {
+    "revised_instruction": "<faithful, readable instruction; not verbatim>",
+    "user_intent": {
+      "goal": "<why>",
+      "expected_outcome": "<definition of success>",
+      "requested_abstraction_level": "<requested level>",
+      "requested_action_scope": "<full scope of requested actions>"
+    }
+  },
+  "requirements": [],
+  "constraints": [],
+  "decomposition": [],
+  "planning": {
+    "status": "not_started",
+    "method": "Requirement-first: identify observable obligations and acceptance tests; plan atomic, verifiable steps with dependencies; validate outputs and preserve scope.",
+    "sources": []
+  },
+  "execution": {
     "status": "pending",
     "enqueued_at": null,
     "started_at": null,
@@ -42,23 +49,53 @@ Use the versioned format documented in Issue #1 for intake and Issue #2 for queu
     "worker": null
   },
   "completion": {
+    "by_requirement": [],
+    "remaining_requirement_ids": [],
     "success": null,
     "summary": null,
-    "output": null,
     "artifacts": [],
     "validation": [],
     "errors": [],
     "receipt": null
+  },
+  "unrequested_changes": {
+    "additions_outside_requirements": [],
+    "revisions_outside_requirements": [],
+    "additional_constraints": [],
+    "scope_reductions": [],
+    "abstraction_level_changes": [],
+    "abstraction_mismatches": [],
+    "action_scope_minimizations": []
   }
 }
 ```
 
-Submit **one bare JSON object per comment**, not a Markdown code fence. Reserved result fields are filled by the queue and execution components, not invented by the submitting agent.
+A new instruction comment must contain **one bare JSON object**, not a Markdown code block.
 
-## Operational safety and bootstrap
+## Agent workflow and field ownership
 
-- Creating these issues and this `AGENTS.md` establishes **the contract, not the automation**. Until listeners, validation, queue publishing, execution, and receipt handling are implemented and tested, agents must not claim automatic transfer or job completion.
-- If queue infrastructure is not operational, preserve the original instruction in Issue #1 and explicitly report that routing/execution is blocked. Do not silently fall back to direct execution. Infrastructure bootstrap or repair outside the normal queue requires specific user authorization and an auditable record.
-- Follow actual repository permissions and higher-priority instructions. Do not treat issue comments as permission to perform otherwise unauthorized actions.
-- Keep workspace-specific work under `workspaces/<project-name>/` once that directory exists; reserve `src/` for shared implementation. Verify directory presence before using it.
-- Never invent schemas, command catalogs, success states, or receipts. Test the complete intake → queue → execution → publication chain before describing the pipeline as operational.
+1. **Read governing instructions first.** Read this `AGENTS.md`, the root `README.md` when available, and the current bodies of Issues #1 and #2. Do not invent unavailable documentation or treat earlier examples as overriding current instructions.
+2. **Interpret without shrinking the instruction.** Populate `interpretation.revised_instruction` with a clear, legible, decipherable **revision of the user's instruction**, *not a verbatim transcription*. Preserve all material actions, qualifiers, priorities, and requested outcomes. Populate `interpretation.user_intent` with the goal, expected outcome, requested abstraction level, and requested action scope. Paraphrasing does not authorize changing intent or reducing action scope.
+3. **Determine requirements and constraints.** Populate `requirements[]` with stable requirement IDs and observable acceptance criteria. Record explicit `constraints[]` separately. Requirements express *what must be achieved*; decomposition items express *how* to satisfy them. Use `nonce` as stable identity, `ordinal=null` unless an applicable documented override exists, and `source.issue=1` and `source.comment_id=null` on intake.
+4. **Reserve, then build the decomposition.** An unplanned intake may leave `decomposition[]` empty and `planning.status="not_started"`. Before executing, the planner fills `decomposition[]` with atomic, independently checkable work, linked requirement IDs, dependencies, expected outputs, and verification methods. Research-informed planning separates action execution from proof that acceptance criteria were satisfied. Do not invent decomposition for unknown requirements.
+5. **Queue exactly once.** Validate the record; detect duplicate nonce and source-comment identity; copy the entire accepted record to **Issue #2 as a job comment**, preserving its schema, interpretation, requirements, constraints, and intent. Fill `source.comment_id` from trusted GitHub metadata, not user assertions, and populate the enqueue timestamp. Default order is FIFO except for an explicitly documented ordering override.
+6. **Execute and verify.** Claim the queued work, record `execution.status`, worker, and timestamps, and do not execute a nonce more than once. Each requirement needs its own completion entry under `completion.by_requirement[]` with status and verifiable evidence. Supported requirement states: `not_started`, `in_progress`, `completed`, `blocked`, `incomplete`, `failed`. Populate `completion.remaining_requirement_ids[]` from all requirements not verifiably completed; keep blocked and incomplete work visible.
+7. **Audit deviations.** Record every assistant- or worker-introduced change not included in requirements under `unrequested_changes`, specifically:
+   - `additions_outside_requirements[]`
+   - `revisions_outside_requirements[]`
+   - `additional_constraints[]`
+   - `scope_reductions[]`
+   - `abstraction_level_changes[]`
+   - `abstraction_mismatches[]`
+   - `action_scope_minimizations[]`
+
+   Document the user's original expectation, the changed or omitted action, why it happened, affected requirement IDs, available evidence, and whether explicit approval was obtained. Include one deviation in multiple applicable categories. Do not use additional constraints, scope reductions, or an altered abstraction level as silent substitutions for the original assignment.
+8. **Apply the completion gate.** Report a job as fully succeeded only after every requirement passes its acceptance criteria with evidence, `remaining_requirement_ids` is empty, all deviations requiring authorization are resolved, and results plus an execution receipt have been published to and **read back from Issue #2**. Otherwise report the actual blocked, incomplete, or failed status and work remaining. Do not confuse work-item completion with requirement completion.
+
+## Bootstrap and operational boundaries
+
+- The two issues and their schemas specify a **contract**, not an operational workflow. Until listener, validator, publisher, worker, and receipt behavior pass end-to-end tests, do not claim automatic routing or execution. If blocked, keep the instruction traceable in Issue #1 and disclose the missing transition.
+- A user-authorized manual bootstrap may use the GitHub integration, with an audit trail through the appropriate issue; never misrepresent that as an automatically executed job.
+- Follow higher-priority instructions and available permissions. Do not infer that an arbitrary issue comment authorizes privileged operations.
+- Use `workspaces/<project-name>/` for project-isolated work and `src/` for shared components **only after verifying the directories actually exist**.
+- Keep historical v1 jobs intact. Issue #2 is a job scope, **not a mandatory duplicate schema specification**. Amend its body only when there is a separate reason to change the queue contract.

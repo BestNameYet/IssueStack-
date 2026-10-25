@@ -3,6 +3,8 @@
 // Strict, versioned named-object type declarations live in src/types/.
 // Every key is written as field[type], e.g. requirements[array<Requirement>].
 // A named object type is identified by its exact declared field names and types.
+const fs = require('node:fs');
+const path = require('node:path');
 const isObject = x => x !== null && typeof x === 'object' && !Array.isArray(x);
 const own = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 const fence = String.fromCharCode(96).repeat(3);
@@ -59,23 +61,29 @@ function validateDefinition(root, registry) {
   }
 }
 
-funcfunction readDefinition(body) {
+function readDefinition(body) {
   const regex = new RegExp(fence + 'json\\s*([\\s\\S]*?)\\s*' + fence, 'i');
-  const block = String(body || '').match(regex);
-  if (!block) throw new Error('Issue #1 has no JSON record template.');
-  const template = JSON.parse(block[1]);
-  if (template['schema[string]'] !== 'issuestack.task.v3') {
-    throw new Error('No type registry is installed for the declared version.');
+  const match = String(body || '').match(regex);
+  if (!match) throw new Error('Issue #1 has no JSON record template.');
+  let template;
+  try { template = JSON.parse(match[1]); }
+  catch (error) { throw new Error('Invalid Issue #1 record template: ' + error.message); }
+  const version = template?.['schema[string]'];
+  if (typeof version !== 'string' || !/^issuestack\.task\.v[1-9][0-9]*$/.test(version)) {
+    throw new Error('Issue #1 declares an invalid record version.');
   }
-  const registry = require('./types/issuestack.task.v3.json');
+  const filename = path.join(__dirname, 'types', version + '.json');
+  let registry;
+  try { registry = JSON.parse(fs.readFileSync(filename, 'utf8')); }
+  catch (error) { throw new Error('Cannot load type definitions for ' + version + ': ' + error.message); }
   validateDefinition(template, registry);
   return {template, registry};
 }
-ction nullRecord(model) {
-  if (isObject(model)) return Object.fromEntries(Object.keys(model).map(k => [k,nullRecord(model[k])]));
+
+function nullRecord(model) {
+  if (isObject(model)) return Object.fromEntries(Object.keys(model).map(k => [k, nullRecord(model[k])]));
   return null;
 }
-
 function validateValue(value, type, registry, path) {
   if (type.endsWith('|null')) {
     if (value === null) return null;

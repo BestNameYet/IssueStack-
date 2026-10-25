@@ -8,6 +8,14 @@
       "status": "succeeded",
       "archived_at": "2026-10-25T03:28:53.271Z",
       "content": "# Job 6392956620 scratchpad\n\n<!-- ISSUESTACK_PAD_JOB:6392956620 -->\n\nJob: https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6392956620\nNonce: issuestack-scratchpad-live-test-20261024-01\n\n## Working notes\n\nRecord reasoning summaries, decisions, attempts, test results, blockers, and handoffs here. Retain the identity marker.\n\n## Archive integration test\n\nLIVE_ARCHIVE_PROOF_6392956620: Verified that scratchpad notes survive Issue #2 terminal status and are copied exactly into the shared repository archive.\n"
+    },
+    {
+      "job_comment_id": 6392921985,
+      "scratchpad_comment_id": 6392967045,
+      "nonce": "issuestack-job-scratchpad-lifecycle-20261024-v1",
+      "status": "succeeded",
+      "archived_at": "2026-10-25T03:31:12.321Z",
+      "content": "# Job 6392921985 scratchpad\n\n<!-- ISSUESTACK_PAD_JOB:6392921985 -->\n\nJob: https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6392921985\nNonce: issuestack-job-scratchpad-lifecycle-20261024-v1\n\n## Working notes\n\nImplemented and live-tested Issue #1 handoff provisioning, Issue #2 scratchpad index, Issue #3 shared notes, terminal completion archive, and scheduled catch-up.\n"
     }
   ]
 }

@@ -101,10 +101,18 @@ async function handleIssue5Comment({github,context,core}){
     return {state:'awaiting_second_run',turn,issue7_comment_id:created.id,created:true};
   }
   const original=same[0],oldPair=readBlock(original.body,'pair');
-  if(pairDigest(oldPair)===pairDigest(pair))return {state:'awaiting_or_processed_second_run',turn,issue7_comment_id:original.id,created:false};
+  // The stored pair's revision is a lifecycle counter, not source content.
+  // Ignore it when checking for an unchanged replay of the same source pair.
+  if(!Number.isSafeInteger(oldPair.revision)||oldPair.revision<0)throw Error('Invalid stored Issue7 pair revision');
+  if(pairDigest({...oldPair,revision:0})===pairDigest(pair))return {state:'awaiting_or_processed_second_run',turn,issue7_comment_id:original.id,created:false};
   const updated={...pair,revision:oldPair.revision+1};
   const newBody=issue7Body(updated);
   await safeUpdateComment(github,context,original,newBody,'Issue7 pair revision');
+  // The old projection was derived from an obsolete pair. Remove stale display
+  // instructions from BOTH original comments until the new second run validates.
+  // Retain the source bodies (including the prompt-analysis tag) byte for byte.
+  await safeUpdateComment(github,context,prompt,sourceBody(prompt.body),'stale Issue5 user projection invalidation');
+  await safeUpdateComment(github,context,answer,sourceBody(answer.body),'stale Issue5 agent projection invalidation');
   return {state:'awaiting_second_run',turn,issue7_comment_id:original.id,revised:true};
 }
 async function applyValidatedPair({github,context,core,issue7Comment,config}){

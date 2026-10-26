@@ -89,9 +89,10 @@ async function handleIssue5Comment({github,context,core}){
     // Once an even-position response exists, the paired odd-position prompt is
     // immutable. A changed prompt would silently detach the stored second run
     // and leave old projections incorrectly attached to a new request.
-    if(comments[index+1]){
+    if(context.payload.action==='edited' && comments[index+1]){
       const prev=context.payload.changes?.body?.from;
-      if(context.payload.action==='edited' && typeof prev==='string' && sourceBody(prev)!==sourceBody(comment.body)){
+      if(typeof prev!=='string')throw Error('Missing previous paired prompt body');
+      if(sourceBody(prev)!==sourceBody(comment.body)){
         await safeUpdateComment(github,context,comment,prev,'immutable paired user prompt repair');
         throw Error('Paired user prompt is immutable; submit a new odd-position turn');
       }

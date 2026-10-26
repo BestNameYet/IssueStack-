@@ -1,0 +1,52 @@
+name: IssueStack Issue5 Conversation Projection
+
+on:
+  issue_comment:
+    types: [created, edited]
+  issues:
+    types: [edited]
+  push:
+    paths:
+      - 'src/issue5-projection.js'
+      - 'src/issue5-projection-workflow.js'
+      - 'src/issue5-projection.test.js'
+      - 'src/issue5-projection-workflow.test.js'
+      - 'config/issue5-rendering.json'
+      - '.github/workflows/issue5-projection.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: issuestack-issue5-issue7-projection
+  cancel-in-progress: false
+
+jobs:
+  project:
+    if: ${{ (github.event_name == 'issue_comment' || github.event_name == 'issues') && (github.event.issue.number == 5 || github.event.issue.number == 7) && github.actor == github.repository_owner }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate two-pass records and update tagged projections in place
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const projection = require('./src/issue5-projection-workflow.js');
+            const result = await projection.run({github, context, core});
+            core.info(JSON.stringify(result));
+
+  test:
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test Issue5/Issue7 two-pass projection and transport adapter
+        run: node --test src/issue5-projection.test.js src/issue5-projection-workflow.test.js

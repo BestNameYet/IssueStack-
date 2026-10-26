@@ -1,0 +1,10 @@
+{
+  "schema": "issuestack.issue5.render-config.v1",
+  "user_prompt": { "mode": "markdown" },
+  "agent_response": { "mode": "markdown" },
+  "rules": {
+    "projection_source": "issue7-second-run",
+    "prompt_projection_source": "issue5-analysis",
+    "hide_meaning": "display-only"
+  }
+}

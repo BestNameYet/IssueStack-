@@ -75,8 +75,8 @@ function validateRules(rules) {
 // token-based renderers that do not fully parse JavaScript literals.
 function literal(value){
   const encoded=JSON.stringify(String(value)).replace(/[<>&{}]/g,c=>({
-    '<':'\u003c','>':'\u003e','&':'\u0026','{':'\u007b','}':'\u007d'
-  }[c])).replace(/\u2028/g,'\u2028').replace(/\u2029/g,'\u2029');
+    '<':'\\u003c','>':'\\u003e','&':'\\u0026','{':'\\u007b','}':'\\u007d'
+  }[c])).replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
   return '{'+encoded+'}';
 }
 function props(attrs){

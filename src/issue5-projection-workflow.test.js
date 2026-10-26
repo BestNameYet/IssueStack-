@@ -140,3 +140,18 @@ test('replay after Issue7 pair revision is idempotent and invalidates stale Issu
  assert.equal(core.readBlock(f.get(first.issue7_comment_id).body,'pair').revision,1);
  assert.equal(core.readBlock(f.get(first.issue7_comment_id).body,'second').schema,undefined);
 });
+
+
+test('editing a user prompt after an agent response restores the immutable paired source',async()=>{
+ const f=fixture();await f.pairAndReturn();
+ const original=f.get(101);
+ const altered=original.body.replace('Use issue 5 instead','Use issue 4 instead');
+ f.getById(101).body=altered;
+ const event=f.ctx(5,f.get(101),'edited',{body:{from:original.body}});
+ await assert.rejects(workflow.run({github:f.github,context:event,core:{info(){}}}),/Paired user prompt is immutable/);
+ assert.equal(f.get(101).body,original.body);
+ assert.equal(f.data[5].length,2);
+ assert.equal(f.data[7].length,1);
+ assert.equal(core.readBlock(f.get(101).body,'projection').role,'user');
+ assert.equal(core.readBlock(f.get(102).body,'projection').role,'agent');
+});

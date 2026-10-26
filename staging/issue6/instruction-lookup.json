@@ -3,7 +3,7 @@
   "repository": "BestNameYet/IssueStack-",
   "source_blob_sha": "bc9cd1e8b284140e4b9c8a8163cbaf97e5b20b96",
   "issue_number": 6,
-  "status": "staged_not_published",
+  "status": "published",
   "rules": [
     "Lookup objects are JSON, not Markdown tables.",
     "Each non-null comment_id must be assigned from an actual published Issue #6 comment and read back before promotion.",
@@ -19,17 +19,17 @@
       "pages": [
         {
           "page_id": "ui-pipeline-part-01",
-          "comment_id": null,
+          "comment_id": 6426756411,
           "part": 1
         },
         {
           "page_id": "ui-pipeline-part-02",
-          "comment_id": null,
+          "comment_id": 6426757196,
           "part": 2
         },
         {
           "page_id": "ui-pipeline-part-03",
-          "comment_id": null,
+          "comment_id": 6426757918,
           "part": 3
         }
       ]
@@ -41,7 +41,7 @@
       "pages": [
         {
           "page_id": "job-discovery",
-          "comment_id": null,
+          "comment_id": 6426758658,
           "part": 1
         }
       ]
@@ -53,12 +53,12 @@
       "pages": [
         {
           "page_id": "change-review-part-01",
-          "comment_id": null,
+          "comment_id": 6426759464,
           "part": 1
         },
         {
           "page_id": "change-review-part-02",
-          "comment_id": null,
+          "comment_id": 6426760148,
           "part": 2
         }
       ]
@@ -70,7 +70,7 @@
       "pages": [
         {
           "page_id": "instruction-intake",
-          "comment_id": null,
+          "comment_id": 6426763341,
           "part": 1
         }
       ]
@@ -82,7 +82,7 @@
       "pages": [
         {
           "page_id": "task-schema",
-          "comment_id": null,
+          "comment_id": 6426764195,
           "part": 1
         }
       ]
@@ -94,7 +94,7 @@
       "pages": [
         {
           "page_id": "field-ownership",
-          "comment_id": null,
+          "comment_id": 6426765021,
           "part": 1
         }
       ]
@@ -106,7 +106,7 @@
       "pages": [
         {
           "page_id": "job-handshake",
-          "comment_id": null,
+          "comment_id": 6426765803,
           "part": 1
         }
       ]
@@ -118,7 +118,7 @@
       "pages": [
         {
           "page_id": "procedures",
-          "comment_id": null,
+          "comment_id": 6426766697,
           "part": 1
         }
       ]
@@ -130,7 +130,7 @@
       "pages": [
         {
           "page_id": "task-completion",
-          "comment_id": null,
+          "comment_id": 6426767466,
           "part": 1
         }
       ]
@@ -142,7 +142,7 @@
       "pages": [
         {
           "page_id": "intake-slots",
-          "comment_id": null,
+          "comment_id": 6426770615,
           "part": 1
         }
       ]
@@ -154,7 +154,7 @@
       "pages": [
         {
           "page_id": "scratchpads",
-          "comment_id": null,
+          "comment_id": 6426771430,
           "part": 1
         }
       ]
@@ -166,7 +166,7 @@
       "pages": [
         {
           "page_id": "bot-comment-ownership",
-          "comment_id": null,
+          "comment_id": 6426772196,
           "part": 1
         }
       ]
@@ -178,7 +178,7 @@
       "pages": [
         {
           "page_id": "workflow-changes",
-          "comment_id": null,
+          "comment_id": 6426772938,
           "part": 1
         }
       ]
@@ -190,7 +190,7 @@
       "pages": [
         {
           "page_id": "bootstrap-operations",
-          "comment_id": null,
+          "comment_id": 6426776673,
           "part": 1
         }
       ]
@@ -202,22 +202,22 @@
       "pages": [
         {
           "page_id": "task-field-examples-part-01",
-          "comment_id": null,
+          "comment_id": 6426777552,
           "part": 1
         },
         {
           "page_id": "task-field-examples-part-02",
-          "comment_id": null,
+          "comment_id": 6426781706,
           "part": 2
         },
         {
           "page_id": "task-field-examples-part-03",
-          "comment_id": null,
+          "comment_id": 6426782523,
           "part": 3
         },
         {
           "page_id": "task-field-examples-part-04",
-          "comment_id": null,
+          "comment_id": 6426783506,
           "part": 4
         }
       ]
@@ -229,20 +229,22 @@
       "pages": [
         {
           "page_id": "task-three-shot-examples-part-01",
-          "comment_id": null,
+          "comment_id": 6426784858,
           "part": 1
         },
         {
           "page_id": "task-three-shot-examples-part-02",
-          "comment_id": null,
+          "comment_id": 6426785709,
           "part": 2
         },
         {
           "page_id": "task-three-shot-examples-part-03",
-          "comment_id": null,
+          "comment_id": 6426786459,
           "part": 3
         }
       ]
     }
-  ]
+  ],
+  "toc_comment_id": 6426752191,
+  "instructions": "Lookup by task. Fetch the exact Issue #6 comment via its permanent comment_id. Parse schema issuestack.instructions.page.v1 and read contents. For multi-part topics fetch all pages in part order. Do not enumerate the issue or infer comment positions. The Issue #5 conversation remains reserved for odd/even prompt and agent-response pairs."
 }

@@ -1,5 +1,40 @@
 # IssueStack Agent Instructions
 
+## Issue #5 — alternating conversational UI (required agent contract)
+
+**Issue #5 is the conversational UI.** It replaces the previously proposed Issue #4 UI. This section documents the agent contract; it does not claim that an Issue #5 listener, serializer, storage adapter or workflow has already been implemented or tested. Keep the existing Issue #1 instruction intake, Issue #2 job queue, Issue #3 scratchpads and Issue #13 procedures independent of this conversational transcript.
+
+### Transcript ordering and ownership
+
+Count **conversation comment positions** in Issue #5 from one, in creation order; do **not** interpret GitHub's globally assigned numeric comment IDs as consecutive positions. Odd positions **1, 3, 5, ...** contain exactly one user prompt per turn. Even positions **2, 4, 6, ...** contain the agent response to the immediately preceding odd-position prompt. No agent response may be appended while the last conversational comment is an agent response, and no second user turn may be appended without its corresponding agent response. Serialize concurrent publications and verify the latest comment count and role before append; never rely on a stale count. Preserve stable comment IDs and history; do not delete, reorder or insert out-of-band analysis comments into the Issue #5 transcript. An existing nonconforming Issue #5 history must be reconciled/migrated before enabling parity enforcement, not silently renumbered.
+
+### Mandatory prompt-analysis JSON before each response
+
+For every odd-position user prompt, **first persist a valid, machine-readable user-prompt analysis JSON object and read it back successfully**. Only then may the agent publish the even-position response. At minimum the object must contain all eight required keys:
+
+```json
+{
+  "date": "2026-10-25",
+  "time": "22:50:00-07:00",
+  "verbatim_user_prompt": "Use issue 5 instead",
+  "salient_surrounding_context": "The preceding turn proposed Issue #4 for the new alternating conversational UI.",
+  "explicit_meaning": "Replace Issue #4 with Issue #5 as the conversational UI.",
+  "implicit_meaning": "All previously proposed UI constraints remain unchanged except the issue number (inferred from context).",
+  "tone": "directive",
+  "mood": "unknown"
+}
+```
+
+- `date` is an ISO 8601 calendar date (`YYYY-MM-DD`); `time` is an ISO 8601 local time **with UTC offset** (`HH:MM:SS±HH:MM`, or `Z` in UTC), captured for the prompt rather than guessed from response time. Preserve the timezone/offset in both fields' interpretation.
+- `verbatim_user_prompt` is the exact user-authored prompt without paraphrasing or redaction; protect sensitive data from public Issue #5 publication under existing security policies.
+- `salient_surrounding_context` records relevant adjacent dialogue or state, not extraneous history or hidden deliberation. `explicit_meaning` describes the user's directly expressed request; `implicit_meaning` describes carefully attributed inference and must acknowledge uncertainty instead of asserting unsupported intent.
+- `tone` and `mood` are **separate validated enums**, not free-form tags. Allowed `tone` values: `neutral`, `directive`, `inquisitive`, `collaborative`, `critical`, `formal`, `informal`, `urgent`, `unknown`. Allowed `mood` values: `neutral`, `calm`, `curious`, `pleased`, `concerned`, `frustrated`, `angry`, `excited`, `sad`, `unknown`. When emotional evidence is weak, use `unknown`; do not present inferences as established facts.
+- JSON validation must reject missing keys, wrong value types (all eight are strings), malformed date/time strings and out-of-enum values. An implementation may extend the object with additional separately documented fields without removing these minimum fields.
+
+Persist this JSON as a **linked metadata record for the odd-position user-prompt comment**, keyed by its permanent GitHub comment ID and a stable conversation/turn identifier. A hidden machine-readable block in that same odd-position comment is acceptable only if the integration has authorization to edit that comment while preserving the exact user-visible prompt; otherwise use an existing authorized durable sidecar store and record its location. Metadata submission **must not create an additional Issue #5 conversation comment**, because that would break odd/even alternation. Treat hidden HTML comments as public-in-raw Markdown, not private storage. Store neither credentials nor private internal reasoning.
+
+Before responding, verify that (1) the prompt is the current unmatched odd-position comment; (2) the saved metadata has the required keys and valid enums; (3) its durable record identifies the correct prompt comment ID and turn; and (4) no even-position response has already been published for that turn. If metadata storage, read-back, validation or ordering checks fail, **do not publish an agent response**: record the failure through the permitted operational error channel and retry/reconcile without corrupting the transcript. After publication, read back the even-position comment and verify it corresponds to the intended odd-position prompt.
+
 These instructions govern all agents operating in `BestNameYet/IssueStack-` and its subdirectories, unless a more specific `AGENTS.md` adds compatible obligations.
 
 ## Mandatory ledger-first job discovery

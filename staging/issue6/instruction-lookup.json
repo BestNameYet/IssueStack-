@@ -1,0 +1,248 @@
+{
+  "schema": "issuestack.instruction-lookup.v1",
+  "repository": "BestNameYet/IssueStack-",
+  "source_blob_sha": "bc9cd1e8b284140e4b9c8a8163cbaf97e5b20b96",
+  "issue_number": 6,
+  "status": "staged_not_published",
+  "rules": [
+    "Lookup objects are JSON, not Markdown tables.",
+    "Each non-null comment_id must be assigned from an actual published Issue #6 comment and read back before promotion.",
+    "Retrieve only the task-specific comment IDs needed; do not enumerate all Issue #6 comments.",
+    "The issue #5 odd/even transcript is not an instruction storage surface.",
+    "A null comment_id means unpublished; it is never a fetch target."
+  ],
+  "topics": [
+    {
+      "task": "ui-pipeline",
+      "title": "Issue #5 — alternating conversational UI (required agent contract)",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "ui-pipeline-part-01",
+          "comment_id": null,
+          "part": 1
+        },
+        {
+          "page_id": "ui-pipeline-part-02",
+          "comment_id": null,
+          "part": 2
+        },
+        {
+          "page_id": "ui-pipeline-part-03",
+          "comment_id": null,
+          "part": 3
+        }
+      ]
+    },
+    {
+      "task": "job-discovery",
+      "title": "Mandatory ledger-first job discovery",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "job-discovery",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "change-review",
+      "title": "Required exact-change inventory and user-mediated change review",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "change-review-part-01",
+          "comment_id": null,
+          "part": 1
+        },
+        {
+          "page_id": "change-review-part-02",
+          "comment_id": null,
+          "part": 2
+        }
+      ]
+    },
+    {
+      "task": "instruction-intake",
+      "title": "Mandatory routing: instruction intake → job queue",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "instruction-intake",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "task-schema",
+      "title": "Current task schema: `issuestack.task.v3`",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "task-schema",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "field-ownership",
+      "title": "Agent procedure and field ownership",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "field-ownership",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "job-handshake",
+      "title": "Mandatory three-issue handshake — scratchpad before changes",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "job-handshake",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "procedures",
+      "title": "Declared stepwise procedures — Issue #1 → Issue #13 only",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "procedures",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "task-completion",
+      "title": "How to complete an Issue #2 task",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "task-completion",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "intake-slots",
+      "title": "Permanent Issue #1 comment slots",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "intake-slots",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "scratchpads",
+      "title": "Per-job shared scratchpads",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "scratchpads",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "bot-comment-ownership",
+      "title": "GitHub Actions bot-authored comments",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "bot-comment-ownership",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "workflow-changes",
+      "title": "Mandatory GitHub Actions workflow modification mechanism",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "workflow-changes",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "bootstrap-operations",
+      "title": "Bootstrap and operational boundaries",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "bootstrap-operations",
+          "comment_id": null,
+          "part": 1
+        }
+      ]
+    },
+    {
+      "task": "task-field-examples",
+      "title": "Task.v3 field-specific guidance and few-shot examples",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "task-field-examples-part-01",
+          "comment_id": null,
+          "part": 1
+        },
+        {
+          "page_id": "task-field-examples-part-02",
+          "comment_id": null,
+          "part": 2
+        },
+        {
+          "page_id": "task-field-examples-part-03",
+          "comment_id": null,
+          "part": 3
+        },
+        {
+          "page_id": "task-field-examples-part-04",
+          "comment_id": null,
+          "part": 4
+        }
+      ]
+    },
+    {
+      "task": "task-three-shot-examples",
+      "title": "Task.v3 three-shot reference for every entry (second pass)",
+      "target_issue_number": 6,
+      "pages": [
+        {
+          "page_id": "task-three-shot-examples-part-01",
+          "comment_id": null,
+          "part": 1
+        },
+        {
+          "page_id": "task-three-shot-examples-part-02",
+          "comment_id": null,
+          "part": 2
+        },
+        {
+          "page_id": "task-three-shot-examples-part-03",
+          "comment_id": null,
+          "part": 3
+        }
+      ]
+    }
+  ]
+}

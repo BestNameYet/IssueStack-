@@ -35,6 +35,95 @@ Persist this JSON as a **linked metadata record for the odd-position user-prompt
 
 Before responding, verify that (1) the prompt is the current unmatched odd-position comment; (2) the saved metadata has the required keys and valid enums; (3) its durable record identifies the correct prompt comment ID and turn; and (4) no even-position response has already been published for that turn. If metadata storage, read-back, validation or ordering checks fail, **do not publish an agent response**: record the failure through the permitted operational error channel and retry/reconcile without corrupting the transcript. After publication, read back the even-position comment and verify it corresponds to the intended odd-position prompt.
 
+### Agent response return schema (even-position comments)
+
+The **agent response has its own mandatory return schema**, separate from the user-prompt analysis JSON above. Each even-position comment must correspond to **exactly one object conforming to `issuestack.issue5.agent-response.v1`**. The even comment's complete body is this bare JSON object (not a Markdown code fence); the conversational renderer displays its `message` string as the user-visible answer. No metadata-only, acknowledgement or audit comment is inserted into the Issue #5 transcript.
+
+**Normative JSON Schema (Draft 2020-12):**
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueStack Issue #5 Agent Response Return v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "role",
+    "turn",
+    "prompt_comment_id",
+    "prompt_analysis_ref",
+    "date",
+    "time",
+    "status",
+    "message"
+  ],
+  "properties": {
+    "schema": {
+      "const": "issuestack.issue5.agent-response.v1"
+    },
+    "role": {
+      "const": "agent"
+    },
+    "turn": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "prompt_comment_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "prompt_analysis_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "time": {
+      "type": "string",
+      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:Z|[+-](?:0\\d|1[0-3]):[0-5]\\d|[+-]14:00)$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "answered",
+        "needs_input",
+        "blocked",
+        "error"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
+```
+
+**Valid example** (illustrative IDs, not real GitHub identifiers):
+
+```json
+{
+  "schema": "issuestack.issue5.agent-response.v1",
+  "role": "agent",
+  "turn": 1,
+  "prompt_comment_id": 12345,
+  "prompt_analysis_ref": "example-analysis-record-12345",
+  "date": "2026-10-25",
+  "time": "22:50:00-07:00",
+  "status": "answered",
+  "message": "Issue #5 is the conversational UI; Issue #4 is not."
+}
+```
+
+Required fields and meaning: `schema` and `role` are exact constant identifiers; `turn` is the 1-based turn number (its user-prompt position is `2 * turn - 1`, and the reply position is `2 * turn`); `prompt_comment_id` is the permanent GitHub ID of that immediately preceding user prompt; `prompt_analysis_ref` identifies the already persisted, read-back-verified prompt-analysis JSON record; `date` and `time` describe the response publication using the documented ISO 8601 date and offset-aware clock; `status` is exactly one of `answered`, `needs_input`, `blocked`, `error`; `message` contains the nonempty human-readable Markdown response. Response `status` classifies the message, **not** whether a separate Issue #2 job completed. A prompt-analysis record and a response return have different schemas and must never be confused.
+
+**Validation gates:** (1) Parse the even-position comment body as exactly one JSON object, with no surrounding prose or fences. (2) Apply this schema: missing required fields, unknown properties, wrong types, mismatched constants, invalid enums, blank mandatory strings or invalid date/time values are errors; validate actual calendar dates and UTC-offset ranges in addition to lexical patterns. (3) Cross-check against live Issue #5 history and persisted analysis: `turn` agrees with the odd/even ordinal positions; `prompt_comment_id` refers to the *current unmatched* odd-position comment; `prompt_analysis_ref` resolves to valid prompt metadata linked to that exact prompt and already verified before responding; the comment sender is authorized; no response has already been published for this turn. These relational conditions cannot be proven by JSON Schema alone. (4) Append a single even-position response atomically/with concurrency controls, then read back that exact comment and validate it against the saved prompt and analysis record. Do not fabricate a response if any gate fails. The runtime must either enforce these checks or report Issue #5 response publication as unsupported; this documentation does not claim implementation.
+
+**Invalid examples:** omitting `prompt_analysis_ref`, using `role: "user"`, using `status: "success"`, setting `turn` to `0`, or adding an undeclared `confidence` key must each be rejected. A structurally valid JSON object referencing the wrong prompt, an unverified analysis record or an already-answered turn must also be rejected by the cross-record publication checks. A future incompatible response shape requires a new explicit schema version; never silently broaden this v1 contract.
+
 These instructions govern all agents operating in `BestNameYet/IssueStack-` and its subdirectories, unless a more specific `AGENTS.md` adds compatible obligations.
 
 ## Mandatory ledger-first job discovery

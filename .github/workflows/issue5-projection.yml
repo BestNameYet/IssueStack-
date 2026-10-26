@@ -10,6 +10,10 @@ on:
       - 'src/issue5-projection.js'
       - 'src/issue5-projection-workflow.js'
       - 'src/issue5-projection.test.js'
+      - 'src/issue5-presentation.js'
+      - 'src/issue5-presentation.test.js'
+      - 'src/issue5-presentation-integration.test.js'
+      - 'config/issue5-presentation-rules.json'
       - 'src/issue5-projection-workflow.test.js'
       - 'config/issue5-rendering.json'
       - '.github/workflows/issue5-projection.yml'
@@ -49,4 +53,4 @@ jobs:
         with:
           node-version: '22'
       - name: Test Issue5/Issue7 two-pass projection and transport adapter
-        run: node --test src/issue5-projection.test.js src/issue5-projection-workflow.test.js
+        run: node --test src/issue5-projection.test.js src/issue5-projection-workflow.test.js src/issue5-presentation.test.js src/issue5-presentation-integration.test.js

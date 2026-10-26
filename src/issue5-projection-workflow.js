@@ -85,7 +85,20 @@ async function handleIssue5Comment({github,context,core}){
   const comments=await fetchComments(github,context,5);
   const index=comments.findIndex(x=>x.id===comment.id);
   if(index<0)throw Error('Edited Issue5 comment missing from transcript');
-  if(index%2===0)return {state:'awaiting_agent_response',turn:(index+2)/2};
+  if(index%2===0){
+    // Once an even-position response exists, the paired odd-position prompt is
+    // immutable. A changed prompt would silently detach the stored second run
+    // and leave old projections incorrectly attached to a new request.
+    if(comments[index+1]){
+      const prev=context.payload.changes?.body?.from;
+      if(context.payload.action==='edited' && typeof prev==='string' && sourceBody(prev)!==sourceBody(comment.body)){
+        await safeUpdateComment(github,context,comment,prev,'immutable paired user prompt repair');
+        throw Error('Paired user prompt is immutable; submit a new odd-position turn');
+      }
+      return {state:'paired_user_prompt',turn:(index+2)/2};
+    }
+    return {state:'awaiting_agent_response',turn:(index+2)/2};
+  }
   const prompt=comments[index-1],answer=comments[index];
   const turn=(index+1)/2;
   if(!prompt||!answer)throw Error('Broken odd/even Issue5 transcript');

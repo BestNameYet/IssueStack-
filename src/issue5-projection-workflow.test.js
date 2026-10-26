@@ -115,3 +115,28 @@ test('non-owner event and other repositories are rejected',async()=>{
  event.actor='BestNameYet';event.repo.repo='Other';
  await assert.rejects(workflow.run({github:f.github,context:event,core:{info(){}}}),/Unexpected repository/);
 });
+
+
+test('replay after Issue7 pair revision is idempotent and invalidates stale Issue5 projections',async()=>{
+ const f=fixture();
+ await f.pairAndReturn();
+ const prior=f.get(102),replacement=JSON.parse(core.sourceBody(prior.body));
+ replacement.message='An amended first-pass response';
+ f.getById(102).body=core.upsertBlock(JSON.stringify(replacement),'projection',core.readBlock(prior.body,'projection'));
+ const event=f.ctx(5,f.get(102),'edited',{body:{from:prior.body}});
+ const first=await workflow.run({github:f.github,context:event,core:{info(){}}});
+ assert.equal(first.revised,true);
+ const revised=core.readBlock(f.get(first.issue7_comment_id).body,'pair');
+ assert.equal(revised.revision,1);
+ assert.deepEqual(core.readBlock(f.get(first.issue7_comment_id).body,'second'),{});
+ assert.equal(core.readBlock(f.get(101).body,'projection'),null);
+ assert.equal(core.readBlock(f.get(102).body,'projection'),null);
+ assert.equal(f.data[5].length,2);
+ assert.equal(f.data[7].length,1);
+ const retry=await workflow.run({github:f.github,context:event,core:{info(){}}});
+ assert.equal(retry.created,false);
+ assert.equal(retry.revised,undefined);
+ assert.equal(retry.state,'awaiting_or_processed_second_run');
+ assert.equal(core.readBlock(f.get(first.issue7_comment_id).body,'pair').revision,1);
+ assert.equal(core.readBlock(f.get(first.issue7_comment_id).body,'second').schema,undefined);
+});

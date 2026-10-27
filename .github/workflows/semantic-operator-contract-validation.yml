@@ -1,0 +1,36 @@
+name: Semantic Operator Contract Validation
+
+on:
+  push:
+    branches:
+      - stage/semantic-operator-contract-20261027-v1
+    paths:
+      - AGENTS.md
+      - 'config/semantic-operator-*.json'
+      - 'src/semantic-operator-contract.js'
+      - 'src/types/semantic-operator.v1.json'
+      - 'test/semantic-operator-contract.test.js'
+      - '.github/workflows/semantic-operator-contract-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: semantic-operator-contract-validation
+  cancel-in-progress: true
+
+jobs:
+  verify-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout at immutable commit
+        uses: actions/checkout@v4
+      - name: Validate the semantic operator library and type contracts
+        run: node src/semantic-operator-contract.js
+      - name: Execute contract, few-shot, safety and regression tests
+        run: node --test test/semantic-operator-contract.test.js test/agent-context-registry.test.js test/issue8-context-reconciler.test.js
+      - name: Record exact file lengths and SHA-256 for change review
+        run: |
+          node -e "const fs=require('fs'),crypto=require('crypto');const paths=['AGENTS.md','config/semantic-operator-contract.v1.json','config/semantic-operator-fewshots.v1.json','src/types/semantic-operator.v1.json','src/semantic-operator-contract.js','test/semantic-operator-contract.test.js','.github/workflows/semantic-operator-contract-validation.yml'];for(const path of paths){const data=fs.readFileSync(path);console.log('SEMANTIC_META '+JSON.stringify({path,size_bytes:data.length,sha256:crypto.createHash('sha256').update(data).digest('hex')}))}"

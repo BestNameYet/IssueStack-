@@ -1,0 +1,64 @@
+name: IssueStack Audio-Only Model Container
+
+on:
+  push:
+    branches:
+      - stage/audio-deception-comparison-20261026
+    paths:
+      - 'workspaces/audio-deception-comparison/**'
+      - '.github/workflows/audio-deception-comparison.yml'
+  pull_request:
+    paths:
+      - 'workspaces/audio-deception-comparison/**'
+      - '.github/workflows/audio-deception-comparison.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-audio-only-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run audio-only contract tests without weights
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          npm test
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Build Docker image with pinned, checksum-verified audio model
+        working-directory: workspaces/audio-deception-comparison
+        run: docker build --progress=plain -t issuestack-audio-only:ci .
+      - name: Run Docker contract tests
+        run: |
+          docker run --rm --entrypoint npm issuestack-audio-only:ci test
+          docker run --rm --entrypoint python issuestack-audio-only:ci -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Verify bundled model bytes without deserialization
+        run: |
+          docker run --rm --entrypoint python issuestack-audio-only:ci -c '
+          import hashlib, pathlib, json
+          p=pathlib.Path("/models/truth/model.joblib")
+          assert p.is_file(), "Model artifact is missing"
+          manifest=json.loads(p.with_suffix(".manifest.json").read_text())
+          actual=hashlib.sha256(p.read_bytes()).hexdigest()
+          assert actual==manifest["sha256"]
+          assert manifest["loaded"] is False
+          print(json.dumps({"model_installed":True,"sha256":actual,"revision":manifest["revision"]}))
+          '
+      - name: Verify untrusted deserialization remains blocked
+        run: |
+          docker run --rm --entrypoint python issuestack-audio-only:ci -c '
+          import sys
+          sys.path.insert(0, "/app/src")
+          import model_adapter
+          status,reason=model_adapter.checked_artifact()
+          assert status=="model_load_not_authorized", (status,reason)
+          print(status)
+          '

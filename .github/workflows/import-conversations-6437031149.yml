@@ -1,0 +1,98 @@
+name: Import conversations job 6437031149
+on:
+  push:
+    branches: [stage/conversations-6437031149]
+    paths:
+      - workspaces/conversation-categorization/job-6437031149/source/archive.part*
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: stage/conversations-6437031149
+      - name: Reconstruct verified ZIP and begin conversation extraction
+        run: |
+          python3 - <<'PY'
+          import collections, datetime, hashlib, json, os, stat, zipfile
+          from pathlib import Path, PurePosixPath
+          base=Path('workspaces/conversation-categorization/job-6437031149')
+          source=base/'source'
+          parts=[source/'archive.part01',source/'archive.part02']
+          raw=b''.join(p.read_bytes() for p in parts)
+          expected='ab438c7c86a356404613f3c716705f566cdf28bd8209ccec0b36c54f3b472c63'
+          assert len(raw)==18183730 and hashlib.sha256(raw).hexdigest()==expected
+          archive=source/'facebook-heatherfowle1-2026-10-27-PlyBvwkU.zip'
+          archive.write_bytes(raw)
+          def save(path,obj):
+           path.parent.mkdir(parents=True,exist_ok=True)
+           path.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          def date(ms):
+           return datetime.datetime.fromtimestamp(ms/1000,datetime.timezone.utc).isoformat() if ms is not None else None
+          entries=[]; threads={}; errors=[]
+          with zipfile.ZipFile(archive) as z:
+           assert z.testzip() is None, 'ZIP CRC failure'
+           names=set(z.namelist())
+           assert len(names)==len(z.infolist()), 'Duplicate ZIP paths'
+           for info in z.infolist():
+            path=PurePosixPath(info.filename)
+            assert not path.is_absolute() and '..' not in path.parts and '\\' not in info.filename
+            assert not stat.S_ISLNK(info.external_attr>>16)
+            if info.is_dir(): continue
+            data=z.read(info)
+            entries.append({'path':info.filename,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()})
+            if not info.filename.endswith('.json'): continue
+            obj=json.loads(data)
+            if not isinstance(obj,dict) or not isinstance(obj.get('messages'),list): continue
+            dest=base/'extracted'/info.filename
+            dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
+            key=str(path.parent)
+            t=threads.setdefault(key,{'source_folder':key,'title':obj.get('title'),'participants':obj.get('participants',[]),'export_category':path.parts[2],'source_files':[],'messages':[]})
+            t['source_files'].append(info.filename)
+            t['messages'].extend(obj['messages'])
+          rows=[]
+          for key,t in sorted(threads.items()):
+           messages=t.pop('messages')
+           ts=[m['timestamp_ms'] for m in messages if isinstance(m.get('timestamp_ms'),(int,float))]
+           refs=[]
+           def uris(obj):
+            if isinstance(obj,dict):
+             for k,v in obj.items():
+              if k=='uri' and isinstance(v,str): refs.append(v)
+              else: uris(v)
+            elif isinstance(obj,list):
+             for v in obj: uris(v)
+           for m in messages: uris(m)
+           missing=sorted(set(u for u in refs if not u.startswith(('http:','https:')) and u not in names))
+           t.update(message_count=len(messages),first_message_utc=date(min(ts) if ts else None),last_message_utc=date(max(ts) if ts else None),attachment_reference_count=len(refs),missing_attachment_paths=missing,topic_status='pending')
+           rows.append(t)
+          save(base/'inventory.json',{'source':archive.name,'source_bytes':len(raw),'sha256':expected,'entries':entries,'conversations':rows})
+          save(base/'verification.json',{'zip_crc':'passed','source_sha256':expected,'file_count':len(entries),'thread_count':len(rows),'message_count':sum(r['message_count'] for r in rows),'message_file_count':sum(len(r['source_files']) for r in rows),'categories':dict(collections.Counter(r['export_category'] for r in rows)),'missing_attachment_paths':sorted(set(u for r in rows for u in r['missing_attachment_paths'])),'topic_categorization':'pending','execution':'initial extraction complete; semantic categorization pending'})
+          lines=['# Conversation extraction index','','Source: '+archive.name,'','Initial categories preserve Facebook export folders. Topic categorization is pending. Dates are UTC.','','| Conversation | Export category | Messages | First message | Last message |','| --- | --- | ---: | --- | --- |']
+          for r in rows:
+           title=str(r['title']).replace('|','\\|').replace('\n',' ')
+           target='extracted/'+r['source_files'][0]
+           lines.append('| ['+title+']('+target+') | '+r['export_category']+' | '+str(r['message_count'])+' | '+str(r['first_message_utc'])+' | '+str(r['last_message_utc'])+' |')
+          (base/'index.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          for p in parts: p.unlink()
+          metadata_path=Path('config/file-metadata.json')
+          assert not metadata_path.exists(), 'Unexpected metadata baseline; stop rather than overwrite'
+          files=[]
+          for p in sorted(base.rglob('*')):
+           if p.is_file():
+            data=p.read_bytes();files.append({'path':str(p),'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest(),'job_id':6437031149})
+          workflow=Path('.github/workflows/import-conversations-6437031149.yml')
+          files.append({'path':str(workflow),'bytes':workflow.stat().st_size,'sha256':hashlib.sha256(workflow.read_bytes()).hexdigest(),'job_id':6437031149})
+          save(metadata_path,{'schema':'file-metadata.v1','files':files,'self_record':'config/file-metadata.json excluded from self-hash'})
+          print(json.dumps(json.loads((base/'verification.json').read_text()),indent=2))
+          PY
+      - name: Persist source archive and extraction results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- workspaces/conversation-categorization/job-6437031149 config/file-metadata.json
+          git commit -m "Verify source ZIP and extract conversations for job 6437031149"
+          git push origin HEAD:stage/conversations-6437031149

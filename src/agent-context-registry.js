@@ -31,6 +31,13 @@ function validateConfig(config) {
   if (config.max_context_chars < 100 || config.max_context_chars > 1000000) throw Error('Invalid context budget');
   if (config.max_freshness_hours < 1 || config.max_freshness_hours > 8760) throw Error('Invalid freshness');
   if (!config.publish || typeof config.publish.enabled !== 'boolean' || config.publish.issue_number !== 8) throw Error('Invalid publish config');
+  if (!config.refresh || config.refresh.policy_version !== 'issuestack.agent-context.refresh.v1' ||
+      config.refresh.mode !== 'read_only_review_gated' || config.refresh.allow_unattended_issue_writes !== false ||
+      config.refresh.detect_source_drift !== true || config.refresh.verify_toc_hashes !== true ||
+      !Number.isFinite(config.refresh.runtime_observation_max_hours) ||
+      config.refresh.runtime_observation_max_hours < 1 || config.refresh.runtime_observation_max_hours > 8760 ||
+      !/^([0-5]?\d|\*) ([01]?\d|2[0-3]|\*) \* \* \*$/.test(config.refresh.schedule_utc)) throw Error('Unsafe or invalid refresh policy');
+
   const weights=config.benchmark && config.benchmark.weights;
   if (!weights || Object.values(weights).some(v => typeof v !== 'number' || !Number.isFinite(v) || v<0) || Math.abs(Object.values(weights).reduce((a,b)=>a+b,0)-1)>1e-9) throw Error('Benchmark weights must sum to 1');
   config.excluded_patterns.forEach(v => new RegExp(v,'i'));

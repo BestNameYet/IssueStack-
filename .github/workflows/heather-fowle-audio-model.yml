@@ -1,0 +1,166 @@
+name: Heather Fowle - experimental audio-model evaluation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/heather-fowle-audio-model.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  evaluate-seven-wav-files:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Execute seven-file experimental audio evaluation'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check WAV inputs against the sender inventory
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python3 - <<'PY'
+          import json, wave
+          from pathlib import Path
+          root = Path('heather-fowle')
+          records = json.loads((root/'wav-inventory.json').read_text(encoding='utf-8'))
+          assert len(records) == 7, f'Expected seven entries, got {len(records)}'
+          names = [record['wav'] for record in records]
+          assert len(set(names)) == 7, 'Duplicate WAV entry'
+          assert {p.name for p in (root/'wav').glob('*.wav')} == {Path(n).name for n in names}
+          for name in names:
+              path = root/name
+              assert path.is_file()
+              with wave.open(str(path), 'rb') as audio:
+                  assert audio.getnchannels() == 1
+                  assert audio.getsampwidth() == 2
+                  assert audio.getframerate() == 16000
+                  assert audio.getnframes() > 0
+          print('Validated 7 unique mono 16 kHz 16-bit WAV recordings')
+          PY
+
+      - name: Build existing pinned audio-model image
+        working-directory: workspaces/audio-deception-comparison
+        run: docker build --progress=plain --build-arg BUNDLE_TRUTH_MODEL=1 -t issuestack-truth-audio:seven .
+
+      - name: Verify pinned weights without deserialization
+        run: |
+          docker run --rm --entrypoint python issuestack-truth-audio:seven -c '
+          import hashlib, json
+          from pathlib import Path
+          p=Path("/models/truth/model.joblib")
+          manifest=json.loads(p.with_suffix(".manifest.json").read_text())
+          actual=hashlib.sha256(p.read_bytes()).hexdigest()
+          assert actual=="6253a168da06148d86ddf4d7473d1a6f8048ff15e40a22cfd4ece27cd864a6a9"
+          assert manifest["sha256"]==actual
+          assert manifest["loaded"] is False
+          print("Pinned model checksum verified without deserialization")
+          '
+
+      - name: Run model individually on each of the seven WAV files
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          set -euo pipefail
+          mkdir -p heather-fowle/model-reports
+          chmod 777 heather-fowle/model-reports
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          root = Path('heather-fowle')
+          entries = json.loads((root/'wav-inventory.json').read_text(encoding='utf-8'))
+          for entry in entries:
+              filename = Path(entry['wav']).name
+              destination = filename.removesuffix('.wav')+'.json'
+              cmd = [
+                  'docker','run','--rm','--network','none','--cap-drop','ALL',
+                  '--security-opt','no-new-privileges','--pids-limit','128',
+                  '--memory','2g','--cpus','2','--read-only',
+                  '--tmpfs','/tmp:rw,nosuid,size=256m',
+                  '--user','65534:65534','-e','HOME=/tmp',
+                  '-e','NUMBA_CACHE_DIR=/tmp/numba',
+                  '-e','ALLOW_TRUSTED_MODEL_LOAD=1',
+                  '-v',f'{(root/"wav").resolve()}:/data/input:ro',
+                  '-v',f'{(root/"model-reports").resolve()}:/data/output',
+                  'issuestack-truth-audio:seven',
+                  f'/data/input/{filename}',f'/data/output/{destination}'
+              ]
+              subprocess.run(cmd,check=True,timeout=180)
+              print('Processed',filename,flush=True)
+          PY
+
+      - name: Aggregate reports and validate model execution
+        if: always()
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('heather-fowle')
+          entries=json.loads((root/'wav-inventory.json').read_text(encoding='utf-8'))
+          folder=root/'model-reports'
+          reports=[]
+          for entry in entries:
+              filename=Path(entry['wav']).name
+              result_path=folder/(Path(filename).stem+'.json')
+              if result_path.is_file():
+                  payload=json.loads(result_path.read_text(encoding='utf-8'))
+                  model=payload.get('models',{}).get('truthDetection',{})
+                  reports.append({
+                      'timestamp':entry['timestamp'], 'original_ogg':entry['source'],
+                      'wav':entry['wav'], 'transcript':entry['transcript'],
+                      'report':result_path.name, 'model_status':model.get('status'),
+                      'raw_prediction':model.get('raw_prediction'),
+                      'experimental_model_label':model.get('label'),
+                      'calibrated_probability':None
+                  })
+              else:
+                  reports.append({
+                      'timestamp':entry['timestamp'], 'original_ogg':entry['source'],
+                      'wav':entry['wav'], 'transcript':entry['transcript'],
+                      'report':None, 'model_status':'missing_report',
+                      'raw_prediction':None, 'experimental_model_label':None,
+                      'calibrated_probability':None
+                  })
+          summary={
+              'model':'sangambhamare/TruthDetection',
+              'model_revision':'63f1f11bf76fdfc8b433a99a566b6b2683c98af4',
+              'warning':'Experimental uncalibrated model outputs are not evidence of whether a person is truthful or deceptive. Do not use for consequential decisions.',
+              'files_expected':7,
+              'model_runs_succeeded':sum(x['model_status']=='ok' for x in reports),
+              'results':reports
+          }
+          folder.mkdir(exist_ok=True)
+          (folder/'summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
+          with (folder/'summary.csv').open('w',encoding='utf-8') as f:
+              import csv
+              columns=['timestamp','wav','model_status','raw_prediction','experimental_model_label','calibrated_probability']
+              writer=csv.DictWriter(f,fieldnames=columns)
+              writer.writeheader()
+              writer.writerows([{key:row.get(key) for key in columns} for row in reports])
+          print('Model status:',summary['model_runs_succeeded'],'of 7 succeeded; see reports for details')
+          PY
+
+      - name: Upload detailed and aggregate results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heather-fowle-experimental-audio-reports-${{ github.run_id }}
+          path: workspaces/audio-deception-comparison/heather-fowle/model-reports/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Require seven successful technical inference executions
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          summary=json.loads(Path('heather-fowle/model-reports/summary.json').read_text())
+          assert summary['model_runs_succeeded']==summary['files_expected']==7, summary['model_runs_succeeded']
+          print('Technical model execution succeeded for all seven WAV files; labels remain unvalidated')
+          PY

@@ -1,0 +1,44 @@
+[
+  {
+    "timestamp": "2026-10-26 12:07:29.489 PDT",
+    "source": "media/33a57985-6126-4b58-ae23-ee997ba41201.ogg",
+    "duration": "93.77 s",
+    "transcript": "008-6d2fe0835b75.txt"
+  },
+  {
+    "timestamp": "2026-10-26 12:08:39.185 PDT",
+    "source": "media/6ed5f92c-7864-4bf9-a461-0765b95c60a1.ogg",
+    "duration": "55.17 s",
+    "transcript": "018-c25ff1cc2b5c.txt"
+  },
+  {
+    "timestamp": "2026-10-26 12:19:02.415 PDT",
+    "source": "media/50d3d446-c9f5-45dc-bfde-64ff8062a388.ogg",
+    "duration": "41.07 s",
+    "transcript": "013-53e86f96d5e6.txt"
+  },
+  {
+    "timestamp": "2026-10-26 12:19:20.599 PDT",
+    "source": "media/653749ca-8e43-4a7a-99a8-827f20842b49.ogg",
+    "duration": "13.37 s",
+    "transcript": "015-1fba9ee1f328.txt"
+  },
+  {
+    "timestamp": "2026-10-26 12:22:14.334 PDT",
+    "source": "media/aed4960a-8716-42a9-90df-bf21ae2daf7e.ogg",
+    "duration": "53.75 s",
+    "transcript": "025-0c297a8fa3d6.txt"
+  },
+  {
+    "timestamp": "2026-10-26 12:22:51.700 PDT",
+    "source": "media/b0d9f371-453e-4371-b18c-857a9eee8219.ogg",
+    "duration": "31.97 s",
+    "transcript": "026-bb76e6048449.txt"
+  },
+  {
+    "timestamp": "2026-10-26 12:25:19.182 PDT",
+    "source": "media/4a590f66-d3c7-4b40-b6d3-7855db8b1259.ogg",
+    "duration": "46.51 s",
+    "transcript": "012-f93c35df7418.txt"
+  }
+]

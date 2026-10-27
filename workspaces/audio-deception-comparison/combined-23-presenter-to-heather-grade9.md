@@ -1,6 +1,8 @@
-# Heather Lindsay / Heather Fowle: Recorded Statements Review
+# Heather: Recorded Statements Review
 
 **23 Audio Recordings | August 2025 – October 2026**
+
+**Subject:** Heather (Heather Lindsay and Heather Fowle refer to the same person). **Sam** is a separate person in the October 2026 conversations. **Jason Law** is the correct name for the earlier conversation partner.
 
 ## About this review
 

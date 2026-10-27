@@ -1,0 +1,53 @@
+{
+  "participants": [
+    {
+      "name": ""
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1557181956729,
+      "content": "A Messenger user missed your call.",
+      "call_duration": 0,
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1557179081318,
+      "audio_files": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/2246556082264908/audio/787649201615007.mp4",
+          "creation_timestamp": 1557179080
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1557179079982,
+      "content": "A Messenger user missed your call.",
+      "call_duration": 0,
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1557179034916,
+      "content": "You are now connected on Messenger",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/2246556082264908",
+  "magic_words": [
+    
+  ]
+}

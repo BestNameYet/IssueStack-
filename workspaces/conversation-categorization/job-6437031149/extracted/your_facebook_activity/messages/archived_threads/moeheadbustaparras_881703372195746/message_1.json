@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Moe HeadBusta Parras"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560737052642,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Moe HeadBusta Parras",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/moeheadbustaparras_881703372195746",
+  "magic_words": [
+    
+  ]
+}

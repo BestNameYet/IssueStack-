@@ -1,0 +1,28 @@
+{
+  "participants": [
+    {
+      "name": "Harley Cole Wynne"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Harley Cole Wynne",
+      "timestamp_ms": 1568215012826,
+      "content": "\u00f0\u009f\u0098\u00aewtf it`s you\u00f0\u009f\u0091\u0087",
+      "share": {
+        "link": "http://working023.ga/"
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Harley Cole Wynne",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/harleycolewynne_2317875531600832",
+  "magic_words": [
+    
+  ]
+}

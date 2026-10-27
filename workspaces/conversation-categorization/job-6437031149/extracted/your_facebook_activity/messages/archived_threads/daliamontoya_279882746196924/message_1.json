@@ -1,0 +1,37 @@
+{
+  "participants": [
+    {
+      "name": "Dalia Montoya"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1540908296753,
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/daliamontoya_279882746196924/photos/272140560173477.jpg",
+          "creation_timestamp": 1540908290
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1540399279803,
+      "content": "You're now friends with Dalia.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Dalia Montoya",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/daliamontoya_279882746196924",
+  "magic_words": [
+    
+  ]
+}

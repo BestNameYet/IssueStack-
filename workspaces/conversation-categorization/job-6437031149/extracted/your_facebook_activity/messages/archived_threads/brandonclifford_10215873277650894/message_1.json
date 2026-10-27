@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Brandon Clifford"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Brandon Clifford",
+      "timestamp_ms": 1563054649837,
+      "content": "You're now connected on Messenger",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Brandon Clifford",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/brandonclifford_10215873277650894",
+  "magic_words": [
+    
+  ]
+}

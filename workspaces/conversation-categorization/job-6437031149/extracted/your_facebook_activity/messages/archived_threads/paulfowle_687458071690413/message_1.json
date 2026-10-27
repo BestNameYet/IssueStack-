@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Paul Fowle"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560836373220,
+      "content": "Hello sorry to bother you just curious to know if you were related to Cassie or Bradly fowle",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Paul Fowle",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/paulfowle_687458071690413",
+  "magic_words": [
+    
+  ]
+}

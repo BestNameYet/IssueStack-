@@ -1,0 +1,34 @@
+{
+  "participants": [
+    {
+      "name": ""
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560836262991,
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/310004356572591/photos/666745583785835.jpg",
+          "creation_timestamp": 1560836261
+        },
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/310004356572591/photos/2285397305009107.jpg",
+          "creation_timestamp": 1560836260
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/310004356572591",
+  "magic_words": [
+    
+  ]
+}

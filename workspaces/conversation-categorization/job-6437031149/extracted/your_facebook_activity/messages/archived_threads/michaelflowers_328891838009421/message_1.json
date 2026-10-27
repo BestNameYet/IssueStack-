@@ -1,0 +1,45 @@
+{
+  "participants": [
+    {
+      "name": "Michael Flowers"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560846065269,
+      "content": "Love everyone\u00f0\u009f\u0098\u00a2",
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/michaelflowers_328891838009421/photos/387195545255725.jpg",
+          "creation_timestamp": 1560846063
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560832234257,
+      "content": "Hey you",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560790864444,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Michael Flowers",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/michaelflowers_328891838009421",
+  "magic_words": [
+    
+  ]
+}

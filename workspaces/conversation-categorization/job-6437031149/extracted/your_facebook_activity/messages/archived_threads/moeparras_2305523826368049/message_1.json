@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Moe Parras"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560737012229,
+      "content": "Happy father's day",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Moe Parras",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/moeparras_2305523826368049",
+  "magic_words": [
+    
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "participants": [
+    {
+      "name": "Christopher Allen"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Christopher Allen",
+      "timestamp_ms": 1564361060838,
+      "content": "I am board , I'm all alone in my house and nothing to do. Wish I had someone to talk to",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Christopher Allen",
+      "timestamp_ms": 1564360966936,
+      "sticker": {
+        "uri": "your_facebook_activity/messages/stickers_used/369239263222822.png",
+        "ai_stickers": [
+          
+        ]
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Christopher Allen",
+      "timestamp_ms": 1564341881042,
+      "content": "How have you been ? Wish you were around I would come see you",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Christopher Allen",
+      "timestamp_ms": 1564338093059,
+      "content": "Hay girl",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Christopher Allen",
+      "timestamp_ms": 1564338086209,
+      "content": "Christopher sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Christopher Allen",
+      "timestamp_ms": 1564335437835,
+      "content": "You're now friends with Christopher.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Christopher Allen",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/christopherallen_699028703901767",
+  "magic_words": [
+    
+  ]
+}

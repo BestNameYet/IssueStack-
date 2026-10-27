@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": ""
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1561037853890,
+      "content": "You're now connected on Messenger",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/677475259372872",
+  "magic_words": [
+    
+  ]
+}

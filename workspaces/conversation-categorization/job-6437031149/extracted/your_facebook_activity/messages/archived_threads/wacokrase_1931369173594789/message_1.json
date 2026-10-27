@@ -1,0 +1,65 @@
+{
+  "participants": [
+    {
+      "name": "Waco Krase"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Waco Krase",
+      "timestamp_ms": 1560901347223,
+      "sticker": {
+        "uri": "your_facebook_activity/messages/stickers_used/369239263222822.png",
+        "ai_stickers": [
+          
+        ]
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Waco Krase",
+      "timestamp_ms": 1560896038375,
+      "content": "I'm doing really good I'm in the middle of fixing up a little 2 bed house on 2 acres of land in town here in Dayton Tennessee my ole lady and I just naught our 3rd car I'm getting a bike soon I make about 15 an hour so life is really good thanks to Jesus how are you",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560895834619,
+      "content": "Hey you I'm o.k how are u stranger",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Waco Krase",
+      "timestamp_ms": 1560874068312,
+      "content": "Hello",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560873963699,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1541297292655,
+      "content": "You're now friends with Waco.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Waco Krase",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/wacokrase_1931369173594789",
+  "magic_words": [
+    
+  ]
+}

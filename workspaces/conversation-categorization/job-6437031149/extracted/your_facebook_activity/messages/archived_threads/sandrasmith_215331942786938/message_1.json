@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Sandra Smith"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Sandra Smith",
+      "timestamp_ms": 1567126832340,
+      "content": "Sandra sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Sandra Smith",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/sandrasmith_215331942786938",
+  "magic_words": [
+    
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Jennifer Wars Turner"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Jennifer Wars Turner",
+      "timestamp_ms": 1544266649637,
+      "content": "You're now friends with Jennifer.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Jennifer Wars Turner",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/jenniferwarsturner_2131406460253326",
+  "magic_words": [
+    
+  ]
+}

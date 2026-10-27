@@ -1,0 +1,68 @@
+{
+  "participants": [
+    {
+      "name": "Yuri Alvarino"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1564335252709,
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/yurialvarino_10157435986826974/photos/939993726345659.jpg",
+          "creation_timestamp": 1564335252
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1561136787492,
+      "content": "Yuri missed your call.",
+      "call_duration": 0,
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1561125929646,
+      "content": "Yuri missed your call.",
+      "call_duration": 0,
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1561095138538,
+      "content": "Yuri missed your video call.",
+      "call_duration": 0,
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560981405652,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560981363277,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Yuri Alvarino",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/yurialvarino_10157435986826974",
+  "magic_words": [
+    
+  ]
+}

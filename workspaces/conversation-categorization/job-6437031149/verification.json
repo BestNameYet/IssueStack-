@@ -1,0 +1,18 @@
+{
+  "zip_crc": "passed",
+  "source_sha256": "ab438c7c86a356404613f3c716705f566cdf28bd8209ccec0b36c54f3b472c63",
+  "file_count": 349,
+  "thread_count": 82,
+  "message_count": 971,
+  "message_file_count": 82,
+  "categories": {
+    "archived_threads": 77,
+    "filtered_threads": 3,
+    "inbox": 2
+  },
+  "missing_attachment_paths": [
+    ""
+  ],
+  "topic_categorization": "pending",
+  "execution": "initial extraction complete; semantic categorization pending"
+}

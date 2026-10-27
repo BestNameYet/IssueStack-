@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Coley Hamm"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560981429035,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Coley Hamm",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/coleyhamm_327946424791609",
+  "magic_words": [
+    
+  ]
+}

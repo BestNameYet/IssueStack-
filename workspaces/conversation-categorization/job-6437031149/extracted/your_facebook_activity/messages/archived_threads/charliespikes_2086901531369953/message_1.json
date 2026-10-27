@@ -1,0 +1,119 @@
+{
+  "participants": [
+    {
+      "name": "Charlie Spikes"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560868467240,
+      "content": "Where's mom",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560790337888,
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/charliespikes_2086901531369953/photos/315182092703581.jpg",
+          "creation_timestamp": 1560790337
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560741660983,
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/charliespikes_2086901531369953/photos/368019607184788.jpg",
+          "creation_timestamp": 1560741660
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560741530957,
+      "sticker": {
+        "uri": "your_facebook_activity/messages/stickers_used/369239263222822.png",
+        "ai_stickers": [
+          
+        ]
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1543458696707,
+      "content": "BlueMail for Gmail, Yahoo, Outlook etc is beautiful - you've got to try it @BlueMail. Amazing free #email app http://bit.ly/29hM2Xg",
+      "share": {
+        "link": "https://bluemail.me/",
+        "share_text": "BlueMail is a modern, mobile first, powerful Email management tool with a sleek design, unified inbox and support for all your accounts: IMAP,Exchange,POP3."
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1543317749286,
+      "content": "Wtf nigga how are you",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Charlie Spikes",
+      "timestamp_ms": 1541376894403,
+      "content": "Aye",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Charlie Spikes",
+      "timestamp_ms": 1541280782794,
+      "content": "Aye bichhhh",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1540908296752,
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/charliespikes_2086901531369953/photos/319613935532074.jpg",
+          "creation_timestamp": 1540908290
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1540420295411,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1540363614551,
+      "content": "You're now friends with Charlie.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Charlie Spikes",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/charliespikes_2086901531369953",
+  "magic_words": [
+    
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "participants": [
+    {
+      "name": "Amanda Reid"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Amanda Reid",
+      "timestamp_ms": 1560900756859,
+      "content": "LOL I did not mean to send that",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Amanda Reid",
+      "timestamp_ms": 1560900741503,
+      "gifs": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/amandareid_140779426908857/gifs/443366759816584.gif"
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560868415175,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Amanda Reid",
+      "timestamp_ms": 1544266659600,
+      "content": "You're now friends with Amanda.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Amanda Reid",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/amandareid_140779426908857",
+  "magic_words": [
+    
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Samantha Goodwin"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1561757839496,
+      "content": "You're now friends with Samantha.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Samantha Goodwin",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/samanthagoodwin_200978750888924",
+  "magic_words": [
+    
+  ]
+}

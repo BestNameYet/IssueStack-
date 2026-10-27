@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Audrey Clauson"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1541859232966,
+      "content": "You're now friends with Audrey.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Audrey Clauson",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/audreyclauson_2365059696855436",
+  "magic_words": [
+    
+  ]
+}

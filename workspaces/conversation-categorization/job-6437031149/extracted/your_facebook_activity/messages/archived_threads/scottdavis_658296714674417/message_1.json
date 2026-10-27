@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Scott Davis"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Scott Davis",
+      "timestamp_ms": 1567128248400,
+      "content": "Hello....?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Scott Davis",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/scottdavis_658296714674417",
+  "magic_words": [
+    
+  ]
+}

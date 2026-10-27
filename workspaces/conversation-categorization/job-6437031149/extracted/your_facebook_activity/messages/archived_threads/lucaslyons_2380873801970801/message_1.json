@@ -1,0 +1,53 @@
+{
+  "participants": [
+    {
+      "name": "Lucas Lyons"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Lucas Lyons",
+      "timestamp_ms": 1566819078518,
+      "content": "What's up",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1566819054631,
+      "content": "Hey",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Lucas Lyons",
+      "timestamp_ms": 1560792116106,
+      "content": "Hello",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560790257433,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560789584060,
+      "content": "You're now friends with Lucas.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Lucas Lyons",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/lucaslyons_2380873801970801",
+  "magic_words": [
+    
+  ]
+}

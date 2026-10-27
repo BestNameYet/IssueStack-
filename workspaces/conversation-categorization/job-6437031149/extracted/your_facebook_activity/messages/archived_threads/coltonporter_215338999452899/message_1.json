@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Colton Porter"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Colton Porter",
+      "timestamp_ms": 1567129622437,
+      "content": "Do I know youu",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Colton Porter",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/coltonporter_215338999452899",
+  "magic_words": [
+    
+  ]
+}

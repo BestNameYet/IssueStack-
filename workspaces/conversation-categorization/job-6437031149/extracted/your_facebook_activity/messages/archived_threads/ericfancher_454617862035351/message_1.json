@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Eric Fancher"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1561137051632,
+      "content": "whats going on stranger",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Eric Fancher",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/ericfancher_454617862035351",
+  "magic_words": [
+    
+  ]
+}

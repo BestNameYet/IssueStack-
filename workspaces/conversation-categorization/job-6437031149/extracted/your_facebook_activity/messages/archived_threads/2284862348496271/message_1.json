@@ -1,0 +1,32 @@
+{
+  "participants": [
+    {
+      "name": ""
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "",
+      "timestamp_ms": 1560803146693,
+      "content": "Hey I'm getting out at 5 want me to come pick you up sooner?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560766043625,
+      "content": "You're now connected on Messenger",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/2284862348496271",
+  "magic_words": [
+    
+  ]
+}

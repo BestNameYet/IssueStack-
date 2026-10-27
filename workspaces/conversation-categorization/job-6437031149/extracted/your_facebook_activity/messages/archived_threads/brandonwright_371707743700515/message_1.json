@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Brandon Wright"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560784628892,
+      "content": "You're now friends with Brandon.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Brandon Wright",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/brandonwright_371707743700515",
+  "magic_words": [
+    
+  ]
+}

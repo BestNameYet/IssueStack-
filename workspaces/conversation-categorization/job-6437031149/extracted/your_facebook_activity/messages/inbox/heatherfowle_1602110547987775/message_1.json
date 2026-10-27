@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Heather Fowle"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1787118360975,
+      "content": "Where have you been? Haven't heard back from you in a while?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Heather Fowle",
+  "is_still_participant": true,
+  "thread_path": "inbox/heatherfowle_1602110547987775",
+  "magic_words": [
+    
+  ]
+}

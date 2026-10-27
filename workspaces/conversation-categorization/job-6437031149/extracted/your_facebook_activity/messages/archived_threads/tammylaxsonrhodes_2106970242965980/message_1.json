@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Tammy Laxson Rhodes"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1541556797751,
+      "content": "You're now friends with Tammy Laxson.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Tammy Laxson Rhodes",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/tammylaxsonrhodes_2106970242965980",
+  "magic_words": [
+    
+  ]
+}

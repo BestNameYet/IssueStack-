@@ -1,0 +1,98 @@
+{
+  "participants": [
+    {
+      "name": "Gwen Ohern"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Gwen Ohern",
+      "timestamp_ms": 1560883385550,
+      "content": "I just wanna say that you're special to me and you've made a difference in my life, i look up to you, i respect u and cherish u. Send this to all your friends including me no matter how often we talk or how close we are , let old friends know you haven't forget them.if u get 3 back, u r a friend worth keeping",
+      "gifs": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/gwenohern_868531413485909/gifs/466519747445065.gif"
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Gwen Ohern",
+      "timestamp_ms": 1560870644898,
+      "gifs": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/gwenohern_868531413485909/gifs/2373853046273284.gif"
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560870610324,
+      "sticker": {
+        "uri": "your_facebook_activity/messages/stickers_used/1775284809378890.png",
+        "ai_stickers": [
+          
+        ]
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560870605879,
+      "content": "Hello",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560790306564,
+      "photos": [
+        {
+          "uri": "your_facebook_activity/messages/archived_threads/gwenohern_868531413485909/photos/1078127252381249.jpg",
+          "creation_timestamp": 1560790306
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Gwen Ohern",
+      "timestamp_ms": 1560777054769,
+      "sticker": {
+        "uri": "your_facebook_activity/messages/stickers_used/369239263222822.png",
+        "ai_stickers": [
+          
+        ]
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1560735538810,
+      "content": "You sent an attachment.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Gwen Ohern",
+      "timestamp_ms": 1556993575133,
+      "content": "You're now friends with Gwen.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Gwen Ohern",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/gwenohern_868531413485909",
+  "magic_words": [
+    
+  ]
+}

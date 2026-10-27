@@ -1,0 +1,25 @@
+{
+  "participants": [
+    {
+      "name": "Conso Joe"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Conso Joe",
+      "timestamp_ms": 1567126324581,
+      "content": "You're now friends with Conso.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Conso Joe",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/consojoe_514140809396741",
+  "magic_words": [
+    
+  ]
+}

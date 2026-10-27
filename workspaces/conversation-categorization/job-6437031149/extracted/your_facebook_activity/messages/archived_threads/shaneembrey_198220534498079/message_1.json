@@ -1,0 +1,39 @@
+{
+  "participants": [
+    {
+      "name": "Shane Embrey"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Shane Embrey",
+      "timestamp_ms": 1561958093989,
+      "content": "Hello, are you okay?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Shane Embrey",
+      "timestamp_ms": 1560769717547,
+      "content": "Is this the Heather that stayed in Trinity?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Shane Embrey",
+      "timestamp_ms": 1560760201531,
+      "content": "You're now friends with Shane.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Shane Embrey",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/shaneembrey_198220534498079",
+  "magic_words": [
+    
+  ]
+}

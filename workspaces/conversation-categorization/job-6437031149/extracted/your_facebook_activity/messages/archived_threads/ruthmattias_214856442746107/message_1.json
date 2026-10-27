@@ -1,0 +1,49 @@
+{
+  "participants": [
+    {
+      "name": "R\u00c3\u00b9th M\u00c7\u008ett\u00c3\u00acas"
+    },
+    {
+      "name": "Heather Fowle"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "R\u00c3\u00b9th M\u00c7\u008ett\u00c3\u00acas",
+      "timestamp_ms": 1541790146847,
+      "sticker": {
+        "uri": "your_facebook_activity/messages/stickers_used/369239263222822.png",
+        "ai_stickers": [
+          
+        ]
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "R\u00c3\u00b9th M\u00c7\u008ett\u00c3\u00acas",
+      "timestamp_ms": 1541352450974,
+      "sticker": {
+        "uri": "your_facebook_activity/messages/stickers_used/369239263222822.png",
+        "ai_stickers": [
+          
+        ]
+      },
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Heather Fowle",
+      "timestamp_ms": 1541297838084,
+      "content": "You're now connected on Messenger",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "R\u00c3\u00b9th M\u00c7\u008ett\u00c3\u00acas",
+  "is_still_participant": true,
+  "thread_path": "archived_threads/ruthmattias_214856442746107",
+  "magic_words": [
+    
+  ]
+}

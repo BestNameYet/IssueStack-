@@ -52,5 +52,14 @@
     "BestNameYet/IssueStack-",
     "BestNameYet/CommandLine",
     "BestNameYet/StateMachines"
-  ]
+  ],
+  "refresh": {
+    "policy_version": "issuestack.agent-context.refresh.v1",
+    "schedule_utc": "31 2 * * *",
+    "mode": "read_only_review_gated",
+    "runtime_observation_max_hours": 48,
+    "detect_source_drift": true,
+    "verify_toc_hashes": true,
+    "allow_unattended_issue_writes": false
+  }
 }

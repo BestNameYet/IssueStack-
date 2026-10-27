@@ -1,0 +1,112 @@
+name: IssueStack Audio-Only Model Container
+
+on:
+  push:
+    branches:
+      - stage/audio-deception-comparison-20261026
+    paths:
+      - 'workspaces/audio-deception-comparison/**'
+      - '.github/workflows/audio-deception-comparison.yml'
+  pull_request:
+    paths:
+      - 'workspaces/audio-deception-comparison/**'
+      - '.github/workflows/audio-deception-comparison.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-audio-only-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run audio-only contract tests without weights
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          npm test
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Build Docker image with pinned, checksum-verified audio model
+        working-directory: workspaces/audio-deception-comparison
+        run: docker build --progress=plain -t issuestack-audio-only:ci .
+      - name: Run Docker contract tests
+        run: |
+          docker run --rm --entrypoint npm issuestack-audio-only:ci test
+          docker run --rm --entrypoint python issuestack-audio-only:ci -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Verify bundled model bytes without deserialization
+        run: |
+          docker run --rm --entrypoint python issuestack-audio-only:ci -c '
+          import hashlib, pathlib, json
+          p=pathlib.Path("/models/truth/model.joblib")
+          assert p.is_file(), "Model artifact is missing"
+          manifest=json.loads(p.with_suffix(".manifest.json").read_text())
+          actual=hashlib.sha256(p.read_bytes()).hexdigest()
+          assert actual==manifest["sha256"]
+          assert manifest["loaded"] is False
+          print(json.dumps({"model_installed":True,"sha256":actual,"revision":manifest["revision"]}))
+          '
+      - name: Verify untrusted deserialization remains blocked
+        run: |
+          docker run --rm --entrypoint python issuestack-audio-only:ci -c '
+          import sys
+          sys.path.insert(0, "/app/src")
+          import model_adapter
+          status,reason=model_adapter.checked_artifact()
+          assert status=="model_load_not_authorized", (status,reason)
+          print(status)
+          '
+      - name: Generate deterministic non-sensitive WAV input
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          mkdir -p input output
+          python3 - <<'PY'
+          import math, struct, wave
+          with wave.open('input/synthetic-220hz.wav', 'wb') as wav:
+              wav.setnchannels(1)
+              wav.setsampwidth(2)
+              wav.setframerate(16000)
+              wav.writeframes(b''.join(struct.pack('<h', round(6000 * math.sin(2 * math.pi * 220 * i / 16000))) for i in range(16000 * 3)))
+          PY
+          chmod 777 output
+      - name: Run real pinned model inference on synthetic audio in a restricted container
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          docker run --rm --network none --cap-drop ALL \
+            --security-opt no-new-privileges --pids-limit 128 --memory 2g --cpus 2 \
+            --read-only --tmpfs /tmp:rw,nosuid,size=256m --user 65534:65534 \
+            -e HOME=/tmp -e NUMBA_CACHE_DIR=/tmp/numba -e ALLOW_TRUSTED_MODEL_LOAD=1 \
+            -v "$PWD/input:/data/input:ro" -v "$PWD/output:/data/output" \
+            issuestack-audio-only:ci /data/input/synthetic-220hz.wav /data/output/report.json
+          # The unprivileged container deliberately writes a 0600 report as UID 65534.
+          # Transfer ownership on the ephemeral CI host, not inside the container.
+          sudo chown "$(id -u):$(id -g)" output/report.json
+          python3 - <<'PY'
+          import json
+          with open('output/report.json',encoding='utf-8') as stream:
+              report = json.load(stream)
+          assert report['schema']=='issuestack.audio-deception-comparison.v2', report.get('schema')
+          assert list(report['models'])==['truthDetection'], report.get('models')
+          actual=report['models']['truthDetection']
+          assert actual['status']=='ok',actual
+          assert actual['raw_prediction'] in (0,1),actual
+          assert actual['input_modality']=='audio',actual
+          assert report['comparison']['status']=='not_applicable_single_model',report['comparison']
+          assert report['comparison']['agreement'] is None,report['comparison']
+          print(json.dumps({'model_status':'ok','synthetic_audio_only':True,
+                            'raw_prediction':actual['raw_prediction'],
+                            'note':'Synthetic tone checks technical execution only, not truthfulness'}))
+          PY
+      - name: Persist synthetic inference report outside ephemeral container
+        uses: actions/upload-artifact@v4
+        with:
+          name: truthdetection-synthetic-audio-smoke
+          path: workspaces/audio-deception-comparison/output/report.json
+          retention-days: 7
+          if-no-files-found: error

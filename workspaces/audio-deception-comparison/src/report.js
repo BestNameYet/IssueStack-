@@ -1,19 +1,15 @@
-export function makeReport({input, truth}) {
-  if (!truth || typeof truth.status !== 'string') throw Error('TruthDetection status is required');
+export function makeReport({input, model}) {
+  if (!model || typeof model.status !== 'string') throw new TypeError('Expected model status');
   return {
-    schema: 'issuestack.audio-deception-comparison.v1',
-    input: {kind:'audio', filename:input},
-    models: {truthDetection:truth},
-    comparison: {
-      status: 'not_applicable_single_model',
-      agreement: null,
-      reason: 'Only one verified audio-only deception classifier is configured; no second prediction exists.'
-    },
+    schema: 'issuestack.audio-deception-comparison.v2',
+    input: {modality:'audio', filename:input},
+    models: {truthDetection:model},
+    comparison: {status:'not_applicable_single_model', agreement:null,
+      reason:'No other validated audio-only deception classifier selected'},
     limitations: [
-      'An acoustic classifier does not establish whether a speaker is truthful.',
-      'No video, facial, gesture or other non-audio features are accepted or imputed.',
-      'Scores are uncalibrated unless separately validated on a representative dataset.',
-      'The model was trained on a limited dataset and has not been independently validated for this input.'
+      'A voice classifier does not establish objective truthfulness.',
+      'Model-card scores are not validated or calibrated truth probabilities.',
+      'The multimodal Lie to Me detector was excluded at the user request.'
     ]
   };
 }

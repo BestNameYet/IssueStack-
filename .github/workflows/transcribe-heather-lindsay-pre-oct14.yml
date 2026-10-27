@@ -1,0 +1,106 @@
+name: Pair and transcribe 18 Heather Lindsay recordings (pre-Oct 14)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'workspaces/audio-deception-comparison/heather_lindsay_18_pre_oct14_audio.zip'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: heather-lindsay-pre-oct14
+  cancel-in-progress: false
+
+jobs:
+  transcribe-and-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install offline speech transcription engine
+        run: python -m pip install 'faster-whisper>=1.1,<2'
+      - name: Extract, transcribe and pair all 18 files
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, shutil, stat, zipfile
+          from faster_whisper import WhisperModel
+          root = pathlib.Path('.')
+          source = root / 'heather_lindsay_18_pre_oct14_audio.zip'
+          if not source.is_file():
+              raise FileNotFoundError(
+                  'Upload heather_lindsay_18_pre_oct14_audio.zip to workspaces/audio-deception-comparison/ first')
+          out = root / 'heather-lindsay-pre-oct14'
+          audio_dir, text_dir = out / 'audio', out / 'transcripts'
+          audio_dir.mkdir(parents=True, exist_ok=True)
+          text_dir.mkdir(parents=True, exist_ok=True)
+          with zipfile.ZipFile(source) as archive:
+              members = {z.filename: z for z in archive.infolist()}
+              manifest = json.loads(archive.read('inventory.json'))
+              assert len(manifest) == 18, f'Expected 18 entries, found {len(manifest)}'
+              names = [row['audio'] for row in manifest]
+              assert len(set(names)) == len(names), 'Duplicate audio paths'
+              assert {name for name in members if name.startswith('audio/')} == set(names), 'ZIP/manifest mismatch'
+              assert all(str(row.get('timestamp_pacific', ''))[:10] < '2026-10-14'
+                         and row.get('sender') == 'Heather Lindsay' for row in manifest)
+              total = sum(members[name].file_size for name in names)
+              assert total < 256 * 1024 * 1024, 'Archive size limit exceeded'
+              model = WhisperModel('base', device='cpu', compute_type='int8')
+              success = 0
+              for i, row in enumerate(manifest, 1):
+                  name = row['audio']
+                  member = members[name]
+                  p = pathlib.PurePosixPath(name)
+                  assert len(p.parts) == 2 and p.parts[0] == 'audio', 'Invalid archive member path'
+                  assert p.suffix.lower() in ('.ogg', '.wav', '.mp3', '.flac', '.opus', '.m4a')
+                  assert not stat.S_ISLNK(member.external_attr >> 16), 'Symlink not allowed'
+                  assert member.file_size <= 32 * 1024 * 1024, 'Audio too large'
+                  audio = audio_dir / p.name
+                  with archive.open(member) as src, audio.open('wb') as dst:
+                      shutil.copyfileobj(src, dst)
+                  actual_sha = hashlib.sha256(audio.read_bytes()).hexdigest()
+                  assert actual_sha == row['sha256'], f'Invalid audio digest: {p.name}'
+                  transcript_name = pathlib.PurePosixPath(row['transcript'])
+                  assert transcript_name.parts == ('transcripts', p.stem + '.txt')
+                  segments, info = model.transcribe(str(audio), beam_size=5, vad_filter=True)
+                  full_text = ' '.join(segment.text.strip() for segment in segments).strip()
+                  output = text_dir / transcript_name.name
+                  output.write_text(full_text + '\n', encoding='utf-8')
+                  row.update(status='ok', language=info.language,
+                             transcript_sha256=hashlib.sha256(output.read_bytes()).hexdigest())
+                  success += 1
+                  print(f'Transcribed and paired {i}/18: {p.name}', flush=True)
+          assert success == 18
+          (out / 'inventory.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+          with (out / 'paired-transcripts.md').open('w', encoding='utf-8') as f:
+              f.write('# Heather Lindsay — 18 audio/transcript pairs before October 14, 2026\n\n')
+              f.write('| Timestamp (Pacific) | Conversation | Audio filename | Full transcript |\n')
+              f.write('| --- | --- | --- | --- |\n')
+              for row in manifest:
+                  transcript = (text_dir / pathlib.Path(row['transcript']).name).read_text(encoding='utf-8').strip()
+                  def cell(value):
+                      return str(value).replace('\\', '\\\\').replace('|', '\\|').replace('\n', '<br>')
+                  f.write(f"| {cell(row['timestamp_pacific'])} | {cell(row['conversation'])} | "
+                          f"`{cell(pathlib.Path(row['audio']).name)}` | {cell(transcript)} |\n")
+          assert len(list(audio_dir.iterdir())) == len(list(text_dir.iterdir())) == 18
+          print('Verified 18 source recordings, 18 transcripts, and paired inventory')
+          PY
+      - name: Commit paired audio, transcripts and inventory
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- workspaces/audio-deception-comparison/heather-lindsay-pre-oct14/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Pair and transcribe 18 Heather Lindsay recordings before Oct 14'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

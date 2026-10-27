@@ -95,3 +95,81 @@ test('failed Issue 13 procedure readback leaves no ledger receipt and keeps inpu
  assert.ok(!f.docs.get(ledgerId).body.includes('PROCEDURE:'));
  assert.equal(f.docs.get(slotId).body,JSON.stringify(definition));
 });
+
+// Guard template discovery against unrelated JSON in the Issue #1 body.
+const typeValidator = require('./record-type-validator.js');
+const canonicalTemplate = {
+  "schema[string]": "issuestack.task.v3",
+  "nonce[string]": "<unique-nonce>",
+  "ordinal[number|null]": null,
+  "source[object<Source>]": {
+    "issue[number]": 1,
+    "comment_id[number|null]": null
+  },
+  "interpretation[object<Interpretation>]": {
+    "revised_instruction[string]": "<clear faithful rewritten instruction>",
+    "user_intent[object<UserIntent>]": {
+      "goal[string]": "<goal>",
+      "expected_outcome[string]": "<outcome>",
+      "requested_abstraction_level[string]": "<level>",
+      "requested_action_scope[string]": "<scope>"
+    }
+  },
+  "requirements[array<Requirement>]": [],
+  "constraints[array<Constraint>]": [],
+  "decomposition[array<WorkItem>]": [],
+  "planning[object<Planning>]": {
+    "status[string]": "not_started",
+    "method[string]": "Break user requirements into verifiable work items with explicit dependencies and expected output.",
+    "sources[array<ResearchSource>]": []
+  },
+  "execution[object<Execution>]": {
+    "status[string]": "pending",
+    "enqueued_at[string|null]": null,
+    "started_at[string|null]": null,
+    "finished_at[string|null]": null,
+    "worker[string|null]": null
+  },
+  "completion[object<Completion>]": {
+    "by_requirement[array<RequirementCompletion>]": [],
+    "remaining_requirement_ids[array<Reference>]": [],
+    "success[boolean|null]": null,
+    "summary[string|null]": null,
+    "artifacts[array<Artifact>]": [],
+    "validation[array<ValidationCheck>]": [],
+    "errors[array<ErrorEntry>]": [],
+    "receipt[object<Receipt>|null]": null
+  },
+  "unrequested_changes[object<DeviationAudit>]": {
+    "additions_outside_requirements[array<Deviation>]": [],
+    "revisions_outside_requirements[array<Deviation>]": [],
+    "additional_constraints[array<Deviation>]": [],
+    "scope_reductions[array<Deviation>]": [],
+    "abstraction_level_changes[array<Deviation>]": [],
+    "abstraction_mismatches[array<Deviation>]": [],
+    "action_scope_minimizations[array<Deviation>]": []
+  }
+};
+const asJsonFence = value => String.fromCharCode(96).repeat(3) + 'json\n' +
+  JSON.stringify(value, null, 2) + '\n' + String.fromCharCode(96).repeat(3);
+test('task.v3 template is selected when unrelated UI JSON appears first', () => {
+  const body = '# UI metadata\n' + asJsonFence({date:'2026-10-26',time:'11:00'}) +
+    '\n## Current record template\n' + asJsonFence(canonicalTemplate);
+  const found = typeValidator.readDefinition(body);
+  assert.deepEqual(found.template, canonicalTemplate);
+  assert.ok(found.registry.Requirement);
+});
+test('canonical first task template remains compatible with subsequent UI JSON', () => {
+  const body = '## Current record template\n' + asJsonFence(canonicalTemplate) +
+    '\n# UI examples\n' + asJsonFence({schema:'issuestack.issue5.agent-response.v1',role:'agent'});
+  assert.equal(typeValidator.readDefinition(body).template['schema[string]'], 'issuestack.task.v3');
+});
+test('unrelated malformed JSON code fences do not prevent task template discovery', () => {
+  const fence = String.fromCharCode(96).repeat(3);
+  const body = fence + 'json\n{ definitely not JSON }\n' + fence + '\n' + asJsonFence(canonicalTemplate);
+  assert.equal(typeValidator.readDefinition(body).template['schema[string]'], 'issuestack.task.v3');
+});
+test('missing or duplicate task templates fail closed', () => {
+  assert.throws(() => typeValidator.readDefinition(asJsonFence({date:'2026-10-26'})), /no versioned JSON task record template/);
+  assert.throws(() => typeValidator.readDefinition(asJsonFence(canonicalTemplate) + '\n' + asJsonFence(canonicalTemplate)), /multiple task record templates/);
+});

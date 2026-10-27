@@ -1,0 +1,50 @@
+name: IssueStack Agent Context Registry Validation
+
+on:
+  push:
+    branches:
+      - stage/agent-context-registry-6452132288
+    paths:
+      - 'src/agent-context-registry.js'
+      - 'src/issue8-context-*.js'
+      - 'src/types/agent-context-registry.v1.json'
+      - 'config/agent-context-*.json'
+      - 'test/agent-context-registry.test.js'
+      - '.github/workflows/issue8-context-refresh.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+
+concurrency:
+  group: issue8-context-registry-validation
+  cancel-in-progress: true
+
+jobs:
+  verify-and-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source at immutable event commit
+        uses: actions/checkout@v4
+      - name: Run Node unit and guardrail tests
+        run: node --test test/agent-context-registry.test.js
+      - name: Produce source-only preview (no issue mutations)
+        run: |
+          node src/agent-context-registry.js --commit "$GITHUB_SHA" --output context-registry-preview.json
+          node -e "const f=require('./context-registry-preview.json');if(!f.sources.length||f.schema!=='issuestack.agent-context.registry.v1')process.exit(1);console.log(JSON.stringify({sources:f.sources.length,nodes:f.nodes.length,edges:f.edges.length}))"
+      - name: Collect dated GitHub runtime snapshot (read-only)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runtime = require('./src/issue8-context-runtime.js');
+            const result = await runtime.buildWithRuntime({github,context,outputPath:'context-registry-preview.json'});
+            core.info(JSON.stringify(result));
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue8-context-registry-preview
+          path: context-registry-preview.json
+          retention-days: 14

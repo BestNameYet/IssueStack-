@@ -1,0 +1,56 @@
+{
+  "schema": "issuestack.agent-context.config.v1",
+  "version": 1,
+  "issue_number": 8,
+  "job_comment_id": 6452132288,
+  "included_roots": [
+    "src",
+    ".github/workflows",
+    "config"
+  ],
+  "excluded_patterns": [
+    "(^|/)node_modules(/|$)",
+    "(^|/)audio[-_/]",
+    "heather",
+    "(^|/)transcrib",
+    "(^|/)publish-mobile",
+    "(^|/)import-audio",
+    "(^|/)extract-",
+    "(^|/)build-transcript",
+    "(^|/)workspaces(/|$)",
+    "\\.test\\.js$"
+  ],
+  "extensions": [
+    ".js",
+    ".json",
+    ".yml",
+    ".yaml"
+  ],
+  "max_file_bytes": 150000,
+  "max_registry_pages": 12,
+  "max_context_chars": 15000,
+  "max_freshness_hours": 48,
+  "max_workflow_runs": 30,
+  "benchmark": {
+    "weights": {
+      "accuracy": 0.45,
+      "unsupported": 0.3,
+      "retrieval": 0.1,
+      "tokens": 0.1,
+      "calibration": 0.05
+    },
+    "min_accuracy": 0.85,
+    "max_unsupported": 0.05
+  },
+  "publish": {
+    "enabled": false,
+    "require_job_id": 6452132288,
+    "issue_number": 8,
+    "allow_create": true
+  },
+  "related_repositories": [
+    "BestNameYet/IssueStack-",
+    "BestNameYet/CommandLine",
+    "BestNameYet/StateMachines"
+  ]
+}

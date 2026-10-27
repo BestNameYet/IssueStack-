@@ -1,0 +1,29 @@
+{
+  "schema": "issuestack.audio-deception-comparison.v2",
+  "input": {
+    "modality": "audio",
+    "filename": "d67bc8cb-baca-4b0f-a64b-b92e20469ec5.wav"
+  },
+  "models": {
+    "truthDetection": {
+      "status": "ok",
+      "model": "sangambhamare/TruthDetection",
+      "revision": "63f1f11bf76fdfc8b433a99a566b6b2683c98af4",
+      "label": "Deceptive Story",
+      "score": null,
+      "raw_prediction": 0,
+      "score_calibrated": false,
+      "input_modality": "audio"
+    }
+  },
+  "comparison": {
+    "status": "not_applicable_single_model",
+    "agreement": null,
+    "reason": "No other validated audio-only deception classifier selected"
+  },
+  "limitations": [
+    "A voice classifier does not establish objective truthfulness.",
+    "Model-card scores are not validated or calibrated truth probabilities.",
+    "The multimodal Lie to Me detector was excluded at the user request."
+  ]
+}

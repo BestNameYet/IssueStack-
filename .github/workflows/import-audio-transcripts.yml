@@ -2,10 +2,6 @@ name: Import verified audio transcripts into workspace
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/import-audio-transcripts.yml'
 
 permissions:
   contents: write
@@ -13,7 +9,6 @@ permissions:
 
 jobs:
   import-transcripts:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Import completed audio transcripts into workspace'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

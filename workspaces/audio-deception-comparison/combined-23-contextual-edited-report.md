@@ -16,12 +16,12 @@
 
 ### 1. August 28, 2025 at 2:52:18 PM PDT
 
-**Conversation:** Jael Law  
+**Conversation:** Jason Law  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
 
-Speaking to Jael Law, Heather addresses an earlier allegation involving a man named Leroy and a street or neighborhood whose name is unclear in the recording. She then describes leaving a difficult situation, losing work, becoming stranded in Midland, and staying at a shelter. She apologizes for problems she believes she brought into the recipient's life.
+Speaking to Jason Law, Heather addresses an earlier allegation involving a man named Leroy and a street or neighborhood whose name is unclear in the recording. She then describes leaving a difficult situation, losing work, becoming stranded in Midland, and staying at a shelter. She apologizes for problems she believes she brought into the recipient's life.
 
 **Edited transcript**
 
@@ -59,7 +59,7 @@ Speaking to Jael Law, Heather addresses an earlier allegation involving a man na
 
 ### 2. August 29, 2025 at 9:06:38 AM PDT
 
-**Conversation:** Jael Law  
+**Conversation:** Jason Law  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -74,7 +74,7 @@ Heather asks Jael why work stopped despite the recipient's earlier motivation to
 
 ### 3. August 29, 2025 at 9:22:22 AM PDT
 
-**Conversation:** Jael Law  
+**Conversation:** Jason Law  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -126,7 +126,7 @@ In a separate conversation with Brandon Aldridge, Heather discusses police repor
 
 ### 5. August 29, 2025 at 4:20:36 PM PDT
 
-**Conversation:** Jael Law  
+**Conversation:** Jason Law  
 **Acoustic model result:** True Story
 
 **Contextual scene**
@@ -153,7 +153,7 @@ Heather tells Jael about seeking shelter and assistance: the Salvation Army, sle
 
 ### 6. August 29, 2025 at 5:56:02 PM PDT
 
-**Conversation:** Jael Law  
+**Conversation:** Jason Law  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -239,7 +239,7 @@ Heather updates Rob Peoples about arriving in the Channelview area, her rough lo
 
 ### 10. September 12, 2025 at 4:29:37 PM PDT
 
-**Conversation:** Jael Law  
+**Conversation:** Jason Law  
 **Acoustic model result:** True Story
 
 **Contextual scene**
@@ -260,7 +260,7 @@ Heather updates Jael about Becky, who she believes may have a hernia, and descri
 
 ### 11. September 12, 2025 at 6:12:41 PM PDT
 
-**Conversation:** Jael Law  
+**Conversation:** Jason Law  
 **Acoustic model result:** True Story
 
 **Contextual scene**
@@ -388,7 +388,7 @@ Heather asks Howard Haudenshild whether he spoke with another man about a vehicl
 
 ### 17. 2026-10-26 12:07:29.489 PDT
 
-**Conversation:** Heather Fowle / Heather Lindsay conversation  
+**Conversation:** Sam  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -409,7 +409,7 @@ The exchange concerns a disputed sexual encounter after an earlier departure and
 
 ### 18. 2026-10-26 12:08:39.185 PDT
 
-**Conversation:** Heather Fowle / Heather Lindsay conversation  
+**Conversation:** Sam  
 **Acoustic model result:** True Story
 
 **Contextual scene**
@@ -426,7 +426,7 @@ Heather continues her explanation of visits to the man's home, distinguishing se
 
 ### 19. 2026-10-26 12:19:02.415 PDT
 
-**Conversation:** Heather Fowle / Heather Lindsay conversation  
+**Conversation:** Sam  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -445,7 +445,7 @@ The conversation shifts to Anthony Bradford's reported sighting of Heather with 
 
 ### 20. 2026-10-26 12:19:20.599 PDT
 
-**Conversation:** Heather Fowle / Heather Lindsay conversation  
+**Conversation:** Sam  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -460,7 +460,7 @@ Heather continues the same denial, arguing that motel surveillance or other witn
 
 ### 21. 2026-10-26 12:22:14.334 PDT
 
-**Conversation:** Heather Fowle / Heather Lindsay conversation  
+**Conversation:** Sam  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -481,7 +481,7 @@ Heather rejects the asserted timeline surrounding N.O. and the shooting. She rep
 
 ### 22. 2026-10-26 12:22:51.700 PDT
 
-**Conversation:** Heather Fowle / Heather Lindsay conversation  
+**Conversation:** Sam  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**
@@ -498,7 +498,7 @@ Heather directly responds to allegations of dishonesty and asks the other person
 
 ### 23. 2026-10-26 12:25:19.182 PDT
 
-**Conversation:** Heather Fowle / Heather Lindsay conversation  
+**Conversation:** Sam  
 **Acoustic model result:** Deceptive Story
 
 **Contextual scene**

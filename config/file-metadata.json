@@ -177,6 +177,48 @@
       "size_bytes": 3589,
       "sha256": "db92504bb43116c9ac4e5d037208af447580ba8c22004eb6dd91980f4a29d677",
       "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288"
+    },
+    {
+      "path": "AGENTS.md",
+      "size_bytes": 15858,
+      "sha256": "3c3f15cd1af8527581a21194d6ec52d71281c91650224270f7c24ecd3bce1b21",
+      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+    },
+    {
+      "path": "config/semantic-operator-contract.v1.json",
+      "size_bytes": 20720,
+      "sha256": "2404c27fabd2651bf2f026ca0002b136a8f6601b63e3fb6f87a2c37623761ab1",
+      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+    },
+    {
+      "path": "config/semantic-operator-fewshots.v1.json",
+      "size_bytes": 60857,
+      "sha256": "d294cd6c821ca9296ac9cc643d0f1562fbba72749fb389aad4ccdcf0e04afb6d",
+      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+    },
+    {
+      "path": "src/types/semantic-operator.v1.json",
+      "size_bytes": 17960,
+      "sha256": "16f26f90c4359e2232c5a9aa8c9231dda96e1094c7e327a0ec5052905f223dbd",
+      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+    },
+    {
+      "path": "src/semantic-operator-contract.js",
+      "size_bytes": 12838,
+      "sha256": "d38efa88e564e29d8d28fb8b472ebcd2cab64e8def34c8e9084ed4c25bfc8091",
+      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+    },
+    {
+      "path": "test/semantic-operator-contract.test.js",
+      "size_bytes": 7320,
+      "sha256": "2e4324156a83404e7f2e71e27e3777f388d8e3b4f500d5c3c479f9007697e20b",
+      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+    },
+    {
+      "path": ".github/workflows/semantic-operator-contract-validation.yml",
+      "size_bytes": 1686,
+      "sha256": "cecdf58884ca8d44b24bc7c3301ba5378b526a915b03770964d2d96e9b94b2cc",
+      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
     }
   ]
 }

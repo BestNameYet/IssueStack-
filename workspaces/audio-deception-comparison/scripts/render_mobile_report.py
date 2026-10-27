@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
 
 from reportlab.lib import colors
@@ -128,9 +129,15 @@ for number, block in enumerate(blocks, 1):
     if not speech_paras:
         raise ValueError(f"No transcript for recording {number}")
 
+    original_date = title_match.group(2).strip()
+    if original_date.startswith("2026-"):
+        parsed_dt = datetime.strptime(original_date.replace(" PDT", ""), "%Y-%m-%d %H:%M:%S.%f")
+    else:
+        parsed_dt = datetime.strptime(original_date.replace(" PDT", ""), "%B %d, %Y at %I:%M:%S %p")
+    friendly_date = parsed_dt.strftime("%b %-d, %Y · %-I:%M %p PT")
     parsed.append({
         "number": number,
-        "date": title_match.group(2).strip(),
+        "date": friendly_date,
         "conversation": person_match.group(1).strip(),
         "scene": scene_match.group(1).strip(),
         "transcript": speech_paras,
@@ -168,26 +175,33 @@ story.append(Spacer(1, 14))
 story.append(para("23 RECORDINGS", style_sec))
 story.append(para("14 model labels: Deceptive Story", style_result_red))
 story.append(para("9 model labels: True Story", style_result_green))
-story.append(PageBreak())
-
-for i, item in enumerate(parsed):
-    if i:
+groups = [
+    ("DECEPTIVE STORY", "14 recordings received this model label.", "red", [r for r in parsed if r["result"] == "Deceptive Story"]),
+    ("TRUE STORY", "9 recordings received this model label.", "green", [r for r in parsed if r["result"] == "True Story"]),
+]
+for group_name, group_intro, group_color, group_records in groups:
+    story.append(PageBreak())
+    story.append(para("AUDIO MODEL GROUP", style_label))
+    story.append(para(group_name, style_result_red if group_color == "red" else style_result_green))
+    story.append(para(group_intro, style_deck))
+    story.append(para("Recordings within this group remain in date order. The label is a model output, not a finding of fact.", style_body))
+    for item in group_records:
         story.append(PageBreak())
-    title = f'{item["number"]:02d}  |  {item["date"]}'
-    story.append(para(title, style_sec))
-    story.append(para("Conversation: " + item["conversation"], style_meta))
-    story.append(para("CONVERSATION CONTEXT", style_label))
-    story.append(para(item["scene"], style_body))
-    story.append(para("EDITED TRANSCRIPT", style_label))
-    for transcript_paragraph in item["transcript"]:
-        story.append(para(transcript_paragraph, style_quote))
-    story.append(Spacer(1, 4))
-    story.append(HRFlowable(width="100%", color=LINE, thickness=0.8, spaceBefore=3, spaceAfter=7))
-    story.append(para("MODEL CONCLUSION", style_label))
-    if item["result"] == "Deceptive Story":
-        story.append(para("DECEPTIVE STORY", style_result_red))
-    else:
-        story.append(para("TRUE STORY", style_result_green))
+        title = f'{item["number"]:02d}  |  {item["date"]}'
+        story.append(para(title, style_sec))
+        story.append(para("Conversation: " + item["conversation"], style_meta))
+        story.append(para("CONVERSATION CONTEXT", style_label))
+        story.append(para(item["scene"], style_body))
+        story.append(para("EDITED TRANSCRIPT", style_label))
+        for transcript_paragraph in item["transcript"]:
+            story.append(para(transcript_paragraph, style_quote))
+        story.append(Spacer(1, 4))
+        story.append(HRFlowable(width="100%", color=LINE, thickness=0.8, spaceBefore=3, spaceAfter=7))
+        story.append(para("MODEL CONCLUSION", style_label))
+        if item["result"] == "Deceptive Story":
+            story.append(para("DECEPTIVE STORY", style_result_red))
+        else:
+            story.append(para("TRUE STORY", style_result_green))
 
 DEST.parent.mkdir(parents=True, exist_ok=True)
 doc.build(story)

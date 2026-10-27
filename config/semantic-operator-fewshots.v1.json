@@ -17,7 +17,18 @@
             "operation": "CREATE",
             "evidence_class": "verified_static",
             "target": "illustrative_registry_record",
-            "claim": "Source-confirmed intake orchestration forms a component."
+            "claim": "Source-confirmed intake orchestration forms a component.",
+            "payload": {
+              "id": "example:component",
+              "responsibility": "Source-confirmed intake orchestration forms a component.",
+              "implementation_refs": [
+                "Source-confirmed intake orchestration forms a component."
+              ],
+              "owner": "Source-confirmed intake orchestration forms a component.",
+              "status": "Source-confirmed intake orchestration forms a component."
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Responsibility and executable boundary are identifiable.",
           "decision_boundary": "If only a filename were supplied without behavior, classification would be deferred.",
@@ -33,7 +44,18 @@
             "operation": "DEFER",
             "evidence_class": "documented",
             "target": "illustrative_registry_record",
-            "claim": "Possible component, not confirmed implementation."
+            "claim": "Possible component, not confirmed implementation.",
+            "payload": {
+              "id": "example:component",
+              "responsibility": "Possible component, not confirmed implementation.",
+              "implementation_refs": [
+                "Possible component, not confirmed implementation."
+              ],
+              "owner": "Possible component, not confirmed implementation.",
+              "status": "Possible component, not confirmed implementation."
+            },
+            "review_status": "review_not_required",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Ownership and invocation boundary are missing.",
           "decision_boundary": "A workflow source defining responsibility could establish component status.",
@@ -49,7 +71,18 @@
             "operation": "NO_OP",
             "evidence_class": "unknown",
             "target": "illustrative_registry_record",
-            "claim": "No new component follows from lexical similarity."
+            "claim": "No new component follows from lexical similarity.",
+            "payload": {
+              "id": "example:component",
+              "responsibility": "No new component follows from lexical similarity.",
+              "implementation_refs": [
+                "No new component follows from lexical similarity."
+              ],
+              "owner": "No new component follows from lexical similarity.",
+              "status": "No new component follows from lexical similarity."
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "Names alone don't establish coherent responsibility.",
           "decision_boundary": "Runnable responsibilities and source identity would change this ruling.",
@@ -70,7 +103,23 @@
             "operation": "CREATE",
             "evidence_class": "verified_static",
             "target": "illustrative_registry_record",
-            "claim": "Boundary contract with typed inputs can be indexed."
+            "claim": "Boundary contract with typed inputs can be indexed.",
+            "payload": {
+              "id": "example:interface",
+              "provider": "Boundary contract with typed inputs can be indexed.",
+              "consumer": "Boundary contract with typed inputs can be indexed.",
+              "inputs": [
+                "Boundary contract with typed inputs can be indexed."
+              ],
+              "outputs": [
+                "Boundary contract with typed inputs can be indexed."
+              ],
+              "constraints": [
+                "Boundary contract with typed inputs can be indexed."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Externally received request and expected fields are visible.",
           "decision_boundary": "Private local variables used only inside a handler are not the interface.",
@@ -86,7 +135,23 @@
             "operation": "AUGMENT",
             "evidence_class": "documented",
             "target": "illustrative_registry_record",
-            "claim": "Documented interface; runtime compatibility is unverified."
+            "claim": "Documented interface; runtime compatibility is unverified.",
+            "payload": {
+              "id": "example:interface",
+              "provider": "Documented interface; runtime compatibility is unverified.",
+              "consumer": "Documented interface; runtime compatibility is unverified.",
+              "inputs": [
+                "Documented interface; runtime compatibility is unverified."
+              ],
+              "outputs": [
+                "Documented interface; runtime compatibility is unverified."
+              ],
+              "constraints": [
+                "Documented interface; runtime compatibility is unverified."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "A document is evidence of a declared contract only.",
           "decision_boundary": "An executed contract test would support a runtime classification.",
@@ -102,7 +167,23 @@
             "operation": "NO_OP",
             "evidence_class": "unknown",
             "target": "illustrative_registry_record",
-            "claim": "No interface without a consumer or boundary."
+            "claim": "No interface without a consumer or boundary.",
+            "payload": {
+              "id": "example:interface",
+              "provider": "No interface without a consumer or boundary.",
+              "consumer": "No interface without a consumer or boundary.",
+              "inputs": [
+                "No interface without a consumer or boundary."
+              ],
+              "outputs": [
+                "No interface without a consumer or boundary."
+              ],
+              "constraints": [
+                "No interface without a consumer or boundary."
+              ]
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "Variable assignment does not establish an exchanged contract.",
           "decision_boundary": "A public return contract and consumer would create one.",
@@ -123,7 +204,20 @@
             "operation": "CREATE",
             "evidence_class": "verified_static",
             "target": "illustrative_registry_record",
-            "claim": "A directed creates-job edge is supported by code."
+            "claim": "A directed creates-job edge is supported by code.",
+            "payload": {
+              "subject": "A directed creates-job edge is supported by code.",
+              "predicate": "A directed creates-job edge is supported by code.",
+              "object": "A directed creates-job edge is supported by code.",
+              "conditions": [
+                "A directed creates-job edge is supported by code."
+              ],
+              "evidence": [
+                "A directed creates-job edge is supported by code."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Subject, predicate, object and call are explicit.",
           "decision_boundary": "Import adjacency alone is weaker evidence than a creation call.",
@@ -139,7 +233,20 @@
             "operation": "AUGMENT",
             "evidence_class": "documented",
             "target": "illustrative_registry_record",
-            "claim": "Dependency edge may be represented as documented only."
+            "claim": "Dependency edge may be represented as documented only.",
+            "payload": {
+              "subject": "Dependency edge may be represented as documented only.",
+              "predicate": "Dependency edge may be represented as documented only.",
+              "object": "Dependency edge may be represented as documented only.",
+              "conditions": [
+                "Dependency edge may be represented as documented only."
+              ],
+              "evidence": [
+                "Dependency edge may be represented as documented only."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Represent what the documents claim, not live invocation.",
           "decision_boundary": "Verified invocation source might upgrade evidence.",
@@ -155,7 +262,20 @@
             "operation": "NO_OP",
             "evidence_class": "unknown",
             "target": "illustrative_registry_record",
-            "claim": "No direct dependency between the modules is established."
+            "claim": "No direct dependency between the modules is established.",
+            "payload": {
+              "subject": "No direct dependency between the modules is established.",
+              "predicate": "No direct dependency between the modules is established.",
+              "object": "No direct dependency between the modules is established.",
+              "conditions": [
+                "No direct dependency between the modules is established."
+              ],
+              "evidence": [
+                "No direct dependency between the modules is established."
+              ]
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "Shared dependency doesn't imply module-to-module call.",
           "decision_boundary": "A call site from one module to the other would.",
@@ -176,7 +296,21 @@
             "operation": "CREATE",
             "evidence_class": "documented",
             "target": "illustrative_registry_record",
-            "claim": "A guarded transition exists in documented control logic."
+            "claim": "A guarded transition exists in documented control logic.",
+            "payload": {
+              "subject": "A guarded transition exists in documented control logic.",
+              "from_state": "A guarded transition exists in documented control logic.",
+              "to_state": "A guarded transition exists in documented control logic.",
+              "trigger": "A guarded transition exists in documented control logic.",
+              "guards": [
+                "A guarded transition exists in documented control logic."
+              ],
+              "effects": [
+                "A guarded transition exists in documented control logic."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Source specifies before/after, guard, and trigger.",
           "decision_boundary": "An observed running job alone would not prove the transition guard.",
@@ -192,7 +326,21 @@
             "operation": "DEFER",
             "evidence_class": "verified_runtime",
             "target": "illustrative_registry_record",
-            "claim": "Observed sequence; transition causality remains unverified."
+            "claim": "Observed sequence; transition causality remains unverified.",
+            "payload": {
+              "subject": "Observed sequence; transition causality remains unverified.",
+              "from_state": "Observed sequence; transition causality remains unverified.",
+              "to_state": "Observed sequence; transition causality remains unverified.",
+              "trigger": "Observed sequence; transition causality remains unverified.",
+              "guards": [
+                "Observed sequence; transition causality remains unverified."
+              ],
+              "effects": [
+                "Observed sequence; transition causality remains unverified."
+              ]
+            },
+            "review_status": "review_not_required",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Two observations do not establish trigger or all guards.",
           "decision_boundary": "A source condition or transaction receipt may establish guard behavior.",
@@ -208,7 +356,21 @@
             "operation": "NO_OP",
             "evidence_class": "verified_runtime",
             "target": "illustrative_registry_record",
-            "claim": "State attribute, not a state transition."
+            "claim": "State attribute, not a state transition.",
+            "payload": {
+              "subject": "State attribute, not a state transition.",
+              "from_state": "State attribute, not a state transition.",
+              "to_state": "State attribute, not a state transition.",
+              "trigger": "State attribute, not a state transition.",
+              "guards": [
+                "State attribute, not a state transition."
+              ],
+              "effects": [
+                "State attribute, not a state transition."
+              ]
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "No earlier state, trigger or postcondition given.",
           "decision_boundary": "A correlated event chain could justify transition.",
@@ -229,7 +391,21 @@
             "operation": "CREATE",
             "evidence_class": "documented",
             "target": "illustrative_registry_record",
-            "claim": "An evidenced architectural decision has rationale and alternatives."
+            "claim": "An evidenced architectural decision has rationale and alternatives.",
+            "payload": {
+              "subject": "An evidenced architectural decision has rationale and alternatives.",
+              "choice": "An evidenced architectural decision has rationale and alternatives.",
+              "alternatives": [
+                "An evidenced architectural decision has rationale and alternatives."
+              ],
+              "rationale": "An evidenced architectural decision has rationale and alternatives.",
+              "tradeoffs": [
+                "An evidenced architectural decision has rationale and alternatives."
+              ],
+              "decision_source": "An evidenced architectural decision has rationale and alternatives."
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Tradeoff is explicitly recorded.",
           "decision_boundary": "Do not invent rejected alternatives from code alone.",
@@ -245,7 +421,21 @@
             "operation": "DEFER",
             "evidence_class": "verified_static",
             "target": "illustrative_registry_record",
-            "claim": "Implementation choice observable; motivation remains unknown."
+            "claim": "Implementation choice observable; motivation remains unknown.",
+            "payload": {
+              "subject": "Implementation choice observable; motivation remains unknown.",
+              "choice": "Implementation choice observable; motivation remains unknown.",
+              "alternatives": [
+                "Implementation choice observable; motivation remains unknown."
+              ],
+              "rationale": "Implementation choice observable; motivation remains unknown.",
+              "tradeoffs": [
+                "Implementation choice observable; motivation remains unknown."
+              ],
+              "decision_source": "Implementation choice observable; motivation remains unknown."
+            },
+            "review_status": "review_not_required",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Decision motivation is not inferable as fact from syntax.",
           "decision_boundary": "Explicit PR review could justify motivation.",
@@ -261,7 +451,21 @@
             "operation": "NO_OP",
             "evidence_class": "inferred",
             "target": "illustrative_registry_record",
-            "claim": "Speculation isn't a verified design choice."
+            "claim": "Speculation isn't a verified design choice.",
+            "payload": {
+              "subject": "Speculation isn't a verified design choice.",
+              "choice": "Speculation isn't a verified design choice.",
+              "alternatives": [
+                "Speculation isn't a verified design choice."
+              ],
+              "rationale": "Speculation isn't a verified design choice.",
+              "tradeoffs": [
+                "Speculation isn't a verified design choice."
+              ],
+              "decision_source": "Speculation isn't a verified design choice."
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "No evidence of authorship or actual selected alternative.",
           "decision_boundary": "A signed issue decision would change status.",
@@ -282,7 +486,20 @@
             "operation": "CREATE",
             "evidence_class": "verified_static",
             "target": "illustrative_registry_record",
-            "claim": "Nonce uniqueness is a required validity condition."
+            "claim": "Nonce uniqueness is a required validity condition.",
+            "payload": {
+              "scope": "Nonce uniqueness is a required validity condition.",
+              "rule": "Nonce uniqueness is a required validity condition.",
+              "enforcement": [
+                "Nonce uniqueness is a required validity condition."
+              ],
+              "counterexample": "Nonce uniqueness is a required validity condition.",
+              "recovery": [
+                "Nonce uniqueness is a required validity condition."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Enforcement and invalid counterexample are reproducible.",
           "decision_boundary": "One successful unique nonce by itself is not a rule.",
@@ -298,7 +515,20 @@
             "operation": "DEFER",
             "evidence_class": "verified_runtime",
             "target": "illustrative_registry_record",
-            "claim": "Observed ordering; invariant remains unproved."
+            "claim": "Observed ordering; invariant remains unproved.",
+            "payload": {
+              "scope": "Observed ordering; invariant remains unproved.",
+              "rule": "Observed ordering; invariant remains unproved.",
+              "enforcement": [
+                "Observed ordering; invariant remains unproved."
+              ],
+              "counterexample": "Observed ordering; invariant remains unproved.",
+              "recovery": [
+                "Observed ordering; invariant remains unproved."
+              ]
+            },
+            "review_status": "review_not_required",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Repeated behavior does not imply an enforced norm.",
           "decision_boundary": "A specification plus tests could establish FIFO as invariant.",
@@ -314,7 +544,20 @@
             "operation": "NO_OP",
             "evidence_class": "verified_runtime",
             "target": "illustrative_registry_record",
-            "claim": "An instance pattern is not necessarily an invariant."
+            "claim": "An instance pattern is not necessarily an invariant.",
+            "payload": {
+              "scope": "An instance pattern is not necessarily an invariant.",
+              "rule": "An instance pattern is not necessarily an invariant.",
+              "enforcement": [
+                "An instance pattern is not necessarily an invariant."
+              ],
+              "counterexample": "An instance pattern is not necessarily an invariant.",
+              "recovery": [
+                "An instance pattern is not necessarily an invariant."
+              ]
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "Small sample can't generalize normative condition.",
           "decision_boundary": "Validator requiring unique IDs would establish invariant.",
@@ -335,7 +578,22 @@
             "operation": "CREATE",
             "evidence_class": "verified_runtime",
             "target": "illustrative_registry_record",
-            "claim": "Failure mechanism and recovery can be cataloged."
+            "claim": "Failure mechanism and recovery can be cataloged.",
+            "payload": {
+              "symptom": "Failure mechanism and recovery can be cataloged.",
+              "cause": "Failure mechanism and recovery can be cataloged.",
+              "scope": "Failure mechanism and recovery can be cataloged.",
+              "severity": "Failure mechanism and recovery can be cataloged.",
+              "reproduction": [
+                "Failure mechanism and recovery can be cataloged."
+              ],
+              "recovery": [
+                "Failure mechanism and recovery can be cataloged."
+              ],
+              "status": "Failure mechanism and recovery can be cataloged."
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Concrete error receipt and reproduction exist.",
           "decision_boundary": "A theoretical rate limit risk is not an incident.",
@@ -351,7 +609,22 @@
             "operation": "AUGMENT",
             "evidence_class": "verified_static",
             "target": "illustrative_registry_record",
-            "claim": "Potential failure mode, not observed outage."
+            "claim": "Potential failure mode, not observed outage.",
+            "payload": {
+              "symptom": "Potential failure mode, not observed outage.",
+              "cause": "Potential failure mode, not observed outage.",
+              "scope": "Potential failure mode, not observed outage.",
+              "severity": "Potential failure mode, not observed outage.",
+              "reproduction": [
+                "Potential failure mode, not observed outage."
+              ],
+              "recovery": [
+                "Potential failure mode, not observed outage."
+              ],
+              "status": "Potential failure mode, not observed outage."
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Static source can support possibility, not incident status.",
           "decision_boundary": "A run log would upgrade observed occurrence.",
@@ -367,7 +640,22 @@
             "operation": "DEFER",
             "evidence_class": "unknown",
             "target": "illustrative_registry_record",
-            "claim": "Cause not established; no failure claim."
+            "claim": "Cause not established; no failure claim.",
+            "payload": {
+              "symptom": "Cause not established; no failure claim.",
+              "cause": "Cause not established; no failure claim.",
+              "scope": "Cause not established; no failure claim.",
+              "severity": "Cause not established; no failure claim.",
+              "reproduction": [
+                "Cause not established; no failure claim."
+              ],
+              "recovery": [
+                "Cause not established; no failure claim."
+              ],
+              "status": "Cause not established; no failure claim."
+            },
+            "review_status": "review_not_required",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Temporal association doesn't identify mechanism.",
           "decision_boundary": "Correlated error receipt could support the claim.",
@@ -388,7 +676,16 @@
             "operation": "CREATE",
             "evidence_class": "verified_runtime",
             "target": "illustrative_registry_record",
-            "claim": "Time-scoped completion observation is admissible."
+            "claim": "Time-scoped completion observation is admissible.",
+            "payload": {
+              "target": "Time-scoped completion observation is admissible.",
+              "observed_at": "Time-scoped completion observation is admissible.",
+              "status": "Time-scoped completion observation is admissible.",
+              "receipt": "Time-scoped completion observation is admissible.",
+              "freshness_policy": "Time-scoped completion observation is admissible."
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Run ID, timestamp and retrievable conclusion exist.",
           "decision_boundary": "The receipt does not guarantee present health.",
@@ -404,7 +701,16 @@
             "operation": "AUGMENT",
             "evidence_class": "verified_runtime",
             "target": "illustrative_registry_record",
-            "claim": "Keep historical success but label current health stale."
+            "claim": "Keep historical success but label current health stale.",
+            "payload": {
+              "target": "Keep historical success but label current health stale.",
+              "observed_at": "Keep historical success but label current health stale.",
+              "status": "Keep historical success but label current health stale.",
+              "receipt": "Keep historical success but label current health stale.",
+              "freshness_policy": "Keep historical success but label current health stale."
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Freshness threshold separates then from now.",
           "decision_boundary": "A new current run can support a new observation.",
@@ -420,7 +726,16 @@
             "operation": "NO_OP",
             "evidence_class": "documented",
             "target": "illustrative_registry_record",
-            "claim": "Not an operational observation."
+            "claim": "Not an operational observation.",
+            "payload": {
+              "target": "Not an operational observation.",
+              "observed_at": "Not an operational observation.",
+              "status": "Not an operational observation.",
+              "receipt": "Not an operational observation.",
+              "freshness_policy": "Not an operational observation."
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "Docs contain expectations, not actual execution evidence.",
           "decision_boundary": "A dated run receipt would make it an observation.",
@@ -441,7 +756,22 @@
             "operation": "CREATE",
             "evidence_class": "documented",
             "target": "illustrative_registry_record",
-            "claim": "Task-bounded retrieval rule with authority precedence."
+            "claim": "Task-bounded retrieval rule with authority precedence.",
+            "payload": {
+              "task_pattern": "Task-bounded retrieval rule with authority precedence.",
+              "required_refs": [
+                "Task-bounded retrieval rule with authority precedence."
+              ],
+              "optional_refs": [
+                "Task-bounded retrieval rule with authority precedence."
+              ],
+              "budget": "Task-bounded retrieval rule with authority precedence.",
+              "reverify_before_action": [
+                "Task-bounded retrieval rule with authority precedence."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Specifies triggering task, required sources and validation.",
           "decision_boundary": "Unbounded 'read every issue' guidance is not targeted.",
@@ -457,7 +787,22 @@
             "operation": "AUGMENT",
             "evidence_class": "inferred",
             "target": "illustrative_registry_record",
-            "claim": "Optional retrieval with revalidation warning."
+            "claim": "Optional retrieval with revalidation warning.",
+            "payload": {
+              "task_pattern": "Optional retrieval with revalidation warning.",
+              "required_refs": [
+                "Optional retrieval with revalidation warning."
+              ],
+              "optional_refs": [
+                "Optional retrieval with revalidation warning."
+              ],
+              "budget": "Optional retrieval with revalidation warning.",
+              "reverify_before_action": [
+                "Optional retrieval with revalidation warning."
+              ]
+            },
+            "review_status": "pending_review",
+            "output_kind": "illustrative_typed_proposal"
           },
           "why": "Clearly label supporting—not authoritative—context.",
           "decision_boundary": "Verified governing instruction could raise source priority.",
@@ -473,7 +818,22 @@
             "operation": "NO_OP",
             "evidence_class": "unknown",
             "target": "illustrative_registry_record",
-            "claim": "Does not give task, budget or source prioritization."
+            "claim": "Does not give task, budget or source prioritization.",
+            "payload": {
+              "task_pattern": "Does not give task, budget or source prioritization.",
+              "required_refs": [
+                "Does not give task, budget or source prioritization."
+              ],
+              "optional_refs": [
+                "Does not give task, budget or source prioritization."
+              ],
+              "budget": "Does not give task, budget or source prioritization.",
+              "reverify_before_action": [
+                "Does not give task, budget or source prioritization."
+              ]
+            },
+            "review_status": "review_not_required",
+            "output_kind": "validated_no_op"
           },
           "why": "Unbounded exploration lacks actionable retrieval criteria.",
           "decision_boundary": "Adding task predicates and exact refs makes it valid.",
@@ -493,7 +853,14 @@
           "expected_operation": "CREATE",
           "why": "A new identity and evidence-backed function exist.",
           "contrast": "An existing semantically identical worker would be NO_OP.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "CREATE",
+            "semantic_reason": "A new identity and evidence-backed function exist.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         },
         {
           "id": "CREATE-boundary",
@@ -502,7 +869,14 @@
           "expected_operation": "DEFER",
           "why": "A potential new entity lacks functional evidence.",
           "contrast": "Code with a real responsibility could support CREATE.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "DEFER",
+            "semantic_reason": "A potential new entity lacks functional evidence.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "persist_blocker_and_handoff"
+          }
         },
         {
           "id": "CREATE-negative",
@@ -511,7 +885,14 @@
           "expected_operation": "NO_OP",
           "why": "No new semantic entity or claim exists.",
           "contrast": "A changed behavioral contract could require REVISE.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "NO_OP",
+            "semantic_reason": "No new semantic entity or claim exists.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "record_idempotent_noop"
+          }
         }
       ]
     },
@@ -525,7 +906,14 @@
           "expected_operation": "AUGMENT",
           "why": "Evidence adds support without modifying the proposition.",
           "contrast": "If tests contradict the prior contract, use CONFLICT or REVISE.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "AUGMENT",
+            "semantic_reason": "Evidence adds support without modifying the proposition.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         },
         {
           "id": "AUGMENT-boundary",
@@ -534,7 +922,14 @@
           "expected_operation": "DEFER",
           "why": "Expanded scope is not proven.",
           "contrast": "An authoritative implementation receipt may justify REVISE.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "DEFER",
+            "semantic_reason": "Expanded scope is not proven.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "persist_blocker_and_handoff"
+          }
         },
         {
           "id": "AUGMENT-negative",
@@ -543,7 +938,14 @@
           "expected_operation": "NO_OP",
           "why": "Duplicate support has no additional information.",
           "contrast": "A new independent source would justify AUGMENT.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "NO_OP",
+            "semantic_reason": "Duplicate support has no additional information.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "record_idempotent_noop"
+          }
         }
       ]
     },
@@ -557,7 +959,14 @@
           "expected_operation": "REVISE",
           "why": "Same schema identity but material meaning changed.",
           "contrast": "An unrelated schema v2 might instead be CREATE and SUPERSEDE.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "REVISE",
+            "semantic_reason": "Same schema identity but material meaning changed.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         },
         {
           "id": "REVISE-boundary",
@@ -566,7 +975,14 @@
           "expected_operation": "DEFER",
           "why": "One rejection does not prove an interface contract changed.",
           "contrast": "New validator code can justify REVISION.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "DEFER",
+            "semantic_reason": "One rejection does not prove an interface contract changed.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "persist_blocker_and_handoff"
+          }
         },
         {
           "id": "REVISE-negative",
@@ -575,7 +991,14 @@
           "expected_operation": "NO_OP",
           "why": "No semantic meaning changed.",
           "contrast": "Changing 'may' to 'must' would revise normative meaning.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "NO_OP",
+            "semantic_reason": "No semantic meaning changed.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "record_idempotent_noop"
+          }
         }
       ]
     },
@@ -589,7 +1012,14 @@
           "expected_operation": "SUPERSEDE",
           "why": "Authoritative replacement preserves old history and defines successor.",
           "contrast": "Without replacement proof, do not remove old contract.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "SUPERSEDE",
+            "semantic_reason": "Authoritative replacement preserves old history and defines successor.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         },
         {
           "id": "SUPERSEDE-boundary",
@@ -598,7 +1028,14 @@
           "expected_operation": "DEFER",
           "why": "Similarity and chronology do not prove replacement.",
           "contrast": "An explicit migration instruction would.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "DEFER",
+            "semantic_reason": "Similarity and chronology do not prove replacement.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "persist_blocker_and_handoff"
+          }
         },
         {
           "id": "SUPERSEDE-negative",
@@ -607,7 +1044,14 @@
           "expected_operation": "NO_OP",
           "why": "Both are active; newer doesn't automatically supersede older.",
           "contrast": "A deprecation notice would change the ruling.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "NO_OP",
+            "semantic_reason": "Both are active; newer doesn't automatically supersede older.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "record_idempotent_noop"
+          }
         }
       ]
     },
@@ -621,7 +1065,14 @@
           "expected_operation": "CONFLICT",
           "why": "Same subject, scope and time with incompatible claims.",
           "contrast": "If observations are separated in time, use state transition.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "CONFLICT",
+            "semantic_reason": "Same subject, scope and time with incompatible claims.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         },
         {
           "id": "CONFLICT-boundary",
@@ -630,7 +1081,14 @@
           "expected_operation": "DEFER",
           "why": "Alternatives are proposals, not conflicting deployed facts.",
           "contrast": "An authoritative adopted design could decide.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "DEFER",
+            "semantic_reason": "Alternatives are proposals, not conflicting deployed facts.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "persist_blocker_and_handoff"
+          }
         },
         {
           "id": "CONFLICT-negative",
@@ -639,7 +1097,14 @@
           "expected_operation": "NO_OP",
           "why": "States at different times are not contradictory.",
           "contrast": "Same-time authoritative disagreement would be conflict.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "NO_OP",
+            "semantic_reason": "States at different times are not contradictory.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "record_idempotent_noop"
+          }
         }
       ]
     },
@@ -653,7 +1118,14 @@
           "expected_operation": "NO_OP",
           "why": "No new proposition, source or confidence.",
           "contrast": "An independent successful test adds new evidence and becomes AUGMENT.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "NO_OP",
+            "semantic_reason": "No new proposition, source or confidence.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "record_idempotent_noop"
+          }
         },
         {
           "id": "NO_OP-boundary",
@@ -662,7 +1134,14 @@
           "expected_operation": "AUGMENT",
           "why": "Even with unchanged source, new operational data is material.",
           "contrast": "If the receipt is identical, NO_OP.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "AUGMENT",
+            "semantic_reason": "Even with unchanged source, new operational data is material.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         },
         {
           "id": "NO_OP-negative",
@@ -671,7 +1150,14 @@
           "expected_operation": "REVISE",
           "why": "Semantic content changed despite same identity.",
           "contrast": "Filename alone cannot decide no-op.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "REVISE",
+            "semantic_reason": "Semantic content changed despite same identity.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         }
       ]
     },
@@ -685,7 +1171,14 @@
           "expected_operation": "DEFER",
           "why": "Missing critical evidence must be recorded rather than guessed.",
           "contrast": "Once evidence is available, re-enter from P2.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "DEFER",
+            "semantic_reason": "Missing critical evidence must be recorded rather than guessed.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "persist_blocker_and_handoff"
+          }
         },
         {
           "id": "DEFER-boundary",
@@ -694,7 +1187,14 @@
           "expected_operation": "DEFER",
           "why": "Complete proposal can wait without unsafe publication.",
           "contrast": "If exact approval is verified, continue review/publish.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "DEFER",
+            "semantic_reason": "Complete proposal can wait without unsafe publication.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "record_existing_evidence_or_deferral",
+            "next_step": "persist_blocker_and_handoff"
+          }
         },
         {
           "id": "DEFER-negative",
@@ -703,7 +1203,14 @@
           "expected_operation": "CREATE",
           "why": "Deferral would be unnecessary; perform justified action.",
           "contrast": "A new blocker such as conflicting IDs would warrant defer.",
-          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence",
+          "expected_output": {
+            "operation": "CREATE",
+            "semantic_reason": "Deferral would be unnecessary; perform justified action.",
+            "registry_mutation_permitted": false,
+            "evidence_requirement": "source_links_and_review",
+            "next_step": "build_typed_proposal_and_review"
+          }
         }
       ]
     }

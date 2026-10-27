@@ -27,6 +27,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install 'silero-vad[onnx-cpu]==6.2.3' 'webrtcvad-wheels==2.0.14.post1'
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
           ffmpeg -version | head -n 1
       - name: Download and verify published Android audio archive
         shell: bash

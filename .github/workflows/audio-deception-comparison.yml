@@ -84,6 +84,9 @@ jobs:
             -e HOME=/tmp -e NUMBA_CACHE_DIR=/tmp/numba -e ALLOW_TRUSTED_MODEL_LOAD=1 \
             -v "$PWD/input:/data/input:ro" -v "$PWD/output:/data/output" \
             issuestack-audio-only:ci /data/input/synthetic-220hz.wav /data/output/report.json
+          # The unprivileged container deliberately writes a 0600 report as UID 65534.
+          # Transfer ownership on the ephemeral CI host, not inside the container.
+          sudo chown "$(id -u):$(id -g)" output/report.json
           python3 - <<'PY'
           import json
           with open('output/report.json',encoding='utf-8') as stream:

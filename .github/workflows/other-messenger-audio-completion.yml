@@ -24,7 +24,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install FFmpeg required to prepare additional audio\n        run: |\n          sudo apt-get update -qq\n          sudo apt-get install -y ffmpeg\n      - name: Verify fixed input identities and prepare scratch space
+      - name: Install FFmpeg required to prepare additional audio
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: Verify fixed input identities and prepare scratch space
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/messenger-source" "$RUNNER_TEMP/messenger-wav" "$RUNNER_TEMP/messenger-output"

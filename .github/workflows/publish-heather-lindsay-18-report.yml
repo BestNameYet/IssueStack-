@@ -1,0 +1,58 @@
+name: Publish Heather Lindsay 18-model report artifact
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-heather-lindsay-18-report.yml'
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Download validated reports from completed evaluation
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 40443312430
+          name: heather-lindsay-pre-oct14-experimental-audio-reports-40443312430
+          github-token: ${{ github.token }}
+          path: workspaces/audio-deception-comparison/heather-lindsay-pre-oct14/model-reports
+      - name: Validate reports and annotate shared identity
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          folder = Path('workspaces/audio-deception-comparison/heather-lindsay-pre-oct14/model-reports')
+          summary = json.loads((folder/'summary.json').read_text(encoding='utf-8'))
+          assert summary['files_expected'] == summary['model_runs_succeeded'] == 18
+          assert len(summary['results']) == 18
+          assert all(row['model_status'] == 'ok' for row in summary['results'])
+          report = folder/'contextual-report.md'
+          text = report.read_text(encoding='utf-8')
+          assert text.count('## Subreport ') == 18
+          text = text.replace('# Heather Lindsay — 18 individual audio model reports',
+             '# Heather Lindsay — 18 individual audio model reports\n\n'
+             '**Identity:** Heather Lindsay and Heather Fowle refer to the same person in '
+             'this report and the earlier seven-recording report. Original sender metadata is retained.',
+             1)
+          report.write_text(text,encoding='utf-8')
+          print('Verified 18 model reports and 18 complete contextual subreports')
+          PY
+      - name: Commit recovered reports to repository
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- workspaces/audio-deception-comparison/heather-lindsay-pre-oct14/model-reports/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish recovered Heather Lindsay 18-file model reports'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

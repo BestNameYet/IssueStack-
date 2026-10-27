@@ -1,16 +1,18 @@
-name: IssueStack Agent Context Registry Validation
+name: IssueStack Agent Context Registry Drift Audit
 
 on:
   push:
     branches:
-      - stage/agent-context-registry-6452132288
+      - stage/issue8-refresh-evaluation-6452132288
     paths:
       - 'src/agent-context-registry.js'
       - 'src/issue8-context-*.js'
       - 'src/types/agent-context-registry.v1.json'
       - 'config/agent-context-*.json'
-      - 'test/agent-context-registry.test.js'
+      - 'test/*context*.test.js'
       - '.github/workflows/issue8-context-refresh.yml'
+  schedule:
+    - cron: '31 2 * * *'
   workflow_dispatch:
 
 permissions:
@@ -19,35 +21,62 @@ permissions:
   issues: read
 
 concurrency:
-  group: issue8-context-registry-validation
-  cancel-in-progress: true
+  group: issue8-context-audit
+  cancel-in-progress: false
 
 jobs:
-  verify-and-preview:
+  validate-drift:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - name: Checkout source at immutable event commit
+      - name: Checkout audited implementation
         uses: actions/checkout@v4
-      - name: Run Node unit and guardrail tests
-        run: node --test test/agent-context-registry.test.js
-      - name: Produce source-only preview (no issue mutations)
-        run: |
-          node src/agent-context-registry.js --commit "$GITHUB_SHA" --output context-registry-preview.json
-          node -e "const f=require('./context-registry-preview.json');if(!f.sources.length||f.schema!=='issuestack.agent-context.registry.v1')process.exit(1);console.log(JSON.stringify({sources:f.sources.length,nodes:f.nodes.length,edges:f.edges.length}))"
-      - name: Collect dated GitHub runtime snapshot (read-only)
+      - name: Checkout authoritative main source
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: production-source
+      - name: Run Node regression and adversarial tests
+        run: node --test test/agent-context-registry.test.js test/issue8-context-reconciler.test.js
+      - name: Read and audit Issue 8 without mutation
         uses: actions/github-script@v7
         with:
           script: |
-            const runtime = require('./src/issue8-context-runtime.js');
-            const result = await runtime.buildWithRuntime({github,context,outputPath:'context-registry-preview.json'});
-            core.info(JSON.stringify(result));
-      - name: Print candidate file hashes for audited metadata
-        run: |
-          node -e "const fs=require('fs'),crypto=require('crypto');const list=['config/agent-context-registry.json','config/agent-context-fixtures.json','config/agent-context-knowledge.json','src/types/agent-context-registry.v1.json','src/agent-context-registry.js','src/issue8-context-runtime.js','src/issue8-context-publisher.js','src/issue8-context-benchmark.js','test/agent-context-registry.test.js','.github/workflows/issue8-context-refresh.yml'];for(const p of list){const b=fs.readFileSync(p);console.log('PATH_META '+JSON.stringify({path:p,size_bytes:b.length,sha256:crypto.createHash('sha256').update(b).digest('hex')}))}"
-      - name: Upload preview artifact
+            const fs=require('node:fs');
+            const path=require('node:path');
+            const child=require('node:child_process');
+            const reg=require('./src/agent-context-registry.js');
+            const pub=require('./src/issue8-context-publisher.js');
+            const runtime=require('./src/issue8-context-runtime.js');
+            const recon=require('./src/issue8-context-reconciler.js');
+            const bench=require('./src/issue8-context-benchmark.js');
+            const config=reg.loadConfig('./config/agent-context-registry.json');
+            if(config.refresh.mode!=='read_only_review_gated'||config.refresh.allow_unattended_issue_writes!==false)throw Error('Unapproved publication settings');
+            const root=path.resolve('production-source');
+            const commit=child.execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
+            const now=new Date().toISOString();
+            const rec=reg.buildRegistry({root,repo:context.repo.owner+'/'+context.repo.repo,commit,config,observedAt:now});
+            rec.runtime=await runtime.observe({github,owner:context.repo.owner,repo:context.repo.repo,config,now});
+            const know=JSON.parse(fs.readFileSync(path.join(root,'config/agent-context-knowledge.json'),'utf8'));
+            const desired=pub.pagePayloads(rec,know);
+            const comments=await recon.readIssue8(github,{owner:context.repo.owner,repo:context.repo.repo});
+            const plan=recon.plan({comments,desiredPages:desired,sourceCommit:commit,config,now,repo:context.repo.owner+'/'+context.repo.repo});
+            const fixture=JSON.parse(fs.readFileSync('config/agent-context-fixtures.json','utf8'));
+            const heldout=JSON.parse(fs.readFileSync('config/agent-context-heldout.json','utf8'));
+            const protocol=bench.buildProtocol({fixtures:fixture,heldout,seed:20261027});
+            fs.writeFileSync('context-registry-preview.json',JSON.stringify(rec,null,2)+'\n');
+            fs.writeFileSync('issue8-context-drift.json',JSON.stringify(plan,null,2)+'\n');
+            fs.writeFileSync('issue8-benchmark-protocol.json',JSON.stringify(protocol,null,2)+'\n');
+            core.info(JSON.stringify({audit_ok:plan.current.ok,needs_review:plan.needs_review,changes:plan.changes.filter(x=>x.action!=='no_op'),page_count:plan.current.page_count,commit,source_count:rec.sources.length,adversarial_prompts:protocol.prompts.adversarial.length}));
+            if(!plan.current.ok)core.warning('Registry integrity audit failed; human review required');
+            if(plan.current.stale)core.warning('Dated Issue #8 runtime evidence is stale; this is NOT a current-health claim');
+            // No issue-comment writes. Reviewed human decisions remain the sole publication gate.
+      - name: Upload immutable audit and benchmark protocol artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: issue8-context-registry-preview
-          path: context-registry-preview.json
+          name: issue8-context-drift-audit
+          path: |
+            context-registry-preview.json
+            issue8-context-drift.json
+            issue8-benchmark-protocol.json
           retention-days: 14

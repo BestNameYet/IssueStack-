@@ -1,0 +1,8 @@
+node_modules
+.git
+.env
+*.wav
+*.mp3
+output
+input
+__pycache__

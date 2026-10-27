@@ -1,15 +1,10 @@
 name: Extract Heather Fowle audio and transcripts
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/extract-heather-fowle.yml'
 permissions:
   contents: write
 jobs:
   extract:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Execute corrected Heather Fowle extraction'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

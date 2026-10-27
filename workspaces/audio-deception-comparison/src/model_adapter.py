@@ -1,61 +1,58 @@
-"""TruthDetection audio-only inference; joblib deserialization requires informed opt-in."""
-import argparse
+"""Audio-only TruthDetection adapter. Never load an unchecked joblib artifact."""
+import hashlib
 import json
 import os
 from pathlib import Path
+import sys
 
-MODEL_ID = "sangambhamare/TruthDetection"
+REPO = "sangambhamare/TruthDetection"
+REVISION = "63f1f11bf76fdfc8b433a99a566b6b2683c98af4"
+EXPECTED_SHA256 = "6253a168da06148d86ddf4d7473d1a6f8048ff15e40a22cfd4ece27cd864a6a9"
+DEFAULT_PATH = Path("/models/truth/model.joblib")
 
-def report(status, **extra):
-    return {"model":MODEL_ID, "input_modality":"audio", "status":status,
-            "raw_prediction":None, "normalized_label":None,
-            "scores":None, "scores_calibrated":False, **extra}
 
-def predict(audio, model_dir):
-    audio = Path(audio)
-    if audio.suffix.lower() != ".wav":
-        return report("unsupported_audio_format", reason="WAV required")
-    if not audio.is_file():
-        return report("invalid_audio", reason="Input audio does not exist")
-    artifact = Path(model_dir) / "truth" / "model.joblib"
-    if not artifact.is_file():
-        return report("model_not_installed", reason="Pinned model.joblib not bundled")
-    if os.getenv("ALLOW_PICKLE_MODELS") != "1":
-        return report("untrusted_model_not_approved",
-                      reason="Review bundled joblib artifact; set ALLOW_PICKLE_MODELS=1 only if trusted")
-    import numpy as np
-    import librosa
+def checked_artifact(path=DEFAULT_PATH):
+    path = Path(path)
+    if not path.is_file():
+        return "model_not_installed", "Pinned TruthDetection model.joblib is not present in the container"
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if digest != EXPECTED_SHA256:
+        return "model_integrity_error", "Model file SHA-256 does not match the reviewed immutable source"
+    if os.environ.get("ALLOW_TRUSTED_MODEL_LOAD") != "1":
+        return "model_load_not_authorized", "joblib deserialization is disabled; explicitly set ALLOW_TRUSTED_MODEL_LOAD=1 after reviewing model safety"
+    return None, None
+
+
+def predict(audio_path):
+    if not isinstance(audio_path, str) or not audio_path.lower().endswith(".wav"):
+        return {"status": "unsupported_audio_format", "model": REPO, "reason": "WAV audio required", "label": None, "score": None}
+    status, reason = checked_artifact()
+    if status:
+        return {"status": status, "model": REPO, "reason": reason, "label": None, "score": None}
+    # Import and deserialize only after verifying exact model bytes and opt-in.
     import joblib
-    y, sr = librosa.load(str(audio), sr=None, mono=True, duration=30.0)
-    if y.size == 0 or sr <= 0:
-        return report("invalid_audio", reason="Empty or invalid waveform")
+    import librosa
+    import numpy as np
+    model = joblib.load(DEFAULT_PATH)
+    y, sr = librosa.load(audio_path, sr=None)
+    if len(y) == 0:
+        return {"status": "invalid_audio", "model": REPO, "reason": "empty waveform", "label": None, "score": None}
     mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
-    features = np.mean(mfcc, axis=1).reshape(1, 13)
-    if not np.isfinite(features).all():
-        return report("invalid_audio", reason="Nonfinite MFCC values")
-    model = joblib.load(artifact)
-    guess = model.predict(features)[0]
-    raw = guess.item() if hasattr(guess, "item") else guess
-    if raw not in (0, 1, "0", "1"):
-        return report("unknown_label", raw_prediction=str(raw))
-    label = "truthful" if raw in (1, "1") else "deceptive"
-    scores = None
-    if hasattr(model, "predict_proba") and hasattr(model, "classes_"):
-        scores = [{"class":str(k), "uncalibrated_score":float(p)}
-                  for k,p in zip(model.classes_, model.predict_proba(features)[0])]
-    return report("ok", raw_prediction=str(raw), normalized_label=label,
-                  scores=scores, preprocessing={"mfcc":13, "sample_rate":int(sr), "max_seconds":30})
+    features = np.mean(mfcc, axis=1).reshape(1, -1)
+    predicted = int(model.predict(features)[0])
+    if predicted not in (0, 1):
+        raise ValueError("unexpected TruthDetection prediction")
+    label = "True Story" if predicted == 1 else "Deceptive Story"
+    return {"status": "ok", "model": REPO, "revision": REVISION,
+            "label": label, "score": None, "raw_prediction": predicted,
+            "score_calibrated": False, "input_modality": "audio"}
 
-def main():
-    p=argparse.ArgumentParser()
-    p.add_argument("audio")
-    p.add_argument("--model-dir", default=os.getenv("MODEL_DIR", "/opt/models"))
-    args=p.parse_args()
+
+if __name__ == "__main__":
     try:
-        output=predict(args.audio,args.model_dir)
+        if len(sys.argv) != 2:
+            raise ValueError("usage: model_adapter.py path/to/input.wav")
+        print(json.dumps(predict(sys.argv[1])))
     except Exception as exc:
-        output=report("error",reason=type(exc).__name__+": "+str(exc)[:300])
-    print(json.dumps(output, allow_nan=False))
-
-if __name__=="__main__":
-    main()
+        print(json.dumps({"status": "error", "model": REPO,
+                          "reason": str(exc), "label": None, "score": None}))

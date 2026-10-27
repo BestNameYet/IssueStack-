@@ -1,0 +1,58 @@
+name: Import verified audio transcripts into workspace
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-audio-transcripts.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  import-transcripts:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Import completed audio transcripts into workspace'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out IssueStack
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Retrieve successful transcription artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: audio-transcripts-40439400668
+          run-id: 40439400668
+          github-token: ${{ github.token }}
+          path: workspaces/audio-deception-comparison/transcripts
+      - name: Validate complete transcripts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          directory = Path('workspaces/audio-deception-comparison/transcripts')
+          inventory = json.loads((directory / 'inventory.json').read_text(encoding='utf-8'))
+          assert len(inventory) == 35, f'Expected 35 records, received {len(inventory)}'
+          assert all(record['status'] == 'ok' for record in inventory), 'Incomplete transcription artifact'
+          filenames = [record['transcript'] for record in inventory]
+          assert len(set(filenames)) == len(filenames), 'Duplicate transcript file names'
+          actual = {p.name for p in directory.glob('*.txt') if p.name != 'combined.txt'}
+          assert actual == set(filenames), f'Expected 35 individual transcripts; got {len(actual)}'
+          assert (directory / 'combined.txt').is_file()
+          print(f'Verified {len(inventory)} individual transcripts and combined transcript.')
+          PY
+      - name: Commit transcripts to IssueStack workspace
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- workspaces/audio-deception-comparison/transcripts/
+          if git diff --cached --quiet; then
+            echo "Verified transcript files already present; nothing to commit."
+          else
+            git commit -m "Import 35 completed audio transcripts into workspace"
+            git push origin HEAD:main
+          fi

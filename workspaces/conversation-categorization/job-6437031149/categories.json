@@ -1,0 +1,407 @@
+{
+  "category_definitions": {
+    "family_children": "Discussion of children, parenting, family contact, or family relationships.",
+    "housing_support": "Housing, homelessness, relocation, basic needs, or practical support.",
+    "social_checkin": "Greetings, catching up, wellbeing inquiries, or casual conversation.",
+    "relationship_flirting": "Expressed affection, dating, flirting, or relationship discussion.",
+    "conflict_hostility": "Hostile messages, interpersonal disputes, or threats as expressed in the messages.",
+    "legal_safety": "Discussion of police, jail, probation, legal concerns, or personal safety; statements are attributed to speakers.",
+    "substance_discussion": "Messages mentioning alcohol, drugs, or ambiguous substance-related offers; no substance identity inferred.",
+    "work_money": "Employment, money, expenses, gambling, or financial arrangements.",
+    "contact_technology": "Phone numbers, calls, connection difficulties, accounts, or messaging technology.",
+    "shared_media": "Photos, stickers, GIFs, audio, attachments, or links are a significant part of the thread.",
+    "forwarded_messages": "Forwarded chain messages, greetings, promotional material, or appeals to share.",
+    "promotional_links": "Repeated promotional or adult-content links; destinations were not opened.",
+    "ai_conversation": "Conversation with the exported Meta AI account.",
+    "identity_question": "Asks who a person is, whether they know each other, or about possible family connection.",
+    "system_only": "Only platform connection or group-membership events are available.",
+    "limited_context": "Insufficient substantive text to determine a topic beyond available contact or media events."
+  },
+  "annotations": {
+    "176687113241974": {
+      "categories": [
+        "family_children",
+        "housing_support",
+        "relationship_flirting",
+        "contact_technology",
+        "shared_media"
+      ],
+      "summary": "Heather and an unnamed account exchange messages about children, contact with family, cold weather, homelessness, and phone access. The thread includes affectionate messages, photos, stickers, and audio. The export does not name the other account; statements within messages do not establish its identity.",
+      "confidence": "supported_by_available_text"
+    },
+    "gwenohern_868531413485909": {
+      "categories": [
+        "social_checkin",
+        "shared_media",
+        "forwarded_messages"
+      ],
+      "summary": "Greetings, images/GIFs, and a forwarded friendship message asking recipients to pass it on.",
+      "confidence": "supported_by_available_text"
+    },
+    "mikeschuetzjr_2047446355294694": {
+      "categories": [
+        "shared_media",
+        "social_checkin"
+      ],
+      "summary": "A connection event, shared photos/attachment, and a brief affectionate message.",
+      "confidence": "supported_by_available_text"
+    },
+    "manuelcuellar_1590521711047984": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "contact_technology",
+        "legal_safety"
+      ],
+      "summary": "A catch-up conversation about Houston and Pasadena, phone access, accommodation, mutual acquaintances, and reported legal trouble. A message from Manuel's account identifies its writer as Katie; the exported account name is preserved.",
+      "confidence": "supported_by_available_text"
+    },
+    "amandareid_1965277036848874": {
+      "categories": [
+        "social_checkin",
+        "shared_media"
+      ],
+      "summary": "A greeting asks what Heather is doing; the remaining records include connection and media activity.",
+      "confidence": "supported_by_available_text"
+    },
+    "chrismeekins_2051324368239965": {
+      "categories": [
+        "social_checkin",
+        "work_money",
+        "contact_technology"
+      ],
+      "summary": "Greetings and check-ins about work and the heat, a request to text outside Facebook while at work, and an invitation to meet for drinks.",
+      "confidence": "supported_by_available_text"
+    },
+    "chrissmith_1956151331135059": {
+      "categories": [
+        "housing_support",
+        "legal_safety",
+        "substance_discussion",
+        "relationship_flirting"
+      ],
+      "summary": "Discussion of returning from Houston, transport and a place to stay, concerns about police, a priced offer in ambiguous substance-related slang, and later sexual/flirtatious exchanges. The substance is not identified in the text.",
+      "confidence": "supported_by_available_text"
+    },
+    "127532374892625": {
+      "categories": [
+        "social_checkin",
+        "contact_technology"
+      ],
+      "summary": "An unnamed account and Heather discuss the weather and locations in Texas, then exchange contact information. The other account's identity is absent from the export.",
+      "confidence": "supported_by_available_text"
+    },
+    "charliespikes_2086901531369953": {
+      "categories": [
+        "social_checkin",
+        "family_children",
+        "forwarded_messages",
+        "shared_media"
+      ],
+      "summary": "Brief greetings, an email-app promotional message, media, and a question about where Mom is.",
+      "confidence": "supported_by_available_text"
+    },
+    "198843731102426": {
+      "categories": [
+        "housing_support",
+        "relationship_flirting",
+        "legal_safety",
+        "shared_media"
+      ],
+      "summary": "An unnamed account and Heather discuss affection, a trailer/RV rental and relocation, legal troubles, and distress about a pet. Messages contain allegations and personal accounts; the unnamed account's identity is not inferred from signatures.",
+      "confidence": "supported_by_available_text"
+    },
+    "2062766377115213": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "relationship_flirting",
+        "legal_safety"
+      ],
+      "summary": "Catching up about where each person is staying, Eric's reported incarceration, a bereavement, a relationship separation, and plans to visit. The other account is unnamed in the export.",
+      "confidence": "supported_by_available_text"
+    },
+    "graceswift_167204867562448": {
+      "categories": [
+        "social_checkin",
+        "shared_media"
+      ],
+      "summary": "A brief check-in about what each person is doing and who they are with, alongside media.",
+      "confidence": "supported_by_available_text"
+    },
+    "katiecuellar_142711263382340": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "legal_safety",
+        "contact_technology"
+      ],
+      "summary": "Katie and Heather reconnect, discuss living conditions in a travel trailer, family support, relocation to Florida, and past jail/probation questions. Several video-call attempts appear.",
+      "confidence": "supported_by_available_text"
+    },
+    "rhondssmall_316663452620557": {
+      "categories": [
+        "social_checkin"
+      ],
+      "summary": "A short compliment follows the connection record.",
+      "confidence": "supported_by_available_text"
+    },
+    "debbieblevins_2027229430675226": {
+      "categories": [
+        "forwarded_messages",
+        "shared_media"
+      ],
+      "summary": "A forwarded message claims that sharing a child's picture will fund a kidney transplant, and another shares birthday wishes. The fundraising assertion is recorded as a forwarded claim.",
+      "confidence": "supported_by_available_text"
+    },
+    "moeparras_198172717836194": {
+      "categories": [
+        "family_children",
+        "conflict_hostility",
+        "housing_support",
+        "work_money",
+        "contact_technology"
+      ],
+      "summary": "Heather repeatedly asks for contact and visits with the children. The thread also discusses video calls, school clothing expenses, money, unstable housing, and a reported theft. Moe sends a hostile response; later messages discuss possible financial support.",
+      "confidence": "supported_by_available_text"
+    },
+    "2246556082264908": {
+      "categories": [
+        "contact_technology",
+        "limited_context"
+      ],
+      "summary": "Connection and missed-call records with an unnamed account; no substantive conversation topic is available.",
+      "confidence": "supported_by_available_text"
+    },
+    "yurialvarino_10157435986826974": {
+      "categories": [
+        "contact_technology",
+        "limited_context"
+      ],
+      "summary": "Connection/media activity and missed voice/video calls; insufficient text for a substantive topic.",
+      "confidence": "supported_by_available_text"
+    },
+    "amandareid_140779426908857": {
+      "categories": [
+        "social_checkin",
+        "shared_media"
+      ],
+      "summary": "A brief message says that a preceding item was sent accidentally; remaining activity is sparse.",
+      "confidence": "supported_by_available_text"
+    },
+    "michaelflowers_328891838009421": {
+      "categories": [
+        "social_checkin"
+      ],
+      "summary": "Brief greetings and an affectionate general message.",
+      "confidence": "supported_by_available_text"
+    },
+    "victordelafuente_1185767918247505": {
+      "categories": [
+        "social_checkin",
+        "relationship_flirting",
+        "work_money"
+      ],
+      "summary": "Casual and flirtatious greetings, work and leisure talk, and discussion of gambling losses affecting a planned road trip.",
+      "confidence": "supported_by_available_text"
+    },
+    "192624258391040": {
+      "categories": [
+        "conflict_hostility",
+        "legal_safety"
+      ],
+      "summary": "An unnamed account sends a hostile message containing accusations, insults, and a threat involving jail. These are the sender's allegations, not established facts.",
+      "confidence": "supported_by_available_text"
+    },
+    "215333009453498": {
+      "categories": [
+        "social_checkin"
+      ],
+      "summary": "One brief greeting from an unnamed account.",
+      "confidence": "supported_by_available_text"
+    },
+    "2284862348496271": {
+      "categories": [
+        "contact_technology",
+        "social_checkin"
+      ],
+      "summary": "An unnamed account asks whether Heather wants an earlier pickup after getting out at five.",
+      "confidence": "supported_by_available_text"
+    },
+    "carolyntodd_198549317798534": {
+      "categories": [
+        "shared_media"
+      ],
+      "summary": "Three Facebook story links and a connection event; the linked content was not opened.",
+      "confidence": "supported_by_available_text"
+    },
+    "chrisfisher_662910434228612": {
+      "categories": [
+        "identity_question"
+      ],
+      "summary": "A single message asks whether the sender knows Heather.",
+      "confidence": "supported_by_available_text"
+    },
+    "christopherallen_699028703901767": {
+      "categories": [
+        "social_checkin",
+        "relationship_flirting"
+      ],
+      "summary": "Greetings and a wish to visit or have someone to talk with while alone.",
+      "confidence": "supported_by_available_text"
+    },
+    "christopherallen_198843814435751": {
+      "categories": [
+        "legal_safety",
+        "work_money",
+        "family_children",
+        "social_checkin"
+      ],
+      "summary": "Discussion of a reported arrest and parole concerns, remodeling a mother's house, her hospitalization, Eric's reported incarceration, and personal safety. The thread ends with a wellbeing check.",
+      "confidence": "supported_by_available_text"
+    },
+    "coltonporter_215338999452899": {
+      "categories": [
+        "identity_question"
+      ],
+      "summary": "A single message asks whether the sender knows Heather.",
+      "confidence": "supported_by_available_text"
+    },
+    "ericfancher_454617862035351": {
+      "categories": [
+        "social_checkin"
+      ],
+      "summary": "One brief greeting asks what is going on.",
+      "confidence": "supported_by_available_text"
+    },
+    "facebookuser_208077216845744": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "summary": "Connection and media/contact records with an account exported as Facebook user; no substantive text topic is established.",
+      "confidence": "supported_by_available_text"
+    },
+    "harleycolewynne_2317875531600832": {
+      "categories": [
+        "limited_context"
+      ],
+      "summary": "A single brief message appears to point to something involving the recipient. Context is insufficient to determine the subject or intent.",
+      "confidence": "supported_by_available_text"
+    },
+    "jorgegonzalez_215331676120298": {
+      "categories": [
+        "identity_question"
+      ],
+      "summary": "A single message asks who the recipient is.",
+      "confidence": "supported_by_available_text"
+    },
+    "lucaslyons_2380873801970801": {
+      "categories": [
+        "social_checkin"
+      ],
+      "summary": "A short exchange of greetings.",
+      "confidence": "supported_by_available_text"
+    },
+    "moeparras_2305523826368049": {
+      "categories": [
+        "family_children",
+        "social_checkin"
+      ],
+      "summary": "One Father's Day greeting.",
+      "confidence": "supported_by_available_text"
+    },
+    "paulfowle_687458071690413": {
+      "categories": [
+        "family_children",
+        "identity_question"
+      ],
+      "summary": "A message asks whether the recipient is related to Cassie or Bradly Fowle; it does not establish a family relationship.",
+      "confidence": "supported_by_available_text"
+    },
+    "peggylynn_363041981172868": {
+      "categories": [
+        "identity_question",
+        "social_checkin"
+      ],
+      "summary": "A question about knowing the recipient, followed by a brief emoji response.",
+      "confidence": "supported_by_available_text"
+    },
+    "quincywilson_2471255143159231": {
+      "categories": [
+        "identity_question"
+      ],
+      "summary": "A single message asks whether the sender knows Heather.",
+      "confidence": "supported_by_available_text"
+    },
+    "scotlandcarona_124891028497697": {
+      "categories": [
+        "social_checkin",
+        "forwarded_messages",
+        "identity_question",
+        "relationship_flirting"
+      ],
+      "summary": "Greetings and an identity mix-up, a question about being single, and several chain or forwarded messages asking for further sharing. Claims in forwarded appeals remain attributed to those messages.",
+      "confidence": "supported_by_available_text"
+    },
+    "scottdavis_658296714674417": {
+      "categories": [
+        "social_checkin"
+      ],
+      "summary": "A single greeting.",
+      "confidence": "supported_by_available_text"
+    },
+    "shaneembrey_198220534498079": {
+      "categories": [
+        "identity_question",
+        "social_checkin"
+      ],
+      "summary": "Messages ask whether this is the Heather who stayed in Trinity and whether she is okay.",
+      "confidence": "supported_by_available_text"
+    },
+    "wacokrase_1931369173594789": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "work_money"
+      ],
+      "summary": "A catch-up exchange includes the sender's account of housing improvements, vehicles, work, and life in Tennessee.",
+      "confidence": "supported_by_available_text"
+    },
+    "heatherfowle_1602110547987775": {
+      "categories": [
+        "social_checkin"
+      ],
+      "summary": "One message asks where the recipient has been and notes a lack of response.",
+      "confidence": "supported_by_available_text"
+    },
+    "metaai_1380275369625917": {
+      "categories": [
+        "ai_conversation"
+      ],
+      "summary": "An AI introduction and platform notice accompany questions about explicit-chat capabilities and requests for models that provide such conversation. No evaluation of model capabilities is inferred.",
+      "confidence": "supported_by_available_text"
+    },
+    "lindachrisgillesand241others_5207873412653411": {
+      "categories": [
+        "system_only"
+      ],
+      "summary": "Two group-member departure notifications; no substantive conversation is included.",
+      "confidence": "supported_by_available_text"
+    },
+    "privatedating065_6382239535235172": {
+      "categories": [
+        "promotional_links"
+      ],
+      "summary": "A large filtered group thread contains repeated adult-content and dating promotions with external links, interspersed with membership notifications. Links were not opened, and membership does not establish participation or interest.",
+      "confidence": "supported_by_available_text"
+    },
+    "privatesite067_5445144632264132": {
+      "categories": [
+        "system_only"
+      ],
+      "summary": "Eight group-member departure notifications; the group title alone is not used to infer a substantive conversation topic.",
+      "confidence": "supported_by_available_text"
+    }
+  }
+}

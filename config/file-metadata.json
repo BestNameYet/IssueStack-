@@ -1,6 +1,6 @@
 {
   "schema": "issuestack.file-metadata.v1",
-  "job_id": 6439198174,
+  "job_id": 6452132288,
   "files": [
     {
       "path": ".github/workflows/heather-public-site.yml",
@@ -67,6 +67,66 @@
       "size_bytes": 5764,
       "sha256": "3c78b1d0d3f26bb9cec0f8dd6c5ad66afc37d077049dda83caf5518daaf4b4b0",
       "purpose": "Public Heather website; validated MP3 reuse"
+    },
+    {
+      "path": "config/agent-context-registry.json",
+      "size_bytes": 1153,
+      "sha256": "753a4f358ab2738382cc28ae9c70e44bc2d6097bc9a8dde1cf706dee31f2243b",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "config/agent-context-fixtures.json",
+      "size_bytes": 2297,
+      "sha256": "cfebed12974bad59aeecac6333cda878e058f867ae4745dd7b0329d5b48a7c99",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "config/agent-context-knowledge.json",
+      "size_bytes": 3531,
+      "sha256": "bb01e85f0ba2d2fd480e683b298a54b759a4ebf9074baf9144e1fc2d44f052de",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "src/types/agent-context-registry.v1.json",
+      "size_bytes": 4964,
+      "sha256": "2bec6f3513bd1c62803e5ab9d9df9441b91ecd02fdd5caf38a2cac0d57e75389",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "src/agent-context-registry.js",
+      "size_bytes": 14498,
+      "sha256": "01a451c129a9ac66f822b2281f52a2470e5b441dc610775ba2a29396a1086b94",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "src/issue8-context-runtime.js",
+      "size_bytes": 2278,
+      "sha256": "b594b23067fcd78b51cccd8cdf22026aa28e580872b1b5a87e77e9b6cc0dc3c1",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "src/issue8-context-publisher.js",
+      "size_bytes": 4857,
+      "sha256": "ccb49f692b5a869b4620b3a7eadc53bd915bf1f063b43f160845d9f21c41cbf8",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "src/issue8-context-benchmark.js",
+      "size_bytes": 2926,
+      "sha256": "35a7bd65759b3f4a3b0b2a3f7dfa4a83ee0cffacac0a2b13b1052dd119e0b606",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": "test/agent-context-registry.test.js",
+      "size_bytes": 7278,
+      "sha256": "a839be149440c18678433fec3befa3cb4106de42fa0b72c3efd8b64200bbe845",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+    },
+    {
+      "path": ".github/workflows/issue8-context-refresh.yml",
+      "size_bytes": 2603,
+      "sha256": "80a7ab2ed5cde6fb945bc321f89b8090a4d86de2da5cf2c312d8709ea2bd6ef2",
+      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
     }
   ]
 }

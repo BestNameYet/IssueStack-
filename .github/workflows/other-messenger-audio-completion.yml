@@ -1,0 +1,128 @@
+name: IssueStack Additional Messenger Audio — Stage Processing
+
+on:
+  push:
+    branches: [stage/other-messenger-audio-20261027]
+    paths:
+      - '.github/workflows/other-messenger-audio-completion.yml'
+      - 'workspaces/audio-deception-comparison/additional-messenger-audio/scripts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contextualize-transcribe-score:
+    if: github.ref == 'refs/heads/stage/other-messenger-audio-20261027'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install FFmpeg required to prepare additional audio
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: Verify fixed input identities and prepare scratch space
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/messenger-source" "$RUNNER_TEMP/messenger-wav" "$RUNNER_TEMP/messenger-output"
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+          p=Path('workspaces/audio-deception-comparison/additional-messenger-audio/wav_conversion_manifest.csv')
+          rows=list(csv.DictReader(p.open(encoding='utf-8-sig')))
+          assert len(rows)==110
+          assert sum(r['prior_23']=='yes' for r in rows)==23
+          assert sum(r['prior_23']=='no' for r in rows)==87
+          assert sum(r['transcript_status']=='needs_transcription' and r['prior_23']=='no' for r in rows)==57
+          print('110 manifest entries; 23 excluded; 87 additional; 57 need speech recognition')
+          PY
+      - name: Retrieve original merged archive from the existing GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download messenger-archive-2026-10-27 \
+            --repo "${{ github.repository }}" \
+            --pattern 'merged-messenger-messages-heather-profiles.zip' \
+            --dir "$RUNNER_TEMP/messenger-source"
+          echo '5021c790220f24d8011e63fc404cc6ede0ebb5233ac4fecfe206bef303b579e5  '"$RUNNER_TEMP/messenger-source/merged-messenger-messages-heather-profiles.zip" | sha256sum -c -
+      - name: Restore source-linked event context from committed report
+        run: |
+          set -euo pipefail
+          python3 workspaces/audio-deception-comparison/additional-messenger-audio/scripts/parse_context_report.py \
+            workspaces/audio-deception-comparison/additional-messenger-audio/additional_recordings_contextual_report.md \
+            "$RUNNER_TEMP/messenger-output/events.jsonl"
+      - name: Verify original media and produce WAVs for 87 additional files ONLY
+        run: |
+          set -euo pipefail
+          python3 workspaces/audio-deception-comparison/additional-messenger-audio/scripts/complete_audio.py audit \
+            --archive "$RUNNER_TEMP/messenger-source/merged-messenger-messages-heather-profiles.zip" \
+            --manifest workspaces/audio-deception-comparison/additional-messenger-audio/wav_conversion_manifest.csv \
+            --events "$RUNNER_TEMP/messenger-output/events.jsonl" \
+            --wav-dir "$RUNNER_TEMP/messenger-wav" \
+            --out "$RUNNER_TEMP/messenger-output"
+      - name: Install local CPU-based speech-recognition system (no audio API upload)
+        run: |
+          set -euo pipefail
+          python3 -m pip install --upgrade pip
+          python3 -m pip install faster-whisper==1.2.1
+      - name: Transcribe only the 57 additional files without existing transcripts
+        run: |
+          set -euo pipefail
+          python3 workspaces/audio-deception-comparison/additional-messenger-audio/scripts/complete_audio.py transcribe \
+            --manifest workspaces/audio-deception-comparison/additional-messenger-audio/wav_conversion_manifest.csv \
+            --wav-dir "$RUNNER_TEMP/messenger-wav" \
+            --out "$RUNNER_TEMP/messenger-output" \
+            --asr-model base.en --cpu-threads 4
+      - name: Build the existing pinned TruthDetection model container
+        working-directory: workspaces/audio-deception-comparison
+        run: docker build --progress=plain -t issuestack-audio-only:addl .
+      - name: Run checksum-verified model inside restricted offline container
+        run: |
+          set -euo pipefail
+          chmod -R a+rX "$RUNNER_TEMP/messenger-wav"
+          chmod 777 "$RUNNER_TEMP/messenger-output"
+          docker run --rm \
+            --network none --cap-drop ALL --security-opt no-new-privileges \
+            --pids-limit 128 --memory 3g --cpus 2 \
+            --read-only --tmpfs /tmp:rw,nosuid,size=512m --user 65534:65534 \
+            -e HOME=/tmp -e NUMBA_CACHE_DIR=/tmp/numba \
+            -e ALLOW_TRUSTED_MODEL_LOAD=1 \
+            -v "$RUNNER_TEMP/messenger-wav:/data/input:ro" \
+            -v "$RUNNER_TEMP/messenger-output:/data/output:rw" \
+            -v "$PWD/workspaces/audio-deception-comparison/additional-messenger-audio:/data/metadata:ro" \
+            --entrypoint python issuestack-audio-only:addl \
+            /data/metadata/scripts/batch_truthdetection.py \
+            /data/metadata/wav_conversion_manifest.csv /data/input /data/output/truthdetection_results.jsonl
+          sudo chown "$(id -u):$(id -g)" "$RUNNER_TEMP/messenger-output/truthdetection_results.jsonl"
+      - name: Combine transcripts, conversation contexts and real model outputs
+        if: always()
+        run: |
+          set -euo pipefail
+          test -f "$RUNNER_TEMP/messenger-output/events.jsonl" || exit 0
+          python3 workspaces/audio-deception-comparison/additional-messenger-audio/scripts/complete_audio.py aggregate \
+            --manifest workspaces/audio-deception-comparison/additional-messenger-audio/wav_conversion_manifest.csv \
+            --events "$RUNNER_TEMP/messenger-output/events.jsonl" \
+            --out "$RUNNER_TEMP/messenger-output"
+      - name: Upload results for verification (no original media)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: additional-messenger-audio-job-6437560304
+          path: |
+            ${{ runner.temp }}/messenger-output/audit.json
+            ${{ runner.temp }}/messenger-output/source_wavs.jsonl
+            ${{ runner.temp }}/messenger-output/transcription_results.jsonl
+            ${{ runner.temp }}/messenger-output/truthdetection_results.jsonl
+            ${{ runner.temp }}/messenger-output/contextual_evaluation_records.jsonl
+            ${{ runner.temp }}/messenger-output/contextual_completion_report.md
+            ${{ runner.temp }}/messenger-output/completion_summary.json
+          retention-days: 7
+          if-no-files-found: warn

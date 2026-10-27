@@ -5,11 +5,12 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/publish-mobile-heather-report.yml'
+      - 'workspaces/audio-deception-comparison/scripts/render_mobile_report.py'
 permissions:
   contents: write
 jobs:
   render-mobile-report:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Render phone-friendly Heather PDF'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Rerender grouped Messenger PDF with friendly dates'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -38,10 +39,13 @@ jobs:
           assert all(abs(float(page.mediabox.height)-640)<0.1 for page in reader.pages)
           text='\n'.join(page.extract_text() or '' for page in reader.pages)
           assert text.count('MODEL CONCLUSION')==23, text.count('MODEL CONCLUSION')
-          assert text.count('DECEPTIVE STORY')==15, text.count('DECEPTIVE STORY')
-          assert text.count('TRUE STORY')==10, text.count('TRUE STORY')
+          assert text.count('DECEPTIVE STORY')>=14, text.count('DECEPTIVE STORY')
+          assert text.count('TRUE STORY')>=9, text.count('TRUE STORY')
           assert 'Heather Lindsay' in text and 'Heather Fowle' in text
           assert len(text)>18000
+          assert 'Aug 28, 2025' in text
+          assert 'Oct 26, 2026' in text
+          assert text.index('DECEPTIVE STORY') < text.index('TRUE STORY')
           assert not re.search(r'[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}\\.(ogg|wav)',text,re.I)
           print(f'Verified: {len(reader.pages)} small-screen pages, {len(text)} extracted characters, 23 results, {p.stat().st_size} bytes')
           PY

@@ -1,0 +1,68 @@
+name: Convert Heather Fowle OGG recordings to WAV
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/convert-heather-fowle-wav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Convert seven Heather Fowle OGG files to WAV'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Convert 7 OGG recordings to 16 kHz mono PCM WAV
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess, wave
+          from pathlib import Path
+          base = Path("workspaces/audio-deception-comparison/heather-fowle")
+          inventory = json.loads((base / "inventory.json").read_text(encoding="utf-8"))
+          assert len(inventory) == 7, "Expected exactly seven recordings"
+          audio = base / "audio"
+          dest = base / "wav"
+          dest.mkdir(exist_ok=True)
+          expected = {Path(item["source"]).name for item in inventory}
+          actual = {f.name for f in audio.glob("*.ogg")}
+          assert expected == actual, f"Inventory/audio mismatch: expected {len(expected)}, actual {len(actual)}"
+          for item in inventory:
+              filename = Path(item["source"]).name
+              source = audio / filename
+              target = dest / (source.stem + ".wav")
+              subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin",
+                              "-y", "-i", str(source), "-vn", "-ac", "1", "-ar", "16000",
+                              "-c:a", "pcm_s16le", str(target)], check=True)
+              with wave.open(str(target), "rb") as stream:
+                  assert stream.getnchannels() == 1
+                  assert stream.getframerate() == 16000
+                  assert stream.getsampwidth() == 2
+                  assert stream.getnframes() > 0
+              item["wav"] = "wav/" + target.name
+          outputs = list(dest.glob("*.wav"))
+          assert len(outputs) == 7, f"Expected seven WAV files, got {len(outputs)}"
+          (base / "wav-inventory.json").write_text(
+              json.dumps(inventory, indent=2) + "\n", encoding="utf-8")
+          print("Validated 7 original OGG files, 7 new PCM WAV files and mapping.")
+          PY
+      - name: Commit WAV files and mappings
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- workspaces/audio-deception-comparison/heather-fowle/wav/ workspaces/audio-deception-comparison/heather-fowle/wav-inventory.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Add seven Heather Fowle 16 kHz PCM WAV recordings"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

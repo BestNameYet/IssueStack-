@@ -10,7 +10,7 @@ permissions:
   contents: write
 jobs:
   render-mobile-report:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Rerender grouped Messenger PDF with friendly dates'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Publish abridged Messenger recording report'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -42,7 +42,9 @@ jobs:
           assert text.count('DECEPTIVE STORY')>=14, text.count('DECEPTIVE STORY')
           assert text.count('TRUE STORY')>=9, text.count('TRUE STORY')
           assert 'Heather Lindsay' in text and 'Heather Fowle' in text
-          assert len(text)>18000
+          assert len(text)>8000
+          assert 'SELECTED TRANSCRIPT EXCERPTS' in text
+          assert '…' in text or '...' in text
           assert 'Aug 28, 2025' in text
           assert 'Oct 26, 2026' in text
           assert text.index('DECEPTIVE STORY') < text.index('TRUE STORY')

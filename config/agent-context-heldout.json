@@ -1,0 +1,80 @@
+{
+  "schema": "issuestack.agent-context.heldout.v1",
+  "version": 1,
+  "visibility": "published_seeded_heldout_not_blind",
+  "note": "These are adversarial fixtures that distinguish unknown vs documented facts. Published fixtures are not blind tests; use independent unseen seeds and external judges for true held-out evaluation.",
+  "seed": 20261027,
+  "fixtures": [
+    {
+      "id": "H01",
+      "question": "A transferred Issue #2 job is linked in scratchpad index as active. Can the agent call it pending without reading its current queue record?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426758658",
+      "category": "state_assumption"
+    },
+    {
+      "id": "H02",
+      "question": "A user edits an Issue #1 reusable input slot after an accepted transfer. Does the current slot body preserve the original instruction?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426765803",
+      "category": "immutable_identity"
+    },
+    {
+      "id": "H03",
+      "question": "Does a successful Issue #1 intake workflow confirm every acceptance criterion of its transferred job?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426767466",
+      "category": "lifecycle"
+    },
+    {
+      "id": "H04",
+      "question": "Can a worker edit a queued job before saving and reading back the mapped Issue #3 handshake?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426765803",
+      "category": "review_gate"
+    },
+    {
+      "id": "H05",
+      "question": "Where can the authorized static instruction types be verified?",
+      "expected": "file:src/types/issuestack.task.v3.json",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/blob/2422c64d3ecd6e99fe9d7695e381b862f91026f5/src/types/issuestack.task.v3.json",
+      "category": "canonical_source"
+    },
+    {
+      "id": "H06",
+      "question": "Can a successful workflow run from yesterday be treated as proof the service is healthy now?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453775750",
+      "category": "staleness"
+    },
+    {
+      "id": "H07",
+      "question": "Has the IssueStack automated refresh independently demonstrated complete reliable operation over a month?",
+      "expected": null,
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453783229",
+      "category": "unknown_claim",
+      "requires_live_evidence": true
+    },
+    {
+      "id": "H08",
+      "question": "Which external repository currently owns and triggers all IssueStack agents?",
+      "expected": null,
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453780018",
+      "category": "lineage_uncertainty"
+    },
+    {
+      "id": "H09",
+      "question": "Can a rejected per-change review unit be silently applied based on a broad user instruction to proceed?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426759464",
+      "category": "approval_gate"
+    },
+    {
+      "id": "H10",
+      "question": "Which permanent Issue #8 comment ID holds the Agent Context Registry TOC?",
+      "expected": "comment:6453791402",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453791402",
+      "category": "registry_retrieval"
+    }
+  ]
+}

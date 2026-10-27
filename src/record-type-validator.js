@@ -62,16 +62,25 @@ function validateDefinition(root, registry) {
 }
 
 function readDefinition(body) {
-  const regex = new RegExp(fence + 'json\\s*([\\s\\S]*?)\\s*' + fence, 'i');
-  const match = String(body || '').match(regex);
-  if (!match) throw new Error('Issue #1 has no JSON record template.');
-  let template;
-  try { template = JSON.parse(match[1]); }
-  catch (error) { throw new Error('Invalid Issue #1 record template: ' + error.message); }
-  const version = template?.['schema[string]'];
-  if (typeof version !== 'string' || !/^issuestack\.task\.v[1-9][0-9]*$/.test(version)) {
-    throw new Error('Issue #1 declares an invalid record version.');
+  // The issue description may contain unrelated JSON (UI examples, return
+  // schemas, etc.) before or after the canonical task record template.
+  // Select by its explicit version marker, never by fenced-block position.
+  const regex = new RegExp(fence + 'json\\s*([\\s\\S]*?)\\s*' + fence, 'gi');
+  const candidates = [];
+  for (const match of String(body || '').matchAll(regex)) {
+    let parsed;
+    try { parsed = JSON.parse(match[1]); }
+    catch { continue; } // An unrelated JSON example is not the task template.
+    const version = parsed?.['schema[string]'];
+    if (typeof version === 'string' &&
+        /^issuestack\.task\.v[1-9][0-9]*$/.test(version)) {
+      candidates.push(parsed);
+    }
   }
+  if (!candidates.length) throw new Error('Issue #1 has no versioned JSON task record template.');
+  if (candidates.length > 1) throw new Error('Issue #1 has multiple task record templates; selection is ambiguous.');
+  const template = candidates[0];
+  const version = template['schema[string]'];
   const filename = path.join(__dirname, 'types', version + '.json');
   let registry;
   try { registry = JSON.parse(fs.readFileSync(filename, 'utf8')); }

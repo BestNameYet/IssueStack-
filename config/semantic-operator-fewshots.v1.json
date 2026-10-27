@@ -1,0 +1,780 @@
+{
+  "schema": "issuestack.semantic-operator.fewshots.v1",
+  "version": 1,
+  "contract": "config/semantic-operator-contract.v1.json",
+  "guidance": "Every operational concept and semantic action has contrastive positive, boundary and negative worked examples. Examples illustrate classification and choices, not authority or actual runtime observations. Follow exact schemas and current evidence even when examples disagree.",
+  "concepts": [
+    {
+      "concept": "component",
+      "examples": [
+        {
+          "id": "component-positive",
+          "kind": "positive",
+          "input": "A workflow with one named job validates intake comments and creates queue jobs.",
+          "ruling": "Source-confirmed intake orchestration forms a component.",
+          "expected": {
+            "record_type": "component",
+            "operation": "CREATE",
+            "evidence_class": "verified_static",
+            "target": "illustrative_registry_record",
+            "claim": "Source-confirmed intake orchestration forms a component."
+          },
+          "why": "Responsibility and executable boundary are identifiable.",
+          "decision_boundary": "If only a filename were supplied without behavior, classification would be deferred.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "component-boundary",
+          "kind": "boundary",
+          "input": "A comment says an unnamed external service performs scheduling.",
+          "ruling": "Possible component, not confirmed implementation.",
+          "expected": {
+            "record_type": "component",
+            "operation": "DEFER",
+            "evidence_class": "documented",
+            "target": "illustrative_registry_record",
+            "claim": "Possible component, not confirmed implementation."
+          },
+          "why": "Ownership and invocation boundary are missing.",
+          "decision_boundary": "A workflow source defining responsibility could establish component status.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "component-negative",
+          "kind": "negative",
+          "input": "Two scripts share the word queue in their names.",
+          "ruling": "No new component follows from lexical similarity.",
+          "expected": {
+            "record_type": "component",
+            "operation": "NO_OP",
+            "evidence_class": "unknown",
+            "target": "illustrative_registry_record",
+            "claim": "No new component follows from lexical similarity."
+          },
+          "why": "Names alone don't establish coherent responsibility.",
+          "decision_boundary": "Runnable responsibilities and source identity would change this ruling.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "interface",
+      "examples": [
+        {
+          "id": "interface-positive",
+          "kind": "positive",
+          "input": "A handler expects a JSON job envelope with nonce, args and command fields.",
+          "ruling": "Boundary contract with typed inputs can be indexed.",
+          "expected": {
+            "record_type": "interface",
+            "operation": "CREATE",
+            "evidence_class": "verified_static",
+            "target": "illustrative_registry_record",
+            "claim": "Boundary contract with typed inputs can be indexed."
+          },
+          "why": "Externally received request and expected fields are visible.",
+          "decision_boundary": "Private local variables used only inside a handler are not the interface.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "interface-boundary",
+          "kind": "boundary",
+          "input": "README documents an API return shape, but current implementation is unread.",
+          "ruling": "Documented interface; runtime compatibility is unverified.",
+          "expected": {
+            "record_type": "interface",
+            "operation": "AUGMENT",
+            "evidence_class": "documented",
+            "target": "illustrative_registry_record",
+            "claim": "Documented interface; runtime compatibility is unverified."
+          },
+          "why": "A document is evidence of a declared contract only.",
+          "decision_boundary": "An executed contract test would support a runtime classification.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "interface-negative",
+          "kind": "negative",
+          "input": "A function declares a local variable named output.",
+          "ruling": "No interface without a consumer or boundary.",
+          "expected": {
+            "record_type": "interface",
+            "operation": "NO_OP",
+            "evidence_class": "unknown",
+            "target": "illustrative_registry_record",
+            "claim": "No interface without a consumer or boundary."
+          },
+          "why": "Variable assignment does not establish an exchanged contract.",
+          "decision_boundary": "A public return contract and consumer would create one.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "relationship",
+      "examples": [
+        {
+          "id": "relationship-positive",
+          "kind": "positive",
+          "input": "An intake handler directly calls an Issue #2 comment creation API.",
+          "ruling": "A directed creates-job edge is supported by code.",
+          "expected": {
+            "record_type": "relationship",
+            "operation": "CREATE",
+            "evidence_class": "verified_static",
+            "target": "illustrative_registry_record",
+            "claim": "A directed creates-job edge is supported by code."
+          },
+          "why": "Subject, predicate, object and call are explicit.",
+          "decision_boundary": "Import adjacency alone is weaker evidence than a creation call.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "relationship-boundary",
+          "kind": "boundary",
+          "input": "Two docs say service A depends on B without source or run receipts.",
+          "ruling": "Dependency edge may be represented as documented only.",
+          "expected": {
+            "record_type": "relationship",
+            "operation": "AUGMENT",
+            "evidence_class": "documented",
+            "target": "illustrative_registry_record",
+            "claim": "Dependency edge may be represented as documented only."
+          },
+          "why": "Represent what the documents claim, not live invocation.",
+          "decision_boundary": "Verified invocation source might upgrade evidence.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "relationship-negative",
+          "kind": "negative",
+          "input": "Two modules both use the same shared logger.",
+          "ruling": "No direct dependency between the modules is established.",
+          "expected": {
+            "record_type": "relationship",
+            "operation": "NO_OP",
+            "evidence_class": "unknown",
+            "target": "illustrative_registry_record",
+            "claim": "No direct dependency between the modules is established."
+          },
+          "why": "Shared dependency doesn't imply module-to-module call.",
+          "decision_boundary": "A call site from one module to the other would.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "state_transition",
+      "examples": [
+        {
+          "id": "state_transition-positive",
+          "kind": "positive",
+          "input": "A workflow sets job status pending→running only after scratchpad handshake.",
+          "ruling": "A guarded transition exists in documented control logic.",
+          "expected": {
+            "record_type": "state_transition",
+            "operation": "CREATE",
+            "evidence_class": "documented",
+            "target": "illustrative_registry_record",
+            "claim": "A guarded transition exists in documented control logic."
+          },
+          "why": "Source specifies before/after, guard, and trigger.",
+          "decision_boundary": "An observed running job alone would not prove the transition guard.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "state_transition-boundary",
+          "kind": "boundary",
+          "input": "Logs show completed after running, but no transition rule is known.",
+          "ruling": "Observed sequence; transition causality remains unverified.",
+          "expected": {
+            "record_type": "state_transition",
+            "operation": "DEFER",
+            "evidence_class": "verified_runtime",
+            "target": "illustrative_registry_record",
+            "claim": "Observed sequence; transition causality remains unverified."
+          },
+          "why": "Two observations do not establish trigger or all guards.",
+          "decision_boundary": "A source condition or transaction receipt may establish guard behavior.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "state_transition-negative",
+          "kind": "negative",
+          "input": "A job JSON contains status=running.",
+          "ruling": "State attribute, not a state transition.",
+          "expected": {
+            "record_type": "state_transition",
+            "operation": "NO_OP",
+            "evidence_class": "verified_runtime",
+            "target": "illustrative_registry_record",
+            "claim": "State attribute, not a state transition."
+          },
+          "why": "No earlier state, trigger or postcondition given.",
+          "decision_boundary": "A correlated event chain could justify transition.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "decision",
+      "examples": [
+        {
+          "id": "decision-positive",
+          "kind": "positive",
+          "input": "A recorded design review compares fixed IDs with ordinal positions and chooses stable IDs.",
+          "ruling": "An evidenced architectural decision has rationale and alternatives.",
+          "expected": {
+            "record_type": "decision",
+            "operation": "CREATE",
+            "evidence_class": "documented",
+            "target": "illustrative_registry_record",
+            "claim": "An evidenced architectural decision has rationale and alternatives."
+          },
+          "why": "Tradeoff is explicitly recorded.",
+          "decision_boundary": "Do not invent rejected alternatives from code alone.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "decision-boundary",
+          "kind": "boundary",
+          "input": "Code uses fixed IDs, but no explanation of why.",
+          "ruling": "Implementation choice observable; motivation remains unknown.",
+          "expected": {
+            "record_type": "decision",
+            "operation": "DEFER",
+            "evidence_class": "verified_static",
+            "target": "illustrative_registry_record",
+            "claim": "Implementation choice observable; motivation remains unknown."
+          },
+          "why": "Decision motivation is not inferable as fact from syntax.",
+          "decision_boundary": "Explicit PR review could justify motivation.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "decision-negative",
+          "kind": "negative",
+          "input": "A comment says a team 'probably preferred speed'.",
+          "ruling": "Speculation isn't a verified design choice.",
+          "expected": {
+            "record_type": "decision",
+            "operation": "NO_OP",
+            "evidence_class": "inferred",
+            "target": "illustrative_registry_record",
+            "claim": "Speculation isn't a verified design choice."
+          },
+          "why": "No evidence of authorship or actual selected alternative.",
+          "decision_boundary": "A signed issue decision would change status.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "invariant",
+      "examples": [
+        {
+          "id": "invariant-positive",
+          "kind": "positive",
+          "input": "The parser rejects a job without a unique nonce.",
+          "ruling": "Nonce uniqueness is a required validity condition.",
+          "expected": {
+            "record_type": "invariant",
+            "operation": "CREATE",
+            "evidence_class": "verified_static",
+            "target": "illustrative_registry_record",
+            "claim": "Nonce uniqueness is a required validity condition."
+          },
+          "why": "Enforcement and invalid counterexample are reproducible.",
+          "decision_boundary": "One successful unique nonce by itself is not a rule.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "invariant-boundary",
+          "kind": "boundary",
+          "input": "A run often processes commands in FIFO order but no rule requires it.",
+          "ruling": "Observed ordering; invariant remains unproved.",
+          "expected": {
+            "record_type": "invariant",
+            "operation": "DEFER",
+            "evidence_class": "verified_runtime",
+            "target": "illustrative_registry_record",
+            "claim": "Observed ordering; invariant remains unproved."
+          },
+          "why": "Repeated behavior does not imply an enforced norm.",
+          "decision_boundary": "A specification plus tests could establish FIFO as invariant.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "invariant-negative",
+          "kind": "negative",
+          "input": "Two successful jobs had distinct IDs.",
+          "ruling": "An instance pattern is not necessarily an invariant.",
+          "expected": {
+            "record_type": "invariant",
+            "operation": "NO_OP",
+            "evidence_class": "verified_runtime",
+            "target": "illustrative_registry_record",
+            "claim": "An instance pattern is not necessarily an invariant."
+          },
+          "why": "Small sample can't generalize normative condition.",
+          "decision_boundary": "Validator requiring unique IDs would establish invariant.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "failure",
+      "examples": [
+        {
+          "id": "failure-positive",
+          "kind": "positive",
+          "input": "A reproducible API rate-limit response causes a bounded retry to exhaust.",
+          "ruling": "Failure mechanism and recovery can be cataloged.",
+          "expected": {
+            "record_type": "failure",
+            "operation": "CREATE",
+            "evidence_class": "verified_runtime",
+            "target": "illustrative_registry_record",
+            "claim": "Failure mechanism and recovery can be cataloged."
+          },
+          "why": "Concrete error receipt and reproduction exist.",
+          "decision_boundary": "A theoretical rate limit risk is not an incident.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "failure-boundary",
+          "kind": "boundary",
+          "input": "Code may allow a loop to retry without a bound; no incident observed.",
+          "ruling": "Potential failure mode, not observed outage.",
+          "expected": {
+            "record_type": "failure",
+            "operation": "AUGMENT",
+            "evidence_class": "verified_static",
+            "target": "illustrative_registry_record",
+            "claim": "Potential failure mode, not observed outage."
+          },
+          "why": "Static source can support possibility, not incident status.",
+          "decision_boundary": "A run log would upgrade observed occurrence.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "failure-negative",
+          "kind": "negative",
+          "input": "Someone guesses the UI crashed because logs were late.",
+          "ruling": "Cause not established; no failure claim.",
+          "expected": {
+            "record_type": "failure",
+            "operation": "DEFER",
+            "evidence_class": "unknown",
+            "target": "illustrative_registry_record",
+            "claim": "Cause not established; no failure claim."
+          },
+          "why": "Temporal association doesn't identify mechanism.",
+          "decision_boundary": "Correlated error receipt could support the claim.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "operational_observation",
+      "examples": [
+        {
+          "id": "operational_observation-positive",
+          "kind": "positive",
+          "input": "A specific Actions run completed success at an immutable run URL and timestamp.",
+          "ruling": "Time-scoped completion observation is admissible.",
+          "expected": {
+            "record_type": "operational_observation",
+            "operation": "CREATE",
+            "evidence_class": "verified_runtime",
+            "target": "illustrative_registry_record",
+            "claim": "Time-scoped completion observation is admissible."
+          },
+          "why": "Run ID, timestamp and retrievable conclusion exist.",
+          "decision_boundary": "The receipt does not guarantee present health.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "operational_observation-boundary",
+          "kind": "boundary",
+          "input": "A run completed yesterday while current state is unknown.",
+          "ruling": "Keep historical success but label current health stale.",
+          "expected": {
+            "record_type": "operational_observation",
+            "operation": "AUGMENT",
+            "evidence_class": "verified_runtime",
+            "target": "illustrative_registry_record",
+            "claim": "Keep historical success but label current health stale."
+          },
+          "why": "Freshness threshold separates then from now.",
+          "decision_boundary": "A new current run can support a new observation.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "operational_observation-negative",
+          "kind": "negative",
+          "input": "Documentation says workflow is reliable.",
+          "ruling": "Not an operational observation.",
+          "expected": {
+            "record_type": "operational_observation",
+            "operation": "NO_OP",
+            "evidence_class": "documented",
+            "target": "illustrative_registry_record",
+            "claim": "Not an operational observation."
+          },
+          "why": "Docs contain expectations, not actual execution evidence.",
+          "decision_boundary": "A dated run receipt would make it an observation.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "concept": "retrieval_guidance",
+      "examples": [
+        {
+          "id": "retrieval_guidance-positive",
+          "kind": "positive",
+          "input": "A worker must read AGENTS and a specific Issue #6 page before changing queued job.",
+          "ruling": "Task-bounded retrieval rule with authority precedence.",
+          "expected": {
+            "record_type": "retrieval_guidance",
+            "operation": "CREATE",
+            "evidence_class": "documented",
+            "target": "illustrative_registry_record",
+            "claim": "Task-bounded retrieval rule with authority precedence."
+          },
+          "why": "Specifies triggering task, required sources and validation.",
+          "decision_boundary": "Unbounded 'read every issue' guidance is not targeted.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "retrieval_guidance-boundary",
+          "kind": "boundary",
+          "input": "A suggested source is useful but might be stale at commit time.",
+          "ruling": "Optional retrieval with revalidation warning.",
+          "expected": {
+            "record_type": "retrieval_guidance",
+            "operation": "AUGMENT",
+            "evidence_class": "inferred",
+            "target": "illustrative_registry_record",
+            "claim": "Optional retrieval with revalidation warning."
+          },
+          "why": "Clearly label supporting—not authoritative—context.",
+          "decision_boundary": "Verified governing instruction could raise source priority.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "retrieval_guidance-negative",
+          "kind": "negative",
+          "input": "A note says 'Look through GitHub until you find something'.",
+          "ruling": "Does not give task, budget or source prioritization.",
+          "expected": {
+            "record_type": "retrieval_guidance",
+            "operation": "NO_OP",
+            "evidence_class": "unknown",
+            "target": "illustrative_registry_record",
+            "claim": "Does not give task, budget or source prioritization."
+          },
+          "why": "Unbounded exploration lacks actionable retrieval criteria.",
+          "decision_boundary": "Adding task predicates and exact refs makes it valid.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "operation": "CREATE",
+      "examples": [
+        {
+          "id": "CREATE-positive",
+          "kind": "positive",
+          "input": "A new source exposes a previously unknown callable worker.",
+          "expected_operation": "CREATE",
+          "why": "A new identity and evidence-backed function exist.",
+          "contrast": "An existing semantically identical worker would be NO_OP.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "CREATE-boundary",
+          "kind": "boundary",
+          "input": "A new module name appears but its code cannot be read.",
+          "expected_operation": "DEFER",
+          "why": "A potential new entity lacks functional evidence.",
+          "contrast": "Code with a real responsibility could support CREATE.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "CREATE-negative",
+          "kind": "negative",
+          "input": "Only the timestamp on an existing record changes.",
+          "expected_operation": "NO_OP",
+          "why": "No new semantic entity or claim exists.",
+          "contrast": "A changed behavioral contract could require REVISE.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "operation": "AUGMENT",
+      "examples": [
+        {
+          "id": "AUGMENT-positive",
+          "kind": "positive",
+          "input": "New test evidence confirms an existing same-scope function contract.",
+          "expected_operation": "AUGMENT",
+          "why": "Evidence adds support without modifying the proposition.",
+          "contrast": "If tests contradict the prior contract, use CONFLICT or REVISE.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "AUGMENT-boundary",
+          "kind": "boundary",
+          "input": "A comment claims the same function now operates globally.",
+          "expected_operation": "DEFER",
+          "why": "Expanded scope is not proven.",
+          "contrast": "An authoritative implementation receipt may justify REVISE.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "AUGMENT-negative",
+          "kind": "negative",
+          "input": "The exact same source hash and evidence link were already recorded.",
+          "expected_operation": "NO_OP",
+          "why": "Duplicate support has no additional information.",
+          "contrast": "A new independent source would justify AUGMENT.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "operation": "REVISE",
+      "examples": [
+        {
+          "id": "REVISE-positive",
+          "kind": "positive",
+          "input": "A validated schema changes required field X from optional to mandatory.",
+          "expected_operation": "REVISE",
+          "why": "Same schema identity but material meaning changed.",
+          "contrast": "An unrelated schema v2 might instead be CREATE and SUPERSEDE.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "REVISE-boundary",
+          "kind": "boundary",
+          "input": "A log shows a single invalid request was rejected.",
+          "expected_operation": "DEFER",
+          "why": "One rejection does not prove an interface contract changed.",
+          "contrast": "New validator code can justify REVISION.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "REVISE-negative",
+          "kind": "negative",
+          "input": "A comment corrects punctuation without changing content.",
+          "expected_operation": "NO_OP",
+          "why": "No semantic meaning changed.",
+          "contrast": "Changing 'may' to 'must' would revise normative meaning.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "operation": "SUPERSEDE",
+      "examples": [
+        {
+          "id": "SUPERSEDE-positive",
+          "kind": "positive",
+          "input": "An approved specification explicitly replaces an old command contract.",
+          "expected_operation": "SUPERSEDE",
+          "why": "Authoritative replacement preserves old history and defines successor.",
+          "contrast": "Without replacement proof, do not remove old contract.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "SUPERSEDE-boundary",
+          "kind": "boundary",
+          "input": "A newer file has similar name to an older one.",
+          "expected_operation": "DEFER",
+          "why": "Similarity and chronology do not prove replacement.",
+          "contrast": "An explicit migration instruction would.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "SUPERSEDE-negative",
+          "kind": "negative",
+          "input": "Two currently supported API versions coexist.",
+          "expected_operation": "NO_OP",
+          "why": "Both are active; newer doesn't automatically supersede older.",
+          "contrast": "A deprecation notice would change the ruling.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "operation": "CONFLICT",
+      "examples": [
+        {
+          "id": "CONFLICT-positive",
+          "kind": "positive",
+          "input": "Current source says job status is running; current authoritative job says failed for same revision.",
+          "expected_operation": "CONFLICT",
+          "why": "Same subject, scope and time with incompatible claims.",
+          "contrast": "If observations are separated in time, use state transition.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "CONFLICT-boundary",
+          "kind": "boundary",
+          "input": "Two authors propose competing designs but neither is implemented.",
+          "expected_operation": "DEFER",
+          "why": "Alternatives are proposals, not conflicting deployed facts.",
+          "contrast": "An authoritative adopted design could decide.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "CONFLICT-negative",
+          "kind": "negative",
+          "input": "One report says queued at t1 and another says running at t2.",
+          "expected_operation": "NO_OP",
+          "why": "States at different times are not contradictory.",
+          "contrast": "Same-time authoritative disagreement would be conflict.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "operation": "NO_OP",
+      "examples": [
+        {
+          "id": "NO_OP-positive",
+          "kind": "positive",
+          "input": "An identical source SHA and claim already exist with same evidence.",
+          "expected_operation": "NO_OP",
+          "why": "No new proposition, source or confidence.",
+          "contrast": "An independent successful test adds new evidence and becomes AUGMENT.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "NO_OP-boundary",
+          "kind": "boundary",
+          "input": "A workflow is rerun and emits a new unique failure.",
+          "expected_operation": "AUGMENT",
+          "why": "Even with unchanged source, new operational data is material.",
+          "contrast": "If the receipt is identical, NO_OP.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "NO_OP-negative",
+          "kind": "negative",
+          "input": "An API contract changes but filename stays constant.",
+          "expected_operation": "REVISE",
+          "why": "Semantic content changed despite same identity.",
+          "contrast": "Filename alone cannot decide no-op.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    },
+    {
+      "operation": "DEFER",
+      "examples": [
+        {
+          "id": "DEFER-positive",
+          "kind": "positive",
+          "input": "The source is inaccessible and no retrievable evidence substantiates a claim.",
+          "expected_operation": "DEFER",
+          "why": "Missing critical evidence must be recorded rather than guessed.",
+          "contrast": "Once evidence is available, re-enter from P2.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "DEFER-boundary",
+          "kind": "boundary",
+          "input": "An operator has evidence but is awaiting approval for an Issue #8 update.",
+          "expected_operation": "DEFER",
+          "why": "Complete proposal can wait without unsafe publication.",
+          "contrast": "If exact approval is verified, continue review/publish.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        },
+        {
+          "id": "DEFER-negative",
+          "kind": "negative",
+          "input": "Evidence and authorization are complete within budget.",
+          "expected_operation": "CREATE",
+          "why": "Deferral would be unnecessary; perform justified action.",
+          "contrast": "A new blocker such as conflicting IDs would warrant defer.",
+          "fixture_provenance": "synthetic_training_demonstration_not_empirical_issue_stack_evidence"
+        }
+      ]
+    }
+  ],
+  "end_to_end": [
+    {
+      "id": "E2E-A",
+      "scenario": "New workflow discovered",
+      "input": "An immutable source commit introduces a workflow that validates a command and emits Issue #2 job comments.",
+      "steps": [
+        "P1 locate source delta",
+        "P2 split trigger, validation, write side effect into atomic claims",
+        "P3 classify component/interface/relationship separately",
+        "P4 resolve identities against current registry",
+        "P5 choose CREATE for new component and AUGMENT for known interface when evidence supports it",
+        "P6 write distinct typed proposals",
+        "P7 validate source commit and request approval for Issue #8 changes",
+        "P8 checkpoint proposals as deferred until review"
+      ],
+      "output": {
+        "result": "deferred",
+        "proposals": [
+          "component:workflow-unknown",
+          "interface:command-envelope",
+          "relationship:workflow-to-queue"
+        ],
+        "review_required": true
+      },
+      "lesson": "One document yields multiple atomic record types, never an unbounded essay."
+    },
+    {
+      "id": "E2E-B",
+      "scenario": "Conflicting operational assertions",
+      "input": "Documentation says transfer implies completion, but an immutable job status is running after transfer.",
+      "steps": [
+        "P1 identify affected documented claim and job receipt",
+        "P2 decompose transfer and execution as separate assertions",
+        "P3 classify state_transition and operational_observation",
+        "P4 align times/scopes",
+        "P5 revise conceptual distinction or flag CONFLICT if truly same scope",
+        "P6 cite instruction and current record",
+        "P7 prohibit unreviewed replacement of existing context",
+        "P8 checkpoint open evidence question"
+      ],
+      "output": {
+        "result": "deferred",
+        "operation": "CONFLICT",
+        "review_required": true
+      },
+      "lesson": "Never equate queue transfer, job execution and completion without independent proof."
+    },
+    {
+      "id": "E2E-C",
+      "scenario": "Novel coordination primitive",
+      "input": "A new mechanism coordinates turns across agents but has no valid category-specific payload shape.",
+      "steps": [
+        "P1 capture immutable reference",
+        "P2 atomize behavior without fitting a favored concept",
+        "P3 test inclusion and exclusion criteria for all nine types",
+        "P4 record unmatched dimensions",
+        "P5 choose DEFER with unclassified proposal rather than forcing taxonomy",
+        "P6 propose ontology definition, 3 contrastive shots and tests",
+        "P7 request versioned schema review",
+        "P8 checkpoint missing ontology category"
+      ],
+      "output": {
+        "result": "deferred",
+        "record_type": "unclassified",
+        "review_required": true
+      },
+      "lesson": "Novel information leads to a schema-extension proposal, not silent malformed registry JSON."
+    }
+  ]
+}

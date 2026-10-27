@@ -1,0 +1,78 @@
+name: Transcribe audio archive
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  transcribe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install offline transcription engine
+        run: python -m pip install 'faster-whisper>=1.1,<2'
+      - name: Extract and transcribe audio
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python - <<'PY'
+          import zipfile, pathlib, tempfile, shutil, json, csv, hashlib, stat
+          from faster_whisper import WhisperModel
+          source = pathlib.Path("audio_last_3_days_deduplicated.zip")
+          out = pathlib.Path("transcripts")
+          out.mkdir(exist_ok=True)
+          records = []
+          with zipfile.ZipFile(source) as z:
+              members = []
+              total = 0
+              for f in z.infolist():
+                  p = pathlib.PurePosixPath(f.filename)
+                  if f.is_dir() or p.suffix.lower() not in (".ogg", ".wav", ".mp3", ".flac", ".m4a", ".opus"):
+                      continue
+                  if p.is_absolute() or ".." in p.parts or chr(92) in f.filename or stat.S_ISLNK(f.external_attr >> 16):
+                      raise ValueError("Unsafe zip entry")
+                  total += f.file_size
+                  if f.file_size > 256*1024*1024 or total > 1024*1024*1024:
+                      raise ValueError("Zip uncompressed size exceeds limit")
+                  members.append(f)
+              if not members:
+                  raise ValueError("No audio files in archive")
+              model = WhisperModel("base", device="cpu", compute_type="int8")
+              with tempfile.TemporaryDirectory() as d:
+                  for i, f in enumerate(sorted(members, key=lambda f: f.filename), 1):
+                      key = f"{i:03d}-{hashlib.sha256(f.filename.encode()).hexdigest()[:12]}"
+                      input_file = pathlib.Path(d) / (key + pathlib.PurePosixPath(f.filename).suffix.lower())
+                      item = {"source":f.filename,"status":"error","transcript":key+".txt","error":None}
+                      try:
+                          with z.open(f) as src, input_file.open("wb") as dst:
+                              shutil.copyfileobj(src, dst)
+                          segments, info = model.transcribe(str(input_file), beam_size=5, vad_filter=True)
+                          text = " ".join(s.text.strip() for s in segments).strip()
+                          (out / item["transcript"]).write_text(text + "\n",encoding="utf-8")
+                          item.update(status="ok", language=info.language)
+                      except Exception as exc:
+                          item["error"] = f"{type(exc).__name__}: {str(exc)[:200]}"
+                      records.append(item)
+                      input_file.unlink(missing_ok=True)
+                      print(f"Processed {i}/{len(members)}: {item['status']}", flush=True)
+          (out / "inventory.json").write_text(json.dumps(records,indent=2)+"\n",encoding="utf-8")
+          with (out / "combined.txt").open("w",encoding="utf-8") as f:
+              for item in records:
+                  f.write("### "+item["source"]+"\n")
+                  p = out / item["transcript"]
+                  f.write((p.read_text(encoding="utf-8") if p.exists() else "[FAILED]\n")+"\n")
+          if any(x["status"] != "ok" for x in records):
+              raise SystemExit("Some audio files could not be transcribed")
+          PY
+      - name: Publish transcripts as short-lived artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audio-transcripts-${{ github.run_id }}
+          path: workspaces/audio-deception-comparison/transcripts/
+          retention-days: 7
+          if-no-files-found: warn

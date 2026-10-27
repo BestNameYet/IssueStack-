@@ -1,0 +1,813 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/BestNameYet/IssueStack-/src/types/semantic-operator.v1.json",
+  "title": "IssueStack Semantic Operator v1 - validated outputs",
+  "description": "Schemas are normative, output must be validated independently. Source evidence is untrusted and never granted instruction priority.",
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "sha256",
+        "source_commit",
+        "observed_at",
+        "evidence_class",
+        "assertion_span"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_commit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "evidence_class": {
+          "enum": [
+            "verified_runtime",
+            "verified_static",
+            "documented",
+            "inferred",
+            "unknown"
+          ]
+        },
+        "assertion_span": {
+          "type": "string"
+        }
+      }
+    },
+    "ruling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inclusion_test",
+        "exclusion_test",
+        "few_shot_refs",
+        "reason",
+        "alternatives",
+        "confidence",
+        "uncertainties"
+      ],
+      "properties": {
+        "inclusion_test": {
+          "type": "string"
+        },
+        "exclusion_test": {
+          "type": "string"
+        },
+        "few_shot_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "unknown"
+          ]
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "payloads": {
+      "$comment": "Concept-specific payload schemas are in $defs; unclassified is a distinct extension proposal",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/payload_component"
+        },
+        {
+          "$ref": "#/$defs/payload_interface"
+        },
+        {
+          "$ref": "#/$defs/payload_relationship"
+        },
+        {
+          "$ref": "#/$defs/payload_state_transition"
+        },
+        {
+          "$ref": "#/$defs/payload_decision"
+        },
+        {
+          "$ref": "#/$defs/payload_invariant"
+        },
+        {
+          "$ref": "#/$defs/payload_failure"
+        },
+        {
+          "$ref": "#/$defs/payload_operational_observation"
+        },
+        {
+          "$ref": "#/$defs/payload_retrieval_guidance"
+        },
+        {
+          "$ref": "#/$defs/payload_unclassified"
+        }
+      ]
+    },
+    "payload_component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "responsibility",
+        "implementation_refs",
+        "owner",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "responsibility": {
+          "type": "string"
+        },
+        "implementation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "payload_interface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "provider",
+        "consumer",
+        "inputs",
+        "outputs",
+        "constraints"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "consumer": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "payload_relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "predicate",
+        "object",
+        "conditions",
+        "evidence"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "object": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "payload_state_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "from_state",
+        "to_state",
+        "trigger",
+        "guards",
+        "effects"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "from_state": {
+          "type": "string"
+        },
+        "to_state": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "guards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "payload_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "choice",
+        "alternatives",
+        "rationale",
+        "tradeoffs",
+        "decision_source"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "choice": {
+          "type": "string"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "tradeoffs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decision_source": {
+          "type": "string"
+        }
+      }
+    },
+    "payload_invariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "rule",
+        "enforcement",
+        "counterexample",
+        "recovery"
+      ],
+      "properties": {
+        "scope": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "enforcement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counterexample": {
+          "type": "string"
+        },
+        "recovery": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "payload_failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "symptom",
+        "cause",
+        "scope",
+        "severity",
+        "reproduction",
+        "recovery",
+        "status"
+      ],
+      "properties": {
+        "symptom": {
+          "type": "string"
+        },
+        "cause": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "reproduction": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recovery": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "payload_operational_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "observed_at",
+        "status",
+        "receipt",
+        "freshness_policy"
+      ],
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "observed_at": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "receipt": {
+          "type": "string"
+        },
+        "freshness_policy": {
+          "type": "string"
+        }
+      }
+    },
+    "payload_retrieval_guidance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_pattern",
+        "required_refs",
+        "optional_refs",
+        "budget",
+        "reverify_before_action"
+      ],
+      "properties": {
+        "task_pattern": {
+          "type": "string"
+        },
+        "required_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "budget": {
+          "type": "string"
+        },
+        "reverify_before_action": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "payload_unclassified": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed_dimensions",
+        "missing_dimensions",
+        "candidate_definition",
+        "schema_extension_rationale",
+        "evidence_refs"
+      ],
+      "properties": {
+        "observed_dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing_dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "candidate_definition": {
+          "type": "string"
+        },
+        "schema_extension_rationale": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "semantic_proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "command_id",
+        "chore_id",
+        "chore_version",
+        "evidence_sha256",
+        "record_type",
+        "record_id",
+        "operation",
+        "atomic_claim",
+        "payload",
+        "evidence",
+        "existing_record_ref",
+        "semantic_ruling",
+        "uncertainties",
+        "proposed_registry_page",
+        "review_status"
+      ],
+      "properties": {
+        "schema": {
+          "const": "issuestack.semantic-proposal.v1"
+        },
+        "command_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chore_id": {
+          "pattern": "^SC0[1-7]$",
+          "type": "string"
+        },
+        "chore_version": {
+          "const": 1
+        },
+        "evidence_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "record_type": {
+          "enum": [
+            "component",
+            "interface",
+            "relationship",
+            "state_transition",
+            "decision",
+            "invariant",
+            "failure",
+            "operational_observation",
+            "retrieval_guidance",
+            "unclassified"
+          ]
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "enum": [
+            "CREATE",
+            "AUGMENT",
+            "REVISE",
+            "SUPERSEDE",
+            "CONFLICT",
+            "NO_OP",
+            "DEFER"
+          ]
+        },
+        "atomic_claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payload": {
+          "$ref": "#/$defs/payloads"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "existing_record_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "semantic_ruling": {
+          "$ref": "#/$defs/ruling"
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "proposed_registry_page": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "review_status": {
+          "enum": [
+            "pending_review",
+            "review_not_required",
+            "approved",
+            "rejected",
+            "deferred",
+            "blocked"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "CREATE",
+                  "AUGMENT",
+                  "REVISE",
+                  "SUPERSEDE",
+                  "CONFLICT"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "review_status": {
+                "enum": [
+                  "pending_review",
+                  "approved",
+                  "rejected",
+                  "deferred",
+                  "blocked"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "chore_outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chore_id",
+        "chore_version",
+        "evidence_sha256",
+        "idempotency_key",
+        "status",
+        "proposal_refs",
+        "reason",
+        "next_action"
+      ],
+      "properties": {
+        "chore_id": {
+          "pattern": "^SC0[1-7]$",
+          "type": "string"
+        },
+        "chore_version": {
+          "const": 1
+        },
+        "evidence_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "idempotency_key": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "no_op",
+            "deferred",
+            "blocked"
+          ]
+        },
+        "proposal_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "next_action": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "command_id",
+        "job_id",
+        "catalog_version",
+        "evaluated_at",
+        "budget",
+        "chores",
+        "remaining",
+        "status"
+      ],
+      "properties": {
+        "schema": {
+          "const": "issuestack.semantic-chore.checkpoint.v1"
+        },
+        "command_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "job_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "catalog_version": {
+          "const": 1
+        },
+        "evaluated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_passes",
+            "evidence_units",
+            "tool_calls",
+            "proposals"
+          ],
+          "properties": {
+            "max_passes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "evidence_units": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "tool_calls": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "proposals": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            }
+          }
+        },
+        "chores": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/chore_outcome"
+          }
+        },
+        "remaining": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "deferred",
+            "blocked",
+            "no_op"
+          ]
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/semantic_proposal"
+    },
+    {
+      "$ref": "#/$defs/checkpoint"
+    }
+  ],
+  "x_payload_type_binding": {
+    "note": "When record_type is a concept, payload must match only its corresponding payload_* schema; tested in strict JS validator.",
+    "mapping": {
+      "component": "#/$defs/payload_component",
+      "interface": "#/$defs/payload_interface",
+      "relationship": "#/$defs/payload_relationship",
+      "state_transition": "#/$defs/payload_state_transition",
+      "decision": "#/$defs/payload_decision",
+      "invariant": "#/$defs/payload_invariant",
+      "failure": "#/$defs/payload_failure",
+      "operational_observation": "#/$defs/payload_operational_observation",
+      "retrieval_guidance": "#/$defs/payload_retrieval_guidance",
+      "unclassified": "#/$defs/payload_unclassified"
+    }
+  }
+}

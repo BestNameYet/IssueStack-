@@ -47,7 +47,7 @@ The versioned JSON report has `models.truthDetection` only and `comparison.statu
 
 ## Validation and limits
 
-Source inspection and test code do **not** establish real inference. The staged candidate is not deployed to main. Record separately whether Docker built, the pinned weight was verified, unit tests passed, and an actual inference against a non-sensitive WAV succeeded. A label cannot establish the truthfulness of human speech; the source model's reported accuracy has not been independently replicated. False positives, language/accent bias and recording-condition sensitivity are possible. Never treat this as legal, employment or forensic evidence. Do not publish private audio or mount credentials into the container.
+Source inspection and test code do **not** establish real inference. The staged candidate is not deployed to main. Record separately whether Docker built, the pinned weight was verified, unit tests passed, and an actual inference against a non-sensitive WAV succeeded. A label cannot establish the truthfulness of human speech; the source model's reported accuracy has not been independently replicated. False positives, language/accent bias and recording-condition sensitivity are possible. Never treat this as legal, employment or forensic evidence. Do not mount credentials into the container.
 
 ## GitHub Actions: isolated synthetic inference and persisted report
 

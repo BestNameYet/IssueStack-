@@ -25,8 +25,14 @@ jobs:
           base = Path('workspaces/audio-deception-comparison')
           text = (base / 'transcript-table.md').read_text(encoding='utf-8')
           rows = []
-          pattern = re.compile(r'^\\| (2026-10-26 [0-9:.]+ PDT) \\| `(media/[^ `]+\\.(?:ogg|wav))` \\| ([0-9.]+ s) \\| Heather Fowle \\| ', re.M)
-          for timestamp, source, duration in pattern.findall(text):
+          for line in text.splitlines():
+              if ' | Heather Fowle | ' not in line or not line.startswith('| 2026-'):
+                  continue
+              parts = line.split(' | ', 4)
+              assert len(parts) == 5, f'Unexpected table row: {line[:100]}'
+              timestamp = parts[0].removeprefix('| ')
+              source = parts[1].strip('`')
+              duration = parts[2]
               rows.append({'timestamp': timestamp, 'source': source, 'duration': duration})
           assert len(rows) == 7, f'Expected exactly seven Heather Fowle entries, found {len(rows)}'
           existing = json.loads((base / 'transcripts/inventory.json').read_text(encoding='utf-8'))

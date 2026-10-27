@@ -1,0 +1,267 @@
+name: Deduplicate phone audio vs Messenger and classify voice
+
+on:
+  push:
+    branches:
+      - stage/phone-audio-dedup-6439112408
+    paths:
+      - .github/workflows/classify-phone-audio.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dedup-and-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install two independent speech activity detectors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install 'silero-vad[onnx-cpu]==6.2.3' 'webrtcvad-wheels==2.0.14.post1'
+          ffmpeg -version | head -n 1
+      - name: Download and verify published Android audio archive
+        shell: bash
+        env:
+          AUDIO_SOURCE_ZIP: ${{ runner.temp }}/all-audio.zip
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 30 --max-time 600 \
+            'https://github.com/BestNameYet/IssueStack-/releases/download/audio-archive-20261027/all-audio-20261027-002301.zip' \
+            --output "$AUDIO_SOURCE_ZIP"
+          test "$(stat -c %s "$AUDIO_SOURCE_ZIP")" -eq 43507365
+          echo '702482496a69a30be0467b66539e40a71196f74232a4e23c111ecf44f42b0556  '"$AUDIO_SOURCE_ZIP" | sha256sum -c -
+      - name: Deduplicate and conservatively classify voice presence
+        shell: bash
+        env:
+          AUDIO_SOURCE_ZIP: ${{ runner.temp }}/all-audio.zip
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import csv, hashlib, io, json, os, re, stat, subprocess, tempfile, zipfile
+          from collections import Counter, defaultdict
+          from pathlib import Path, PurePosixPath
+          
+          import numpy as np
+          import torch
+          import webrtcvad
+          from silero_vad import load_silero_vad, get_speech_timestamps
+          torch.set_num_threads(2)
+          
+          SOURCE = Path(os.environ["AUDIO_SOURCE_ZIP"])
+          MANIFEST = Path("workspaces/audio-deception-comparison/additional-messenger-audio/wav_conversion_manifest.csv")
+          OUT = Path("workspaces/audio-deception-comparison/phone-audio-dedup-vad-results")
+          OUT.mkdir(parents=True, exist_ok=True)
+          EXPECTED_SHA = "702482496a69a30be0467b66539e40a71196f74232a4e23c111ecf44f42b0556"
+          EXPECTED_SIZE = 43507365
+          EXTS = {".ogg", ".m4a", ".mp3", ".wav", ".flac", ".amr", ".aiff"}
+          if SOURCE.stat().st_size != EXPECTED_SIZE:
+              raise ValueError("Source archive size does not match release metadata")
+          if hashlib.sha256(SOURCE.read_bytes()).hexdigest() != EXPECTED_SHA:
+              raise ValueError("Source archive checksum does not match release metadata")
+          with MANIFEST.open(newline="", encoding="utf-8") as f:
+              ref_rows = list(csv.DictReader(f))
+          if len(ref_rows) != 110:
+              raise ValueError(f"Expected 110 Messenger source records; found {len(ref_rows)}")
+          messenger = defaultdict(list)
+          for ref in ref_rows:
+              digest = ref["sha256_media_id"].lower()
+              if not re.fullmatch(r"[0-9a-f]{64}", digest):
+                  raise ValueError("Invalid Messenger source SHA-256")
+              messenger[digest].append({
+                  "path": ref["original_media_path"],
+                  "original_filename": ref["original_filename"],
+                  "prior_23": ref["prior_23"],
+                  "existing_speech_screen": ref["speech_presence_screen"]
+              })
+          if len(messenger) != 110:
+              raise ValueError("Messenger source manifest contains duplicate content hashes")
+          model = load_silero_vad(onnx=True)
+          vad = webrtcvad.Vad(2)
+          records = []
+          first_path_by_digest = {}
+          errors = []
+          
+          def safe_name(info):
+              name = info.filename
+              parts = PurePosixPath(name).parts
+              mode = info.external_attr >> 16
+              if (not name or name.startswith("/") or "\\" in name or "\x00" in name or
+                  not parts or any(x in ("", ".", "..") for x in name.split("/")) or
+                  stat.S_ISLNK(mode)):
+                  raise ValueError(f"Unsafe ZIP entry: {name!r}")
+              return name
+          
+          def analyze_audio(raw_path, pcm_path):
+              subprocess.run([
+                  "ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin",
+                  "-y", "-i", str(raw_path), "-map", "0:a:0",
+                  "-ac", "1", "-ar", "16000", "-f", "s16le", str(pcm_path)
+              ], check=True, timeout=300, capture_output=True)
+              nbytes = pcm_path.stat().st_size
+              if not nbytes or nbytes % 2:
+                  raise ValueError("Empty or invalid decoded PCM")
+              if nbytes > 256*1024*1024:
+                  raise ValueError("Decoded PCM too large to safely analyze")
+              pcm = np.fromfile(pcm_path, dtype="<i2")
+              seconds = len(pcm) / 16000
+              arr = pcm.astype(np.float32) / 32768.0
+              rms = float(np.sqrt(np.mean(arr*arr)))
+              segments = get_speech_timestamps(torch.from_numpy(arr), model,
+                  sampling_rate=16000, return_seconds=True, threshold=0.5,
+                  min_speech_duration_ms=250, min_silence_duration_ms=200)
+              silero_seconds = sum(max(0.0, x["end"] - x["start"]) for x in segments)
+              frame_len = 480
+              nframes = len(pcm) // frame_len
+              positives = 0
+              for frame in range(nframes):
+                  start = frame * frame_len
+                  chunk = pcm[start:start+frame_len].astype("<i2", copy=False).tobytes()
+                  positives += int(vad.is_speech(chunk, 16000))
+              web_fraction = positives / nframes if nframes else 0.0
+              silero_fraction = silero_seconds / seconds if seconds else 0.0
+              if silero_seconds >= max(0.5, min(1.2, seconds*0.04)) and web_fraction >= 0.035:
+                  category, reason = "voice_likely", "Both independent VAD screens detected sustained voice-like activity"
+              elif silero_seconds < 0.12 and web_fraction < 0.015 and seconds >= 0.45:
+                  category, reason = "nonvoice_likely", "Neither VAD screen detected meaningful voice activity"
+              else:
+                  category, reason = "uncertain", "Voice detectors disagree, duration is very short, or evidence is borderline"
+              return {
+                  "duration_seconds": round(seconds,3), "rms": round(rms,6),
+                  "silero_voice_seconds": round(silero_seconds,3),
+                  "silero_voice_fraction": round(silero_fraction,4),
+                  "webrtc_voice_fraction": round(web_fraction,4),
+                  "silero_segment_count": len(segments),
+                  "voice_category": category, "reason": reason
+              }
+          
+          with tempfile.TemporaryDirectory() as td:
+              tmp = Path(td)
+              with zipfile.ZipFile(SOURCE) as arc:
+                  if (bad := arc.testzip()) is not None:
+                      raise ValueError(f"Bad archive CRC: {bad}")
+                  members = [x for x in arc.infolist() if not x.is_dir()]
+                  if len(members) != 97:
+                      raise ValueError(f"Expected 97 extracted audio files; got {len(members)}")
+                  total = 0
+                  names = set()
+                  for n, entry in enumerate(sorted(members, key=lambda x:x.filename),1):
+                      name = safe_name(entry)
+                      if name in names:
+                          raise ValueError("Repeated ZIP member path")
+                      names.add(name)
+                      ext = PurePosixPath(name).suffix.lower()
+                      if ext not in EXTS:
+                          raise ValueError("Non-audio file in the expected audio archive")
+                      total += entry.file_size
+                      if entry.file_size > 512*1024*1024 or total > 2*1024*1024*1024:
+                          raise ValueError("Uncompressed archive size limit exceeded")
+                      raw = tmp / ("file_" + str(n) + ext)
+                      sha = hashlib.sha256()
+                      with arc.open(entry) as src, raw.open("wb") as f:
+                          while chunk := src.read(1024*1024):
+                              sha.update(chunk)
+                              f.write(chunk)
+                      digest=sha.hexdigest()
+                      result = {
+                          "source_path": name, "size_bytes": entry.file_size,
+                          "format": ext, "sha256": digest, "dedup_status": "",
+                          "messenger_matches": [], "intra_archive_duplicate_of": "",
+                          "voice_category": "not_screened", "reason": "",
+                          "duration_seconds": None, "rms": None,
+                          "silero_voice_seconds": None, "silero_voice_fraction": None,
+                          "webrtc_voice_fraction": None, "silero_segment_count": None,
+                          "source_reference": "Android public audio release"
+                      }
+                      if digest in messenger:
+                          result["dedup_status"] = "messenger_exact_duplicate"
+                          result["messenger_matches"] = messenger[digest]
+                          result["reason"] = "Exact SHA-256 match to 110-source Messenger manifest; excluded from new speech screening"
+                      elif digest in first_path_by_digest:
+                          result["dedup_status"] = "intra_archive_exact_duplicate"
+                          result["intra_archive_duplicate_of"] = first_path_by_digest[digest]
+                          result["reason"] = "Same SHA-256 as earlier phone-archive item; excluded from repeated screening"
+                      else:
+                          result["dedup_status"] = "unique_vs_messenger_sha256"
+                          pcm=tmp / "current.pcm"
+                          try:
+                              result.update(analyze_audio(raw, pcm))
+                          except Exception as exc:
+                              result["voice_category"] = "uncertain"
+                              result["reason"] = f"Cannot verify speech presence: {type(exc).__name__}: {str(exc)[:160]}"
+                              errors.append({"source_path":name,"error":result["reason"]})
+                          finally:
+                              pcm.unlink(missing_ok=True)
+                      first_path_by_digest.setdefault(digest,name)
+                      records.append(result)
+                      raw.unlink(missing_ok=True)
+                      print(f"Processed {n}/{len(members)}: {result['dedup_status']} / {result['voice_category']}",flush=True)
+          
+          assert len(records) == 97
+          by_dedup = Counter(x["dedup_status"] for x in records)
+          by_voice = Counter(x["voice_category"] for x in records)
+          assert sum(by_dedup.values()) == 97
+          assert sum(by_voice.values()) == 97
+          assert by_voice.get("not_screened",0) == by_dedup.get("messenger_exact_duplicate",0)+by_dedup.get("intra_archive_exact_duplicate",0)
+          unmatched = by_dedup.get("unique_vs_messenger_sha256",0)
+          assert unmatched == sum(by_voice.get(cat,0) for cat in ("voice_likely","nonvoice_likely","uncertain"))
+          with (OUT/"classification.json").open("w",encoding="utf-8") as f:
+              json.dump(records,f,indent=2,ensure_ascii=False);f.write("\n")
+          fieldnames=["source_path","size_bytes","format","sha256","dedup_status",
+              "messenger_matches","intra_archive_duplicate_of","voice_category","reason",
+              "duration_seconds","rms","silero_voice_seconds","silero_voice_fraction",
+              "webrtc_voice_fraction","silero_segment_count"]
+          with (OUT/"classification.csv").open("w",newline="",encoding="utf-8") as f:
+              w=csv.DictWriter(f,fieldnames=fieldnames);w.writeheader()
+              for entry in records:
+                  w.writerow({k:(json.dumps(entry[k],ensure_ascii=False) if k=="messenger_matches" else entry.get(k)) for k in fieldnames})
+          summary={
+           "schema":"issuestack.phone-audio-dedup-vad.v1",
+           "source_archive":"audio-archive-20261027/all-audio-20261027-002301.zip",
+           "source_archive_sha256":EXPECTED_SHA,
+           "messenger_reference":"workspaces/audio-deception-comparison/additional-messenger-audio/wav_conversion_manifest.csv",
+           "messenger_unique_source_count":len(messenger),
+           "messenger_prior_23_count":sum(1 for row in ref_rows if row["prior_23"].lower()=="yes"),
+           "phone_audio_files":len(records),
+           "by_dedup":dict(by_dedup),
+           "by_voice":dict(by_voice),
+           "analysis_errors":errors,
+           "speech_classifier_versions":{"silero_vad":"6.2.3 (ONNX)","webrtcvad_wheels":"2.0.14.post1"},
+           "limitations":[
+              "Exact SHA-256 comparison detects identical source file bytes; transcoded/edited duplicates may remain unmatched.",
+              "voice_likely and nonvoice_likely are algorithmic VAD screening labels, not manual listening or proof of content.",
+              "Speech over music, singing, very quiet speech and compression noise can cause false classifications.",
+              "Messenger duplicates were deliberately excluded from new voice screening; prior source VAD flags are retained only as reference metadata.",
+              "No audio was removed, modified, transcribed or committed."
+           ]
+          }
+          with (OUT/"summary.json").open("w",encoding="utf-8") as f:
+              json.dump(summary,f,indent=2);f.write("\n")
+          with (OUT/"summary.md").open("w",encoding="utf-8") as f:
+              f.write("# Android audio ↔ Messenger SHA-256 dedup and voice screening\n\n")
+              f.write(f"Total input audio: **{len(records)}**; Messenger reference files: **{len(messenger)}** (23 previously evaluated).\n\n")
+              f.write("## Deduplication\n\n")
+              for k,v in sorted(by_dedup.items()): f.write(f"- {k}: **{v}**\n")
+              f.write("\n## Screening categories\n\n")
+              for k,v in sorted(by_voice.items()): f.write(f"- {k}: **{v}**\n")
+              f.write("\n## Limitations\n\n")
+              for line in summary["limitations"]: f.write(f"- {line}\n")
+              f.write("\nDetailed file paths, SHA-256 matches and voice metrics are in classification.csv / classification.json.\n")
+          print("RESULT_SUMMARY_JSON="+json.dumps({k:summary[k] for k in ("phone_audio_files","messenger_unique_source_count","messenger_prior_23_count","by_dedup","by_voice","analysis_errors")},separators=(",",":")),flush=True)
+          PY
+      - name: Upload manifests and classification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phone-audio-messenger-dedup-${{ github.run_id }}
+          path: workspaces/audio-deception-comparison/phone-audio-dedup-vad-results/
+          retention-days: 30
+          if-no-files-found: warn

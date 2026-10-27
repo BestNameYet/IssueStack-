@@ -2,15 +2,105 @@
   "schema": "file-metadata.v1",
   "files": [
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/categories.json",
+      "bytes": 31016,
+      "sha256": "4b1eb465b0b5ee90814acb09bf6cc69634a1fd5b497c7f9825eec1873863fb46",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/conversations.json",
+      "bytes": 981528,
+      "sha256": "8691daf3f5f0a6be6f3501429a241e5c98720e9f196b3e1791e16efe3ceedf4e",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/127532374892625/message_1.json",
       "bytes": 3059,
       "sha256": "73f23eaac2f10ca708413c19831437bd9d3083e8f25b5ee3c16305c1cc2beb2f",
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/127532374892625/photos/308049086455727.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/audio/1915954988711344.mp4",
+      "bytes": 101296,
+      "sha256": "5bbba7e6143311f861b033d9f7d792a8b772d325770a33d31c5ee3dddcb26c02",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/audio/2188191198117740.mp4",
+      "bytes": 232731,
+      "sha256": "5c269d5d30fc1e68ab4394adfcbfceade5dbce59d4981eb7b1a38783ea470ea1",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/audio/346250649284642.mp4",
+      "bytes": 166647,
+      "sha256": "fb4e3f2b1a877f17c762918420d46be8b5f13a9279d08aa5bfd6a6449f6738e2",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/audio/478143799360083.mp4",
+      "bytes": 18077,
+      "sha256": "10566bc7895ca59b0276380c7d6061ac9a2bb4c1655986b1d6b7902a53ca1681",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/message_1.json",
       "bytes": 45425,
       "sha256": "513b62db2b6ce576a561684174c15cec0a3cea9ff96f9867dab8310c3b99d0ef",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/178649446390957.jpg",
+      "bytes": 253102,
+      "sha256": "318819a73f7ca6dee6e119eab570bf6023101051b15ed53a64c22a170a3e0c56",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/188962928646436.jpg",
+      "bytes": 181713,
+      "sha256": "f8dd732a3e973a7a7ce320051ef98d577087766c6f2a27cac55ae51528f1ba04",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/197699764464707.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/248734119142432.jpg",
+      "bytes": 155781,
+      "sha256": "807c8205d20809fbd94df59231b25a521ccad657b943b6a429f8cc89527240a3",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/282570489033103.jpg",
+      "bytes": 35517,
+      "sha256": "0bb1302beb99c9cb2accc1ba1eb0ccf5018f4fcec21a111338a4fc4f176ed1ce",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/334104420475145.jpg",
+      "bytes": 31631,
+      "sha256": "40531519f0476afcee277212a665dca2f8bc7241054c8ef24640eeb7696ad365",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/344501346319195.jpg",
+      "bytes": 302408,
+      "sha256": "1399661e84e870a4eb604e4088288d47ad41524a76c6bf7e79c4a94d51111bf6",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/176687113241974/photos/538890883249053.jpg",
+      "bytes": 52187,
+      "sha256": "9285af56968deed5cb6919e7e05ac2112dc2946ce8235edb446904ca29c10e2c",
       "job_id": 6437031149
     },
     {
@@ -38,9 +128,45 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/198843731102426/photos/1639474109519886.jpg",
+      "bytes": 42727,
+      "sha256": "2914cc2bede8dfbcc305d3eaaacecf671955af3a1948a49103fd85b3ad5b78e7",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/198843731102426/photos/2196303797135540.jpg",
+      "bytes": 86141,
+      "sha256": "592929c06316398f0684c9eef64215cc34c608c42c9f9dee4c87bfdc839ee157",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/198843731102426/photos/2329539667105086.jpg",
+      "bytes": 43593,
+      "sha256": "8b100521cc96326386656029c77605bf699133fe5a25b44e334d4f38331c2a1e",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/198843731102426/photos/2436158326709878.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/2062766377115213/message_1.json",
       "bytes": 5785,
       "sha256": "28a8918b4922dda5f3b3671607accc3d3abbe6eb7a17657050d6951349b21808",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/2062766377115213/photos/196970364541953.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/2062766377115213/photos/2361395124136392.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
       "job_id": 6437031149
     },
     {
@@ -53,6 +179,12 @@
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/215333009453498/message_1.json",
       "bytes": 458,
       "sha256": "5c1a88982d01a4b6a457eb1a361a52e49a039212f2641c4e466b2befabaa72e5",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/2246556082264908/audio/787649201615007.mp4",
+      "bytes": 83880,
+      "sha256": "52d1aae0f8e9dd811910d203f967288f4bd02b9e34539568cb97e7bffb6837d1",
       "job_id": 6437031149
     },
     {
@@ -80,6 +212,18 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/310004356572591/photos/2285397305009107.jpg",
+      "bytes": 58832,
+      "sha256": "95d3e48b453435ee7467a2db66ca886b46404f72836eeccf465fa36c28feb05c",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/310004356572591/photos/666745583785835.jpg",
+      "bytes": 49519,
+      "sha256": "d626a51eaca873796fb21d88ef6cc395475f55086cd715dcadcb00e231597e78",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/343046633171024/message_1.json",
       "bytes": 486,
       "sha256": "0034183ae826b26472273da1f27d29adc7443f7d3f8122e7207d615366e66db2",
@@ -98,6 +242,12 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/amandareid_140779426908857/gifs/443366759816584.gif",
+      "bytes": 28243,
+      "sha256": "ae0ca74cacee809edaf7ebf369431aa0297bd15396187624ba6d59fb867cf60b",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/amandareid_140779426908857/message_1.json",
       "bytes": 1324,
       "sha256": "00f6fe66dfb962a291a50f5327ca8c46c69a94df880c907da3b0204169f4fe4c",
@@ -107,6 +257,12 @@
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/amandareid_1965277036848874/message_1.json",
       "bytes": 2290,
       "sha256": "74bea3a7d82ed6e108ac8cc8d9f244b5cd5afb41e68b71e5f83f2f15a793a64b",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/amandareid_1965277036848874/photos/248375922507424.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
       "job_id": 6437031149
     },
     {
@@ -152,6 +308,24 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/charliespikes_2086901531369953/photos/315182092703581.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/charliespikes_2086901531369953/photos/319613935532074.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/charliespikes_2086901531369953/photos/368019607184788.jpg",
+      "bytes": 43593,
+      "sha256": "8b100521cc96326386656029c77605bf699133fe5a25b44e334d4f38331c2a1e",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrisfisher_662910434228612/message_1.json",
       "bytes": 501,
       "sha256": "e79c8976e9388a84e5ac1d801aa1683bf5664ebc43c599607bb7d1c77ec52c44",
@@ -164,9 +338,45 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrismeekins_2051324368239965/photos/320563612195097.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrismeekins_2051324368239965/photos/325933514655686.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrismeekins_2051324368239965/photos/481664302585488.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrissmith_1956151331135059/message_1.json",
       "bytes": 17479,
       "sha256": "99ecd248480c6b5b0ce1fa5048ac393bd962822a5f43323df64501ee63d315be",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrissmith_1956151331135059/photos/376695749634143.png",
+      "bytes": 1399062,
+      "sha256": "6636fbaf96469880968535725aeef91098a58d25e9191e26bc80169ab8663aa4",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrissmith_1956151331135059/photos/547184609026870.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/chrissmith_1956151331135059/photos/857145254620846.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
       "job_id": 6437031149
     },
     {
@@ -212,6 +422,12 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/daliamontoya_279882746196924/photos/272140560173477.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/danieldacus_199065491033077/message_1.json",
       "bytes": 520,
       "sha256": "cee5cb2a288c99c2186ea6f35baf107200ffa0ef6640a11692af20198c5b991c",
@@ -224,9 +440,27 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/davidwindom_510734772773559/photos/286913705365395.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/debbieblevins_2027229430675226/message_1.json",
       "bytes": 2616,
       "sha256": "93003b43d5bbb59a7da1414d544c3ed5deb489fadfe4f65d203a7a2b102127d3",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/debbieblevins_2027229430675226/photos/1061275190732254.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/debbieblevins_2027229430675226/photos/336792720576124.png",
+      "bytes": 30822,
+      "sha256": "c29ca158a273e14c7ad94da72c5daed9a62e37ef87ceffbeb8e6ced6f9e7abdb",
       "job_id": 6437031149
     },
     {
@@ -272,9 +506,39 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/graceswift_167204867562448/photos/2422247234468389.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/graceswift_167204867562448/photos/621091568393316.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/gwenohern_868531413485909/gifs/2373853046273284.gif",
+      "bytes": 820802,
+      "sha256": "d054c316301e010d536e9a1b9e0d165d7ee4ec4fceb59b2cf9266f0e24d552e5",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/gwenohern_868531413485909/gifs/466519747445065.gif",
+      "bytes": 187813,
+      "sha256": "7d2d9ab1430192dbbf25489c73e3681c9177c9169c66965120b71174b882b39f",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/gwenohern_868531413485909/message_1.json",
       "bytes": 3048,
       "sha256": "625071466d7e2f4943af4b66beefaf5def9e02cc3d8696fea5ca09c3c3c7f61b",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/gwenohern_868531413485909/photos/1078127252381249.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
       "job_id": 6437031149
     },
     {
@@ -287,6 +551,12 @@
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/heathertweet_573928239708541/message_1.json",
       "bytes": 915,
       "sha256": "737ceacf9e74f68d2e254109cdcd09e673bdd89e3f52c53fc847f0dad2477ad2",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/heathertweet_573928239708541/photos/2156729991244299.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
       "job_id": 6437031149
     },
     {
@@ -320,6 +590,18 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/katiecuellar_142711263382340/photos/2251285011613978.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/katiecuellar_142711263382340/photos/500532243821456.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/lucaslyons_2380873801970801/message_1.json",
       "bytes": 1373,
       "sha256": "559f53945a347b5ce7b50152d4d1eee82caa36215538c883e9c28a5666cc6088",
@@ -332,9 +614,33 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/manuelcuellar_1590521711047984/photos/1981701118535496.jpg",
+      "bytes": 94736,
+      "sha256": "c86ec7f19fabd32dbb667cb84e69a0423e56b0616f6be6bc0a79bc60d21604c8",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/manuelcuellar_1590521711047984/photos/2280680318865527.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/manuelcuellar_1590521711047984/photos/535579303536462.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/michaelflowers_328891838009421/message_1.json",
       "bytes": 1192,
       "sha256": "279f40d1ec6e63eeae487bdc325c7da6875323f19b0c8ce3471b5f5358558ef9",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/michaelflowers_328891838009421/photos/387195545255725.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
       "job_id": 6437031149
     },
     {
@@ -344,15 +650,69 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/mikeschuetzjr_2047446355294694/photos/321494331771995.jpg",
+      "bytes": 165197,
+      "sha256": "2f95ca807fd5f117f7b8ec9297fdf73c557f64cfa316d50e853ca6ec1ae75225",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/mikeschuetzjr_2047446355294694/photos/916522988696301.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeheadbustaparras_881703372195746/message_1.json",
       "bytes": 535,
       "sha256": "eb0ce5a449947f20967cc716bca34fe84064ebba98d4bf692be5860a525fddb5",
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/audio/724197158025367.mp4",
+      "bytes": 237772,
+      "sha256": "8ae58d662f3ea44de28fc6142fee64f49a7d931853113c6d04c32f8e574ecc93",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/audio/819963388390824.mp4",
+      "bytes": 49420,
+      "sha256": "e99c1eae683cc2227979092dfe6d1eb216703d1c8861ee1bb8e04d7c8eec21c4",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/message_1.json",
       "bytes": 20242,
       "sha256": "ac1947da59683e87640a53e1593dc1fcca33ff709e70c9f0a96e831513dc7547",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/photos/2124117921020934.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/photos/2416079705342838.jpg",
+      "bytes": 188380,
+      "sha256": "dc7d81e0b8ca4f0b4db35aa83ce70b113ec041172dc3fb6b1a8dd1eb614df1d1",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/photos/2552588874792127.jpg",
+      "bytes": 180420,
+      "sha256": "ab70a3dae7b9bc35112c796c6a097bf7ec2573ac6ea75472e5f08cd310559eb7",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/photos/906792139655507.jpg",
+      "bytes": 74008,
+      "sha256": "89d327782468c3f6c7814046309d2dcc4ca646fbbad354faf37f2db1ab64c446",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/moeparras_198172717836194/videos/422578685025280.mp4",
+      "bytes": 2591244,
+      "sha256": "4ce4005e3e7d26f64701ddb200a1f18a1d3a8e8b210cd5841939d9f999a19fae",
       "job_id": 6437031149
     },
     {
@@ -395,6 +755,12 @@
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/rhondssmall_316663452620557/message_1.json",
       "bytes": 898,
       "sha256": "051762631effbdf9c09df7bcc4ef98014de99e4f3de97c94eafac6c43d09193d",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/rhondssmall_316663452620557/photos/470567040360663.jpg",
+      "bytes": 77404,
+      "sha256": "3fb9b7e601430cf89d9bf4b29df7420532cde09a30f46e654523acb1973b6d5a",
       "job_id": 6437031149
     },
     {
@@ -452,6 +818,12 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/victordelafuente_1185767918247505/photos/465906877538068.jpg",
+      "bytes": 64896,
+      "sha256": "26001ec214bfac6f5cdf102487a4b3293a7d6180b27774b7590e26327b4b0400",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/wacokrase_1931369173594789/message_1.json",
       "bytes": 1994,
       "sha256": "b72408ce5e51c9a546b7cada162a4ffa8e871165dbe191829526df7062f6d6c2",
@@ -461,6 +833,18 @@
       "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/yurialvarino_10157435986826974/message_1.json",
       "bytes": 1911,
       "sha256": "5f583f02b30671a4d360434f18631705401168d9eff52b68b396e15f64796e22",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/archived_threads/yurialvarino_10157435986826974/photos/939993726345659.jpg",
+      "bytes": 105460,
+      "sha256": "d169162e8f1f781017412a0c1a327ced3f1f6ca6452040e9e60ef4b2dc9cd20f",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/encrypted_messaging_backup_settings.json",
+      "bytes": 152,
+      "sha256": "6194427068abf3a7c527ca32b23714d59c5143fa67344fc741b831bc5434ced3",
       "job_id": 6437031149
     },
     {
@@ -494,15 +878,261 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/information_about_your_devices.json",
+      "bytes": 1114,
+      "sha256": "c4315c72de640986211ec5e990e4a0cfe9ee50cb8a263f4ed89b15114a9c6bea",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/messaging_settings.json",
+      "bytes": 2092,
+      "sha256": "7e235978358e3394026da845a87438fdeba642f9ae41430067ad243687258a29",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/messenger_active_status_platform_settings.json",
+      "bytes": 337,
+      "sha256": "0955e517873b48571657b020f0911a7ce5ab37cd3292ff15428f1b1015c8598b",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/messenger_active_status_settings.json",
+      "bytes": 379,
+      "sha256": "abebd59ea99efc8534ed90eb20e764f19136fe96d1c09ca2a7e698de46012980",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/secret_conversations.json",
+      "bytes": 647,
+      "sha256": "fe7d6437554093f16c935585a09b942def2118bfce0ebfb04ec52f1293f9fde6",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1211883345577222.png",
+      "bytes": 17233,
+      "sha256": "db47a996db0575933d97da2c2056326fd86ecee5c992bd44c31e64d047f82991",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/126361884215275.png",
+      "bytes": 125188,
+      "sha256": "b349e0f7289f20e26bd90a0e25aeae4a08a9c7c775c85c2301f7594c8b608fb4",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/126361967548600.png",
+      "bytes": 141124,
+      "sha256": "cd6a7bab7348aa660462c252146814eb77f9deca531db472f9cc18afc2bc7d53",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/126362160881914.png",
+      "bytes": 112012,
+      "sha256": "fa56251a1e8b701544dc7720dea148709f91198c6827e254427c9e6dca0487b9",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1390600204574794.png",
+      "bytes": 63294,
+      "sha256": "3d8527c787ec4f74acf7c0546377d5b9ff54be274198175c7e5966f6f6c1cd94",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1398251753726341.png",
+      "bytes": 9431,
+      "sha256": "1da1fbea13769b1f902c9d701d1ab62563f66cfd09912426a781179230ad44e4",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1400298186849907.png",
+      "bytes": 14508,
+      "sha256": "d3c1a251b1dd61fce7783b31d14ad59486acd4f541385f98060232c7f5d55a91",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1403154696629781.png",
+      "bytes": 48154,
+      "sha256": "49fdea3b23b05f366a05e485e3256313d503f2e3178a986a34cb3ca053b3a851",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1403154833296434.png",
+      "bytes": 47837,
+      "sha256": "afe1afdb19854a663d427214c41c581bf74f755584bd25a7b97742f89791faf1",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1435018950122395.png",
+      "bytes": 22462,
+      "sha256": "74a2feb0802d522a09d73df1c1482ef74a8664aa3d90284386f8923759b7d235",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1435019936788963.png",
+      "bytes": 37728,
+      "sha256": "0657098980bb31073d5df4531aa3fcf16c33dc5f9d9446e5b10df247d49dec7b",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1435020460122244.png",
+      "bytes": 30116,
+      "sha256": "bd4d4735e9805bca184b540a16bbad09e06eafc7d0add94a2ad7341acde67085",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/155884458459895.png",
+      "bytes": 10865,
+      "sha256": "8c50c9cc103cc8911a1b0e85b6d59941b9f846f9bda23282f279657218279d20",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/167788116751808.png",
+      "bytes": 13509,
+      "sha256": "a599a582438bf322f95a5fcccf994ca703a8781a46fe2947e1a45b4daee4fd78",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1775283416045696.png",
+      "bytes": 65508,
+      "sha256": "6a8369614b39abd26997034b5586e11818f1e5a6951e28e32571c1df1f2c6562",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1775284809378890.png",
+      "bytes": 48610,
+      "sha256": "24b47f9732e6a44c8cb62619dbb442fca6c64d424148790ce25952a871120c01",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/1926230927415901.png",
+      "bytes": 8087,
+      "sha256": "d41fbed9eb45f9a069d777c4d4ed0f119d2ee404bd121ba2960ef2b2a02807bb",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/213405758808649.png",
+      "bytes": 58323,
+      "sha256": "443120329bf2b49b45cc26ce8db9d03eb8f00c0c8d10339a0ee3918c218e5c19",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/2141908529385198.png",
+      "bytes": 21708,
+      "sha256": "a56fc8a61b10b73cd4c663016a76324c90972c26112abdc8cd28dd9dec6e92ca",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/272548386421883.png",
+      "bytes": 16089,
+      "sha256": "e62bc774169db3e424ebf1710c8ffe454e6f255734d9f6c95a60857d55fa8eb5",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/290254088068958.png",
+      "bytes": 17977,
+      "sha256": "0e1e3a7b1956aa3072d261d03272016f6451915ae8969c023d635b5644e5b2d7",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/369239263222822.png",
+      "bytes": 5428,
+      "sha256": "0f248a52f90951fd35ff55247fc8fd1aef752dd864a71e65141d94caa0937e72",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/396449210499185.png",
+      "bytes": 28368,
+      "sha256": "998f5bcdb3d5e695c6c6326244c84e702dbc8cabacfb615e3fe37078caeb41a9",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/399318707251702.png",
+      "bytes": 13041,
+      "sha256": "31d388dec29359c96a092f646484bee0ffa3589f5f4fd592512ebaf8e7d68d0e",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/445625802303278.png",
+      "bytes": 29421,
+      "sha256": "a18820c0a857e9db3508898aae966e0949e5b08beb61cb6874c42cdab49ba9db",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/460938600694655.png",
+      "bytes": 43938,
+      "sha256": "a4620ec1007553e3db9b3b340f36d1f9015d914894e571c69e8f690c9992e36e",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/488541421259303.png",
+      "bytes": 27432,
+      "sha256": "e5690729b4b08b2506ff3fa29f14e41e04656ee660285fd66419f9119c708c69",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/488541467925965.png",
+      "bytes": 25565,
+      "sha256": "b3892e50ccb5e6a22c7213a646646b8b9869ea782b3eb3af11e5cd36309cff38",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/529233994205629.png",
+      "bytes": 28026,
+      "sha256": "4c2d1f7606965f5f9995734703dbcada67bf16e69f4f955a61fb852925d59984",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/575284725890905.png",
+      "bytes": 21210,
+      "sha256": "1ed3a497c5ef0ad978b1623eb8fd48b36a891db4711340cfb267b0cce1dfb02c",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/629291457187171.png",
+      "bytes": 10594,
+      "sha256": "8b10c07ab4d07001259f7f26af749eb4ecc57e71904b2e2eb94d1e17dc8e429c",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/stickers_used/798723783473135.png",
+      "bytes": 54781,
+      "sha256": "2c82cb91940fdc4a3a93965123177f418ef13b966792d807e3cb6093abf42515",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/support_messages.json",
+      "bytes": 1719,
+      "sha256": "9c43df1c78f00d0f75324836b088d9a5373ddb018416f3edfce5d34813b2b559",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/your_end-to-end_encryption_enabled_messenger_device.json",
+      "bytes": 5302,
+      "sha256": "f1cbc1439c02bc3637f675074cb5a98e1d3c512034ab9091f5a69d666eed4438",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/extracted/your_facebook_activity/messages/your_messenger_app_install_information.json",
+      "bytes": 336,
+      "sha256": "c977b7411aa3b2cbc8654d350fb1d96a9b1664069afad85936bab1829f6a7ab0",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/index.md",
-      "bytes": 17817,
-      "sha256": "cd3955a3ab1ad43e4178e23f8fa7e57d5b23aed170e1e3a76677166f1121f666",
+      "bytes": 15438,
+      "sha256": "07dc3bbe21353f859edecebeaeed4279675c967b51c5fdc050c7fe3230993425",
       "job_id": 6437031149
     },
     {
       "path": "workspaces/conversation-categorization/job-6437031149/inventory.json",
-      "bytes": 174082,
-      "sha256": "4235e7b0d3111ee22e3ae3e7671804ec0d16df979344780ebf717a0e048720e1",
+      "bytes": 135306,
+      "sha256": "d352aa16b37a9190bd05a01b4e18bb7e4058a3e0a3018939961e8b0f25e7171a",
+      "job_id": 6437031149
+    },
+    {
+      "path": "workspaces/conversation-categorization/job-6437031149/scripts/categorize.py",
+      "bytes": 10756,
+      "sha256": "8d3db336ccd27a0a0979ea68b72090abaa64c5be24b2c9d519096e22e9527979",
       "job_id": 6437031149
     },
     {
@@ -512,17 +1142,23 @@
       "job_id": 6437031149
     },
     {
+      "path": "workspaces/conversation-categorization/job-6437031149/summaries.md",
+      "bytes": 61662,
+      "sha256": "b293d2e4d0f14b8b40c822adfa0740a9b2c899965dc25315f1473b67b726ce2d",
+      "job_id": 6437031149
+    },
+    {
       "path": "workspaces/conversation-categorization/job-6437031149/verification.json",
-      "bytes": 461,
-      "sha256": "bfc8e732735b4d5c3f998ea44857a9157c712c1a610a48f95053b530fdb0f401",
+      "bytes": 1652,
+      "sha256": "0f0e7df11a1100230278362965f6b3e9889f3c42e6114397957aaa83605a8fa0",
       "job_id": 6437031149
     },
     {
       "path": ".github/workflows/import-conversations-6437031149.yml",
-      "bytes": 6446,
-      "sha256": "a55cf6b804bbf1b981b1811f5581c3009285300144b96dca03c91c1dad86e05a",
+      "bytes": 1110,
+      "sha256": "57e6de2609d881f2bce054654be6ec12594d5ebdbaf90e7c6fdb4d4402b1c1d1",
       "job_id": 6437031149
     }
   ],
-  "self_record": "config/file-metadata.json excluded from self-hash"
+  "self_record": "Metadata and review manifest excluded from self-hash; immutable commit and review manifest identify them."
 }

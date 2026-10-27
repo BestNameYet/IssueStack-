@@ -403,5 +403,566 @@
       "summary": "Eight group-member departure notifications; the group title alone is not used to infer a substantive conversation topic.",
       "confidence": "supported_by_available_text"
     }
+  },
+  "assignment_method": "Explicit source-text summaries for substantive threads; event-only and sparse-media fallbacks. Categories describe conversation content, not participant traits. Multiple labels allowed.",
+  "assignments": {
+    "176687113241974": {
+      "categories": [
+        "family_children",
+        "housing_support",
+        "relationship_flirting",
+        "contact_technology",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "heathertweet_573928239708541": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "davidwindom_510734772773559": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "manuelcuellar_1590521711047984": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "contact_technology",
+        "legal_safety"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "amandareid_1965277036848874": {
+      "categories": [
+        "social_checkin",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "chrismeekins_2051324368239965": {
+      "categories": [
+        "social_checkin",
+        "work_money",
+        "contact_technology"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "127532374892625": {
+      "categories": [
+        "social_checkin",
+        "contact_technology"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "chrissmith_1956151331135059": {
+      "categories": [
+        "housing_support",
+        "legal_safety",
+        "substance_discussion",
+        "relationship_flirting"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "graceswift_167204867562448": {
+      "categories": [
+        "social_checkin",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "mikeschuetzjr_2047446355294694": {
+      "categories": [
+        "shared_media",
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "charliespikes_2086901531369953": {
+      "categories": [
+        "social_checkin",
+        "family_children",
+        "forwarded_messages",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "daliamontoya_279882746196924": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "randykonetzke_2184637511807270": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "scotlandcarona_124891028497697": {
+      "categories": [
+        "social_checkin",
+        "forwarded_messages",
+        "identity_question",
+        "relationship_flirting"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "peggylynn_363041981172868": {
+      "categories": [
+        "identity_question",
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "wacokrase_1931369173594789": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "work_money"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "ruthmattias_214856442746107": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "ashleyponder_137083327260113": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "elzapataprieto_125043481815785": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "otisenglishjr_140469210248006": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "beckydavis_1998702643547288": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "tammylaxsonrhodes_2106970242965980": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "justinisbell_2300222263539230": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "343046633171024": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "audreyclauson_2365059696855436": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "1902326223184827": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "christiantyler_828381070827437": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "victordelafuente_1185767918247505": {
+      "categories": [
+        "social_checkin",
+        "relationship_flirting",
+        "work_money"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "debbieblevins_2027229430675226": {
+      "categories": [
+        "forwarded_messages",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "jenniferwarsturner_2131406460253326": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "amandareid_140779426908857": {
+      "categories": [
+        "social_checkin",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "2062766377115213": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "relationship_flirting",
+        "legal_safety"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "danieldacus_199065491033077": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "723459108025527": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "katiecuellar_142711263382340": {
+      "categories": [
+        "social_checkin",
+        "housing_support",
+        "legal_safety",
+        "contact_technology"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "gwenohern_868531413485909": {
+      "categories": [
+        "social_checkin",
+        "shared_media",
+        "forwarded_messages"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "2246556082264908": {
+      "categories": [
+        "contact_technology",
+        "limited_context"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "192624258391040": {
+      "categories": [
+        "conflict_hostility",
+        "legal_safety"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "moeparras_2305523826368049": {
+      "categories": [
+        "family_children",
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "moeheadbustaparras_881703372195746": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "moeparras_198172717836194": {
+      "categories": [
+        "family_children",
+        "conflict_hostility",
+        "housing_support",
+        "work_money",
+        "contact_technology"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "shaneembrey_198220534498079": {
+      "categories": [
+        "identity_question",
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "2284862348496271": {
+      "categories": [
+        "contact_technology",
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "elmontoya_198291021157697": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "brandonwright_371707743700515": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "lucaslyons_2380873801970801": {
+      "categories": [
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "rhondssmall_316663452620557": {
+      "categories": [
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "michaelflowers_328891838009421": {
+      "categories": [
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "310004356572591": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "paulfowle_687458071690413": {
+      "categories": [
+        "family_children",
+        "identity_question"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "carolyntodd_198549317798534": {
+      "categories": [
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "198639341122865": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "yurialvarino_10157435986826974": {
+      "categories": [
+        "contact_technology",
+        "limited_context"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "198843731102426": {
+      "categories": [
+        "housing_support",
+        "relationship_flirting",
+        "legal_safety",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "coleyhamm_327946424791609": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "christopherallen_198843814435751": {
+      "categories": [
+        "legal_safety",
+        "work_money",
+        "family_children",
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "677475259372872": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "ronnieshoultz_526493804845308": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "ericfancher_454617862035351": {
+      "categories": [
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "2523390404338495": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "eddiedyson_2847355135338887": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "samanthagoodwin_200978750888924": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "brandonclifford_10215873277650894": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "christopherallen_699028703901767": {
+      "categories": [
+        "social_checkin",
+        "relationship_flirting"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "facebookuser_208077216845744": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "facebookuser_2357476504346279": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "consojoe_514140809396741": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "joeanthonymares_1193109194224347": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "jorgegonzalez_215331676120298": {
+      "categories": [
+        "identity_question"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "sandrasmith_215331942786938": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "215332106120255": {
+      "categories": [
+        "limited_context",
+        "shared_media"
+      ],
+      "confidence": "limited_context"
+    },
+    "215333009453498": {
+      "categories": [
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "scottdavis_658296714674417": {
+      "categories": [
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "quincywilson_2471255143159231": {
+      "categories": [
+        "identity_question"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "coltonporter_215338999452899": {
+      "categories": [
+        "identity_question"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "chrisfisher_662910434228612": {
+      "categories": [
+        "identity_question"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "harleycolewynne_2317875531600832": {
+      "categories": [
+        "limited_context"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "metaai_1380275369625917": {
+      "categories": [
+        "ai_conversation"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "lindachrisgillesand241others_5207873412653411": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "privatedating065_6382239535235172": {
+      "categories": [
+        "promotional_links"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "privatesite067_5445144632264132": {
+      "categories": [
+        "system_only"
+      ],
+      "confidence": "supported_by_available_text"
+    },
+    "heatherfowle_1602110547987775": {
+      "categories": [
+        "social_checkin"
+      ],
+      "confidence": "supported_by_available_text"
+    }
   }
 }

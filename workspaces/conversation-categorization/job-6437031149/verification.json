@@ -1,18 +1,59 @@
 {
-  "zip_crc": "passed",
   "source_sha256": "ab438c7c86a356404613f3c716705f566cdf28bd8209ccec0b36c54f3b472c63",
-  "file_count": 349,
-  "thread_count": 82,
-  "message_count": 971,
-  "message_file_count": 82,
-  "categories": {
-    "archived_threads": 77,
-    "filtered_threads": 3,
-    "inbox": 2
-  },
-  "missing_attachment_paths": [
-    ""
+  "zip_crc": "passed",
+  "archive_files": 349,
+  "json_files_parsed": 224,
+  "extracted_message_area_files": 184,
+  "conversation_files": 82,
+  "conversations": 82,
+  "messages": 971,
+  "multi_part_threads": 0,
+  "exact_duplicate_message_records_preserved": 0,
+  "blank_thread_titles": [
+    "127532374892625",
+    "176687113241974",
+    "1902326223184827",
+    "192624258391040",
+    "198639341122865",
+    "198843731102426",
+    "2062766377115213",
+    "215332106120255",
+    "215333009453498",
+    "2246556082264908",
+    "2284862348496271",
+    "2523390404338495",
+    "310004356572591",
+    "343046633171024",
+    "677475259372872",
+    "723459108025527"
   ],
-  "topic_categorization": "pending",
-  "execution": "initial extraction complete; semantic categorization pending"
+  "attachment_reference_status": {
+    "present": 121,
+    "empty_uri": 2
+  },
+  "missing_attachment_references": [],
+  "categories": {
+    "ai_conversation": 1,
+    "conflict_hostility": 2,
+    "contact_technology": 9,
+    "family_children": 6,
+    "forwarded_messages": 4,
+    "housing_support": 8,
+    "identity_question": 8,
+    "legal_safety": 7,
+    "limited_context": 14,
+    "promotional_links": 1,
+    "relationship_flirting": 7,
+    "shared_media": 21,
+    "social_checkin": 27,
+    "substance_discussion": 1,
+    "system_only": 27,
+    "work_money": 5
+  },
+  "categorization_coverage": 82,
+  "all_original_message_records_preserved": true,
+  "all_extracted_bytes_match_source": true,
+  "timestamps": "UTC; original timestamp_ms retained",
+  "external_link_targets": "not fetched",
+  "semantic_scope": "Text/event categorization; no image, audio or linked-site content interpretation."
 }

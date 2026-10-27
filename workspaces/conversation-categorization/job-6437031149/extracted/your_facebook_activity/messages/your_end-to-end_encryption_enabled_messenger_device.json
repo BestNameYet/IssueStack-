@@ -1,0 +1,238 @@
+[
+  {
+    "timestamp": 1565822980,
+    "media": [
+      
+    ],
+    "label_values": [
+      {
+        "label": "Registration ID associated with this mobile device",
+        "value": ""
+      },
+      {
+        "label": "Unique ID",
+        "value": "AWNTXHGS5VMGWANZQ65YFIGETKLOGD62NH4VTG3ZQVH7BJEUWEVBE"
+      },
+      {
+        "label": "The name you have given this device",
+        "value": ""
+      },
+      {
+        "label": "User agent",
+        "value": "[FBAN/Orca-Android;FBAV/227.0.0.8.119;FBBV/166080952;FBDM/{density=1.5,width=854,height=480};FBLC/en_US;FBCR/cricket;FBMF/Alcatel;FBBD/TCL;FBPN/com.facebook.orca;FBDV/5041C;FBSV/8.1.0;FBLR/0;FBBK/1;FBCA/armeabi-v7a:armeabi;]"
+      },
+      {
+        "label": "Last time device was enabled or disabled",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Last time device used",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Status"
+      },
+      {
+        "label": "Name",
+        "value": "TCL Tetra"
+      }
+    ],
+    "fbid": "211967746456691"
+  },
+  {
+    "timestamp": 1565054965,
+    "media": [
+      
+    ],
+    "label_values": [
+      {
+        "label": "Registration ID associated with this mobile device",
+        "value": ""
+      },
+      {
+        "label": "Unique ID",
+        "value": "AXBSK3TPQVANR4FPKBBMHOKVEZL4KJFSLD65YSTDWCK5PSNOK6NU4"
+      },
+      {
+        "label": "The name you have given this device",
+        "value": ""
+      },
+      {
+        "label": "User agent",
+        "value": ""
+      },
+      {
+        "label": "Last time device was enabled or disabled",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Last time device used",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Status"
+      },
+      {
+        "label": "Name"
+      }
+    ],
+    "fbid": "209870503333082"
+  },
+  {
+    "timestamp": 1560735190,
+    "media": [
+      
+    ],
+    "label_values": [
+      {
+        "label": "Registration ID associated with this mobile device",
+        "value": ""
+      },
+      {
+        "label": "Unique ID",
+        "value": "AUKGUPUU5EJRSMTVRH35KV6DW6VGHDUZ3C6IDG5UWFVQ3CFBBFSGS"
+      },
+      {
+        "label": "The name you have given this device",
+        "value": ""
+      },
+      {
+        "label": "User agent",
+        "value": ""
+      },
+      {
+        "label": "Last time device was enabled or disabled",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Last time device used",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Status"
+      },
+      {
+        "label": "Name"
+      }
+    ],
+    "fbid": "198168177836648"
+  },
+  {
+    "timestamp": 1557181945,
+    "media": [
+      
+    ],
+    "label_values": [
+      {
+        "label": "Registration ID associated with this mobile device",
+        "value": ""
+      },
+      {
+        "label": "Unique ID",
+        "value": "AX7HZRKEYAXJOXUFYKOTM43QNCBUQZEGO35DJSQ32SHCRHHVO4JRK"
+      },
+      {
+        "label": "The name you have given this device",
+        "value": ""
+      },
+      {
+        "label": "User agent",
+        "value": "[FBAN/Orca-Android;FBAV/213.1.0.17.114;FBBV/152682992;FBDM/{density=2.0,width=720,height=1184};FBLC/en_US;FBCR/MetroPCS;FBMF/motorola;FBBD/motorola;FBPN/com.facebook.orca;FBDV/moto e5 play;FBSV/8.0.0;FBLR/0;FBBK/1;FBCA/armeabi-v7a:armeabi;]"
+      },
+      {
+        "label": "Last time device was enabled or disabled",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Last time device used",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Status"
+      },
+      {
+        "label": "Name",
+        "value": "Motorola Moto E5 Play"
+      }
+    ],
+    "fbid": "187320365588096"
+  },
+  {
+    "timestamp": 1543317358,
+    "media": [
+      
+    ],
+    "label_values": [
+      {
+        "label": "Registration ID associated with this mobile device",
+        "value": ""
+      },
+      {
+        "label": "Unique ID",
+        "value": "AXHIR3JZLCHPOQYA6BEFF6OMXFNS4GUA3K62GRJMQ2DE72LDRIVCQ"
+      },
+      {
+        "label": "The name you have given this device",
+        "value": "tincan"
+      },
+      {
+        "label": "User agent",
+        "value": ""
+      },
+      {
+        "label": "Last time device was enabled or disabled",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Last time device used",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Status"
+      },
+      {
+        "label": "Name"
+      }
+    ],
+    "fbid": "135942667392533"
+  },
+  {
+    "timestamp": 1540211532,
+    "media": [
+      
+    ],
+    "label_values": [
+      {
+        "label": "Registration ID associated with this mobile device",
+        "value": ""
+      },
+      {
+        "label": "Unique ID",
+        "value": "AWIZ3THMOMOSSUHEU25J42VBJGAYXGATVN36JVTDXDO5SCT4KW3AM"
+      },
+      {
+        "label": "The name you have given this device",
+        "value": ""
+      },
+      {
+        "label": "User agent",
+        "value": ""
+      },
+      {
+        "label": "Last time device was enabled or disabled",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Last time device used",
+        "timestamp_value": 0
+      },
+      {
+        "label": "Status"
+      },
+      {
+        "label": "Name"
+      }
+    ],
+    "fbid": "117995969187203"
+  }
+]

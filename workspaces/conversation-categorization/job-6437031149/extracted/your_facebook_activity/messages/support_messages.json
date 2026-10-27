@@ -1,0 +1,40 @@
+{
+  "support_messages": {
+    "1260918668465300": {
+      "timestamp": 1735261725,
+      "subject": "You reported someone for pretending to be you",
+      "messages": [
+        {
+          "from": "FB Rep",
+          "to": "Heather Fowle",
+          "subject": "",
+          "message": "\nWe'll let you know when we've reviewed the profile you reported for pretending to be someone they're not. If it goes against one of our Community Standards, we'll remove it or follow up with the profile owner directly.  \n    \nThanks, \nThe Facebook Team\n",
+          "timestamp": 1735261731,
+          "attachments": [
+            
+          ]
+        }
+      ]
+    },
+    "1386480605672060": {
+      "timestamp": 1735261725,
+      "subject": "You reported Heather for pretending to be you",
+      "messages": [
+        {
+          "from": "Heather Fowle",
+          "to": "Facebook",
+          "subject": "Your report",
+          "message": "We'll let you know when we've reviewed the profile you reported for pretending to be someone they're not. If it goes against one of our Community Standards, we'll remove it or follow up with the profile owner directly.  \n    \nThanks, \nThe Facebook Team",
+          "timestamp": 1735261725
+        },
+        {
+          "from": "Facebook",
+          "to": "Heather Fowle",
+          "subject": "We removed the Page you reported",
+          "message": "We reviewed the Page and found that it goes against our Community Standards. We let the person know that their Page has been removed, but not who reported it. Thanks again for letting us know. Reports like yours help keep Facebook safe and welcoming for everyone.",
+          "timestamp": 1735261725
+        }
+      ]
+    }
+  }
+}

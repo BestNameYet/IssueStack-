@@ -1,0 +1,24 @@
+{
+  "media": [
+    
+  ],
+  "label_values": [
+    {
+      "label": "Visible to everyone?",
+      "value": "True"
+    },
+    {
+      "label": "Visibility setting",
+      "value": "Block list"
+    },
+    {
+      "label": "Creation time",
+      "timestamp_value": 0
+    },
+    {
+      "label": "Last modified time",
+      "timestamp_value": 0
+    }
+  ],
+  "fbid": "764935271159933"
+}

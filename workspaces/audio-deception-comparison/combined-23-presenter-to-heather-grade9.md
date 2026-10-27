@@ -18,9 +18,7 @@ Each entry explains what the conversation was about, then presents an edited tra
 
 ### 1. August 28, 2025 at 2:52:18 PM PDT
 
-**Who you were speaking with:** Jael Law  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Jael Law
 **Conversation context**
 
 Heather, on this recording you are speaking to Jael Law. You answer questions about a man named Leroy and whether you visited a certain street. You say you do not remember going there. Then you explain why you left an earlier situation. You describe losing your job, being stranded in Midland, and staying at a shelter. You also apologize to Jael for bringing problems into their life.
@@ -57,13 +55,13 @@ Heather, on this recording you are speaking to Jael Law. You answer questions ab
 >
 > It was like a whole other fucking deal, the reason why I left. So, yeah. Okay. Bye.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 2. August 29, 2025 at 9:06:38 AM PDT
 
-**Who you were speaking with:** Jael Law  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Jael Law
 **Conversation context**
 
 Heather, here you ask Jael about work. You remember Jael being willing to work even when life was hard. You know transportation has been a problem, but you want to understand what else happened.
@@ -72,13 +70,13 @@ Heather, here you ask Jael about work. You remember Jael being willing to work e
 
 > I only ask because I know that I know you enjoyed working and you're very motivated and that didn't really stop you from going to work So I'm just trying to figure out I know the transportation is a motherfucker But other than that what—talk to me.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 3. August 29, 2025 at 9:22:22 AM PDT
 
-**Who you were speaking with:** Jael Law  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Jael Law
 **Conversation context**
 
 Heather, you are trying to encourage Jael during a difficult time in Channelview. You talk about the risk of other people taking advantage of Jael. You are especially worried about the two animals Jael is caring for. Your message is to stay careful, keep going, and not lose hope.
@@ -107,13 +105,13 @@ Heather, you are trying to encourage Jael during a difficult time in Channelview
 >
 > That's like a one important. All right. Love you. Bye.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 4. August 29, 2025 at 4:07:16 PM PDT
 
-**Who you were speaking with:** Brandon Aldridge  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Brandon Aldridge
 **Conversation context**
 
 Heather, in this message to Brandon Aldridge, you talk about a police report. You say a woman told police where someone called Snow was located. You believe that information led police to find Snow. You are describing an allegation from the report, not an event you say you witnessed yourself.
@@ -124,13 +122,13 @@ Heather, in this message to Brandon Aldridge, you talk about a police report. Yo
 >
 > so the cops had the, the cops had had her and so they're going to let Snow go and then she turned around and she told the cops where Snow was holding and so they probably went over there and they searched her and then they found shit and so that's why I get it because Snow would have got away and if that fucking [unclear].
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 5. August 29, 2025 at 4:20:36 PM PDT
 
-**Who you were speaking with:** Jael Law  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Jael Law
 **Conversation context**
 
 Heather, you tell Jael how you looked for a safe place to stay. You describe going to the Salvation Army, spending time at a park, asking churches for help, and getting clothes and food. You also talk about prayer and how your faith helped you keep going.
@@ -151,13 +149,13 @@ Heather, you tell Jael how you looked for a safe place to stay. You describe goi
 >
 > Just don't lose your faith keep your head up and Keep a smile on your face, you know Yeah, I'm glad to hear that.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 6. August 29, 2025 at 5:56:02 PM PDT
 
-**Who you were speaking with:** Jael Law  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Jael Law
 **Conversation context**
 
 Heather, you talk to Jael about making bad choices and learning from them. You admit you have made mistakes yourself. You explain that people act based on what they have learned, and that hard experiences can teach them what to do differently next time.
@@ -176,13 +174,13 @@ Heather, you talk to Jael about making bad choices and learning from them. You a
 >
 > Same thing goes for us we are truly we only know what we were taught so don't be so harsh on yourself it's just a lesson to be learned so every every bad situation you go through and everything that you go through everything just take it as a learning lesson just sit back pay attention and think how could you prevent this or what could you do to make it better or how not to get yourself in that situation next time that's all we could do you know what I'm saying love you bye.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 7. September 8, 2025 at 8:09:15 PM PDT
 
-**Who you were speaking with:** Marland Desira  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Marland Desira
 **Conversation context**
 
 Heather, you leave a message for Marland Desira about his brother. You say you met him, bought or found supplies for him, and were trying to help him get shoes. You also mention groceries, vitamins, and your plan to meet him again.
@@ -199,13 +197,13 @@ Heather, you leave a message for Marland Desira about his brother. You say you m
 >
 > Anyways, but if for him I would just gave it to him But I don't think I don't want to be the size But anyways, I've got him some good shit from GNC and stuff, so anyways, just letting you know, bye.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 8. September 8, 2025 at 8:21:18 PM PDT
 
-**Who you were speaking with:** Ernesto Salinas  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Ernesto Salinas
 **Conversation context**
 
 Heather, you respond to Ernesto Salinas during what sounds like a discussion about items you might sell. You say you have several things available and ask him to contact you if he wants to do business. Some words for those items are not clear in the transcript.
@@ -216,13 +214,13 @@ Heather, you respond to Ernesto Salinas during what sounds like a discussion abo
 >
 > I got four of these [unclear] So if you're interested and I got other stuff as well if you're interested hit me up because I'd like to do some business with you.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 9. September 12, 2025 at 4:27:53 PM PDT
 
-**Who you were speaking with:** Rob Peoples  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Rob Peoples
 **Conversation context**
 
 Heather, you update Rob Peoples about your return to the Channelview area. You describe when you arrived, where you are staying or walking, and an argument that left your voice strained. You say you are on your way to a store.
@@ -237,13 +235,13 @@ Heather, you update Rob Peoples about your return to the Channelview area. You d
 >
 > Um, that's where now I'm going to the store. Uh, so I don't know, other than that, I'm doing a mess. Uh, pin me up. All right, there's-.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 10. September 12, 2025 at 4:29:37 PM PDT
 
-**Who you were speaking with:** Jael Law  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Jael Law
 **Conversation context**
 
 Heather, you tell Jael about Becky. You say Becky has a painful or swollen area that you think may be a hernia. You are concerned because it does not go back in and she has felt sick. You also describe your plans to shop and mention that your voice is improving.
@@ -258,13 +256,13 @@ Heather, you tell Jael about Becky. You say Becky has a painful or swollen area 
 >
 > Anyway, send me back up. Bye.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 11. September 12, 2025 at 6:12:41 PM PDT
 
-**Who you were speaking with:** Jael Law  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Jael Law
 **Conversation context**
 
 Heather, you are trying to reach Jael because some of your earlier messages may not have gone through. You explain that you are near Market and Sheldon and walking toward a food bank. You are checking whether it is open.
@@ -275,13 +273,13 @@ Heather, you are trying to reach Jael because some of your earlier messages may 
 >
 > I'm walking up to the food bank I don't know if they're open or off, but it's around [unclear]. Hopefully it wasn't that big of a thing Anyways, let me get over here and catch my friend right now. I'll be back.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 12. September 12, 2025 at 6:13:13 PM PDT
 
-**Who you were speaking with:** Ernesto Salinas  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Ernesto Salinas
 **Conversation context**
 
 Heather, you call Ernesto to apologize for asking him for something. You say the request was not his responsibility and that you should not have made it. You explain why you asked, then promise not to ask again.
@@ -296,13 +294,13 @@ Heather, you call Ernesto to apologize for asking him for something. You say the
 >
 > But I just wanted to call and let you know that I do apologize for that. And it won't happen again.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 13. September 12, 2025 at 7:41:31 PM PDT
 
-**Who you were speaking with:** Jim Jones  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Jim Jones
 **Conversation context**
 
 Heather, you tell Jim Jones about visiting a food bank. You describe the line, an exchange with a worker that upset you, and the food you received. Afterward, you explain where you are walking and what you plan to do next.
@@ -323,13 +321,13 @@ Heather, you tell Jim Jones about visiting a food bank. You describe the line, a
 >
 > I'm I can feel embusted my ass in the driveway Straight money all nice and bloody But I'm good. I'm walking from market Street I'm on Market and Sheldon right now headed back towards It's in and anyways, how's peppy?
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 14. September 12, 2025 at 8:11:20 PM PDT
 
-**Who you were speaking with:** Marland Desira  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Marland Desira
 **Conversation context**
 
 Heather, you call Marland to check on him. You have not seen him active online much that day. You want to know whether he made it into town safely and how his trip went.
@@ -340,13 +338,13 @@ Heather, you call Marland to check on him. You have not seen him active online m
 >
 > I've never seen you online much today, so I'm not sure But anyways, I just wanted to check and see if you all day and how you trip was and we're not anyways Hit me up. All right. Talk to you later. Bye.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 15. September 13, 2025 at 12:57:23 AM PDT
 
-**Who you were speaking with:** Marland Desira  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Marland Desira
 **Conversation context**
 
 Heather, you explain to Marland why you missed his earlier audio message: you say Bluetooth was still connected. Then you describe where you have been around town. You say you fell and hurt your knee, saw his brother, and look forward to seeing Marland when he returns.
@@ -369,13 +367,13 @@ Heather, you explain to Marland why you missed his earlier audio message: you sa
 >
 > All right, well job is safe And like I said, I'll be looking forward to seeing you When you return so hit me up.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 16. September 13, 2025 at 1:03:33 PM PDT
 
-**Who you were speaking with:** Howard Haudenshild  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Howard Haudenshild
 **Conversation context**
 
 Heather, you contact Howard Haudenshild about an item that sounds like a Durango. You ask whether he spoke to the person who has it. You say someone is ready to buy it and has cash available.
@@ -386,13 +384,13 @@ Heather, you contact Howard Haudenshild about an item that sounds like a Durango
 >
 > And if he's willing to, I have somebody that would like to buy, they have the cash and they're willing to buy it. So if you can get a hold of this man for me, I would greatly appreciate it. Thank you.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 17. 2026-10-26 12:07:29.489 PDT
 
-**Who you were speaking with:** Personal conversation  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Personal conversation
 **Conversation context**
 
 Heather, this conversation is about an alleged sexual encounter and whether you spent a night at another man's house. You say you thought about doing something sexual but changed your mind. You also deny staying overnight. You try to explain why an earlier account may have been misunderstood.
@@ -407,13 +405,13 @@ Heather, this conversation is about an alleged sexual encounter and whether you 
 >
 > I don't know who was because I remember there being a picture or set an ascent girl on the floor and the living room and No, but that was not me I never spent the night [unclear].
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 18. 2026-10-26 12:08:39.185 PDT
 
-**Who you were speaking with:** Personal conversation  
-**Audio model classification:** True Story
-
+**Who you were speaking with:** Personal conversation
 **Conversation context**
 
 Heather, you continue talking about the man's home. You describe sexual encounters from before your current relationship and say you left afterward. You explain that even when he offered to let you stay or move in, you did not accept.
@@ -424,13 +422,13 @@ Heather, you continue talking about the man's home. You describe sexual encounte
 >
 > I just I just didn't want to stay there I just couldn't I don't know it was just [unclear] I just didn't do.
 
+**Model conclusion:** ![TRUE STORY](https://img.shields.io/badge/TRUE_STORY-22863a?style=for-the-badge) **True Story**
+
 ---
 
 ### 19. 2026-10-26 12:19:02.415 PDT
 
-**Who you were speaking with:** Personal conversation  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Personal conversation
 **Conversation context**
 
 Heather, someone has brought up Anthony Bradford's account of seeing you with N.O. at the Crown Inn. You reject that account. You say you were not with N.O. after the shooting involving George. You point to the fact that you are not on a witness list as part of your explanation.
@@ -443,13 +441,13 @@ Heather, someone has brought up Anthony Bradford's account of seeing you with N.
 >
 > For some reason, I'm not on the witness list because I was not with N.O., but there's a lot of motherfuckers that are on that witness list, but I'm not nowhere on that witness list because I was not ever with N.O..
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 20. 2026-10-26 12:19:20.599 PDT
 
-**Who you were speaking with:** Personal conversation  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Personal conversation
 **Conversation context**
 
 Heather, you add to your denial about the Crown Inn. You argue that other people or motel cameras would have shown you there if the reported meeting had really happened.
@@ -458,13 +456,13 @@ Heather, you add to your denial about the Crown Inn. You argue that other people
 
 > I surely would have gotten mentioned by somebody, including him if I had been around him, and if it was at a motel or whatever, they would definitely have surveillance.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 21. 2026-10-26 12:22:14.334 PDT
 
-**Who you were speaking with:** Personal conversation  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Personal conversation
 **Conversation context**
 
 Heather, you continue explaining why you believe the reported timeline is wrong. You deny being with N.O. around the time of the shooting. Again, you say that investigators would have contacted you if you had been present.
@@ -479,13 +477,13 @@ Heather, you continue explaining why you believe the reported timeline is wrong.
 >
 > And like I said, I'm nowhere on that witness list to testify. And there's a lot of people on that list, but no, if I was anywhere around him or with him, I would definitely have been called up there to testify.
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 22. 2026-10-26 12:22:51.700 PDT
 
-**Who you were speaking with:** Personal conversation  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Personal conversation
 **Conversation context**
 
 Heather, you respond directly to the accusation that you are not telling the truth. You say you have no reason to lie and ask the other person to consider whether your explanation makes sense.
@@ -496,13 +494,13 @@ Heather, you respond directly to the accusation that you are not telling the tru
 >
 > Help me see and understand that maybe she is telling the truth because yeah, you know, some things do make sense that what I'm saying, because that's just not true. So...
 
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
+
 ---
 
 ### 23. 2026-10-26 12:25:19.182 PDT
 
-**Who you were speaking with:** Personal conversation  
-**Audio model classification:** Deceptive Story
-
+**Who you were speaking with:** Personal conversation
 **Conversation context**
 
 Heather, you explain what you say was your only visit to the Crown Inn. You describe riding with two women, waiting in a truck during a short stop, and then being taken to Terry's. You say you were not there on the other occasions being discussed.
@@ -512,5 +510,7 @@ Heather, you explain what you say was your only visit to the Crown Inn. You desc
 > and the Crown if I'm not mistaken would be the Mustang and I hadn't even been over there at all the except for once and that's whenever the two ladies had picked me up.
 >
 > When me and you were arguing right before Janie's graduation deal and so they stopped off at the motel there so the lady could get her granddaughter and I sat in the truck until they got the granddaughter and then they got back in the truck and they took me over there to Terry's I gave him the last the change I had a little bit of change I think it was like maybe a dollar or something or whatever but that was the only time that it had been to the Crown.
+
+**Model conclusion:** ![DECEPTIVE STORY](https://img.shields.io/badge/DECEPTIVE_STORY-red?style=for-the-badge) **Deceptive Story**
 
 ---

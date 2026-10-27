@@ -1,0 +1,63 @@
+name: Extract Heather Fowle audio and transcripts
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/extract-heather-fowle.yml'
+permissions:
+  contents: write
+jobs:
+  extract:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Extract 7 Heather Fowle audio transcript pairs'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Extract seven audio and transcript pairs
+        run: |
+          python3 - <<'PY'
+          import json, re, zipfile
+          from pathlib import Path, PurePosixPath
+          base = Path('workspaces/audio-deception-comparison')
+          text = (base / 'transcript-table.md').read_text(encoding='utf-8')
+          rows = []
+          pattern = re.compile(r'^\\| (2026-10-26 [0-9:.]+ PDT) \\| `(media/[^ `]+\\.(?:ogg|wav))` \\| ([0-9.]+ s) \\| Heather Fowle \\| ', re.M)
+          for timestamp, source, duration in pattern.findall(text):
+              rows.append({'timestamp': timestamp, 'source': source, 'duration': duration})
+          assert len(rows) == 7, f'Expected exactly seven Heather Fowle entries, found {len(rows)}'
+          existing = json.loads((base / 'transcripts/inventory.json').read_text(encoding='utf-8'))
+          lookup = {r['source']:r for r in existing}
+          target = base / 'heather-fowle'
+          (target / 'audio').mkdir(parents=True,exist_ok=True)
+          (target / 'transcripts').mkdir(exist_ok=True)
+          with zipfile.ZipFile(base / 'audio_last_3_days_deduplicated.zip') as archive:
+              for row in rows:
+                  src = row['source']
+                  assert src.startswith('media/') and '/' not in src[6:], f'Unexpected archive path: {src}'
+                  assert src in archive.namelist(), f'Audio missing: {src}'
+                  entry = lookup[src]
+                  assert entry['status'] == 'ok', f'Incomplete transcript: {src}'
+                  transcript = base / 'transcripts' / entry['transcript']
+                  assert transcript.is_file(), f'Transcript missing: {transcript}'
+                  (target / 'audio' / PurePosixPath(src).name).write_bytes(archive.read(src))
+                  (target / 'transcripts' / transcript.name).write_bytes(transcript.read_bytes())
+                  row['transcript'] = transcript.name
+          (target / 'inventory.json').write_text(json.dumps(rows,indent=2)+'\n',encoding='utf-8')
+          assert len(list((target/'audio').iterdir())) == 7
+          assert len(list((target/'transcripts').iterdir())) == 7
+          print('Verified 7 original audio recordings and 7 complete transcript files.')
+          PY
+      - name: Commit extracted speaker collection
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- workspaces/audio-deception-comparison/heather-fowle/
+          if ! git diff --cached --quiet; then
+            git commit -m "Add 7 Heather Fowle audio recordings and transcripts"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

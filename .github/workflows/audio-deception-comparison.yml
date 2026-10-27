@@ -91,7 +91,7 @@ jobs:
           import json
           with open('output/report.json',encoding='utf-8') as stream:
               report = json.load(stream)
-          assert report['schema']=='issuestack.audio-deception-comparison.v1', report.get('schema')
+          assert report['schema']=='issuestack.audio-deception-comparison.v2', report.get('schema')
           assert list(report['models'])==['truthDetection'], report.get('models')
           actual=report['models']['truthDetection']
           assert actual['status']=='ok',actual

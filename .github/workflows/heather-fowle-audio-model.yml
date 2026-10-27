@@ -2,17 +2,12 @@ name: Heather Fowle - experimental audio-model evaluation
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/heather-fowle-audio-model.yml'
 
 permissions:
   contents: read
 
 jobs:
   evaluate-seven-wav-files:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Execute seven-file experimental audio evaluation'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

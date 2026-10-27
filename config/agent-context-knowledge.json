@@ -1,0 +1,103 @@
+{
+  "schema": "issuestack.agent-context.knowledge.v1",
+  "decisions": [
+    {
+      "id": "D01",
+      "statement": "Fixed Issue #1 intake slot IDs are used rather than comment positions.",
+      "status": "documented",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/main/src/issue-1-intake.js"
+      ],
+      "alternatives": "unknown",
+      "rationale": "The implementation comment states positions should not be calculated after deletions."
+    },
+    {
+      "id": "D02",
+      "statement": "Issue #2 jobs receive distinct Issue #3 scratchpad comments linked by job ID.",
+      "status": "documented",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426771430"
+      ],
+      "alternatives": "unknown",
+      "rationale": "Durable handoff and recovery are explicit in the instruction library."
+    },
+    {
+      "id": "D03",
+      "statement": "GitHub token-authored edits require scheduled reconciliation for terminal scratchpad archival.",
+      "status": "verified_static",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/main/.github/workflows/issue-2-scratchpad-completion.yml"
+      ],
+      "alternatives": "unknown",
+      "rationale": "Workflow comment documents event suppression and hourly polling."
+    }
+  ],
+  "lineage": [
+    {
+      "from": "BestNameYet/CommandLine",
+      "to": "BestNameYet/IssueStack-",
+      "relation": "relationship_not_yet_verified",
+      "status": "unknown",
+      "evidence": []
+    },
+    {
+      "from": "BestNameYet/StateMachines",
+      "to": "BestNameYet/IssueStack-",
+      "relation": "referenced_JWRS_precedent",
+      "status": "documented",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/main/AGENTS.md"
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "id": "I01",
+      "rule": "An accepted intake is not proof of completed execution.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426763341"
+      ]
+    },
+    {
+      "id": "I02",
+      "rule": "An active job-to-pad index entry does not prove the job is pending.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426758658"
+      ]
+    },
+    {
+      "id": "I03",
+      "rule": "Every worker must record and verify its three-issue handshake before editing a job.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426765803"
+      ]
+    },
+    {
+      "id": "I04",
+      "rule": "User review decisions and verified artifacts precede terminal success.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426759464"
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "id": "F01",
+      "state": "possible",
+      "case": "A GitHub Actions GITHUB_TOKEN edit does not trigger another comment workflow.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/main/.github/workflows/issue-2-scratchpad-completion.yml"
+      ],
+      "recovery": "Scheduled or manual reconciliation; verify index and archive."
+    },
+    {
+      "id": "F02",
+      "state": "possible",
+      "case": "Missing or duplicated pad mappings invalidate the three-issue handshake.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426765803"
+      ],
+      "recovery": "Reconcile mapping with verified permanent comment IDs rather than guessing."
+    }
+  ]
+}

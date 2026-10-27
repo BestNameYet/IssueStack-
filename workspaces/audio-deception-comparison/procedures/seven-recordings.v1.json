@@ -1,0 +1,503 @@
+{
+  "schema": "issuestack.procedure.v1",
+  "nonce": "heather-sam-seven-interactive-review-6451109030-v1",
+  "title": "Seven Heather-to-Sam recordings — transcript, context and window review",
+  "steps": [
+    {
+      "id": "verify_sources",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. Reconcile the seven identifiers using workspaces/audio-deception-comparison/heather-fowle/wav-inventory.json and current source records. Retrieve run 40547505175 artifact 12753946024 (segment_results.json) and run 40551271678 artifact 12753804658 (seven_word_timestamps.json); verify artifact ZIP digests and compare the WAV hashes, filenames and recording IDs stored in both. Map original OGG, derived WAV, transcript filename and Messenger time for every recording. Count existing windows/words and check intervals against duration. Return exact source manifest, artifact references and checks actually performed. source_identity_matched means agreement between the two artifact manifests, NOT independently rehashing audio bytes. List any unverified audio bytes, ASR wording, zero-length words or contextual assumptions explicitly. This source-index step may finish with those disclosed follow-up items; conflicting IDs/hashes or missing artifacts block it. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "recording": {
+                  "type": "integer"
+                },
+                "source_ogg": {
+                  "type": "string"
+                },
+                "wav_filename": {
+                  "type": "string"
+                },
+                "wav_sha256": {
+                  "type": "string"
+                },
+                "transcript_filename": {
+                  "type": "string"
+                },
+                "messenger_time": {
+                  "type": "string"
+                },
+                "duration_seconds": {
+                  "type": "number"
+                },
+                "window_count": {
+                  "type": "integer"
+                },
+                "word_count": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "recording",
+                "source_ogg",
+                "wav_filename",
+                "wav_sha256",
+                "transcript_filename",
+                "messenger_time",
+                "duration_seconds",
+                "window_count",
+                "word_count"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uri",
+                "sha256",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "window_count": {
+            "type": "integer"
+          },
+          "timed_word_count": {
+            "type": "integer"
+          },
+          "source_identity_matched": {
+            "type": "boolean"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "follow_up": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "records",
+          "artifacts",
+          "window_count",
+          "timed_word_count",
+          "source_identity_matched",
+          "checks",
+          "follow_up"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "configure_review",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. USER STEP. Present a concrete choice to Sam: review all seven recordings in chronological order, use both existing 10s and 30s windows (5s step), extract individual claims, show original plus lightly corrected text, and review transitions in 17/18/22 first or follow chronological order. Obtain the user's current decision; preserve their verbatim answer in user_message. Allowed decision is proceed only; review_order is chronological or transitions_first; granularity is claim or sentence. recording_ids must contain exactly 17-23 once, window_seconds must contain 10 and 30 once, step_seconds=5, reuse_existing_results=true, show_raw_and_edited=true and deploy_site=false. Explain this selects how existing results are reviewed, not a classifier rerun. If they request other settings, resolve scope before accepting; never infer approval from silence. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string"
+          },
+          "user_message": {
+            "type": "string"
+          },
+          "recording_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "window_seconds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "step_seconds": {
+            "type": "number"
+          },
+          "review_order": {
+            "type": "string"
+          },
+          "granularity": {
+            "type": "string"
+          },
+          "reuse_existing_results": {
+            "type": "boolean"
+          },
+          "show_raw_and_edited": {
+            "type": "boolean"
+          },
+          "deploy_site": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "decision",
+          "user_message",
+          "recording_ids",
+          "window_seconds",
+          "step_seconds",
+          "review_order",
+          "granularity",
+          "reuse_existing_results",
+          "show_raw_and_edited",
+          "deploy_site"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "align_transcripts",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. Use accepted configuration. Locate the exact original audio and compare its bytes to the recorded WAV hash before listening. Align existing timed words and original transcripts; listen to uncertain wording, zero-duration words, boundary shifts and missing speech. Preserve raw ASR and separately corrected text without changing intended meaning. Include each word/phrase's recording ID and start/end seconds, source method and reviewed/unresolved status. Do not treat ASR scores as verified words. Persist the complete alignment as a versioned artifact, return its URI/hash plus counts and unresolved items. All seven recordings must be represented; no source reconversion or classifier rerun. checks_passed covers structural/coverage checks, not a claim that all uncertain words are resolved. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "artifact_uri": {
+            "type": "string"
+          },
+          "artifact_sha256": {
+            "type": "string"
+          },
+          "recording_count": {
+            "type": "integer"
+          },
+          "item_count": {
+            "type": "integer"
+          },
+          "unresolved": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "checks_passed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "artifact_uri",
+          "artifact_sha256",
+          "recording_count",
+          "item_count",
+          "unresolved",
+          "checks_passed"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "extract_claims",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. Read the accepted alignment artifact and retrieve neighboring Messenger messages. Extract each factual assertion, denial, admission and explanation with a stable claim_id, recording ID, speaker, recipient, full source filename, timestamp interval, original wording, corrected reading text, and the message that prompted it and relevant follow-up. Derive topics from actual speech; do not inherit titles from earlier summaries without verification. Keep uncertainty and context provenance. Save all claims in chronological order in CSV and JSON; return immutable refs, recording count, claim count and unresolved items. Do not manufacture a claim where speech is unclear. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uri",
+                "sha256",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "recording_count": {
+            "type": "integer"
+          },
+          "claim_count": {
+            "type": "integer"
+          },
+          "unresolved": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "checks_passed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "artifacts",
+          "recording_count",
+          "claim_count",
+          "unresolved",
+          "checks_passed"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "join_windows",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. Join each claim to EVERY stored 10s/30s window with positive interval overlap: max(claim_start,window_start)<min(claim_end,window_end). Store exact overlap seconds and separate window identifiers, start/end/mode/label/raw prediction/forest vote shares, whole-recording result and claim ID. Retain all original model values. If no window intersects, record it as unmatched; never create sentence-specific model predictions. Preserve partial-clip handling for recording 20 and the remainder-aligned terminal windows. Audit all 103 source windows, including any with no claim; a window may map to several claims. Highlight actual label transitions in 17/18/22 without assigning a precise lie-onset time. Persist joins and coverage audit; return artifact refs/counts/checks. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uri",
+                "sha256",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "recording_count": {
+            "type": "integer"
+          },
+          "source_window_count": {
+            "type": "integer"
+          },
+          "join_count": {
+            "type": "integer"
+          },
+          "unmatched_claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "unmatched_window_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "checks_passed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "artifacts",
+          "recording_count",
+          "source_window_count",
+          "join_count",
+          "unmatched_claim_ids",
+          "unmatched_window_ids",
+          "checks_passed"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "review_findings",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. USER STEP. Present the claim/context/recorded speech and conspicuous source-attributed TruthDetection labels with clickable original-audio intervals. Follow accepted review order; provide original and edited text and mixed-window results. Show unresolved wording/boundaries for correction. Ask for the user's accept or requested revisions. Return decision=accept only after their explicit review, accepted_recordings containing exactly 17-23 and requested_changes empty. If revisions are requested, preserve the user's answer in the scratchpad and revise versioned alignment/claims/joins outside this step while retaining prior artifact revisions; submit only after re-verification and fresh user acceptance. Do not invent a review or deploy a site. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string"
+          },
+          "user_message": {
+            "type": "string"
+          },
+          "accepted_recordings": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "requested_changes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "decision",
+          "user_message",
+          "accepted_recordings",
+          "requested_changes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "assemble_report",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. Using accepted source/alignment/claim/join records and user review, create the full chronological report, recording summaries, per-claim CSV/JSON and navigable audio-linked preview. Present the speech, story and exact source-attributed model results prominently; keep technical audit details in an appendix. Include exact filenames, Messenger times, timing provenance, original/edited transcript versions, context links and all unresolved items. Reuse current audio assets and model results. Save separate reviewable artifacts only: no changes to existing public site, no hosting server, no PR #21 merge. Return immutable output references and count checks. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uri",
+                "sha256",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "recording_count": {
+            "type": "integer"
+          },
+          "claim_count": {
+            "type": "integer"
+          },
+          "window_count": {
+            "type": "integer"
+          },
+          "unresolved": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "checks_passed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "artifacts",
+          "recording_count",
+          "claim_count",
+          "window_count",
+          "unresolved",
+          "checks_passed"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "verify_delivery",
+      "instruction": "Operate only on recordings 17-23 and the previously computed results. Read the current Issue #13 instruction and accepted history before work. Keep the audio-analysis job 6449290116 and setup job 6451109030 distinct. Independently reread final artifact bytes and compare hashes, audio identity mappings, all seven recording IDs, offset bounds, claim/window joins, all 103 unchanged predictions, counts, audio paths and the user's accepted revisions. Verify original recordings/public website unchanged relative to the execution baseline; preserve exact change inventory and required per-change review before main promotion. Update linked analysis job 6449290116 only after its own verified handshake and requirement review; this procedure reaching complete does not itself close any Issue #2 job. Return verified evidence and review status. Do not claim word-level verification for any unresolved speech. No website deployment or server launch. The engine checks types only: the operator must verify these substantive conditions BEFORE posting a return. If blocked or the user requests changes, record the blocker/decision in the mapped scratchpad, leave this step unanswered and resume here after correction. Never submit a false success or a review rejection merely to advance.",
+      "returns": {
+        "type": "object",
+        "properties": {
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uri",
+                "sha256",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "passed": {
+                  "type": "boolean"
+                },
+                "evidence_uri": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "passed",
+                "evidence_uri"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "remaining": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "delivery_verified": {
+            "type": "boolean"
+          },
+          "publication_status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifacts",
+          "checks",
+          "remaining",
+          "delivery_verified",
+          "publication_status"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

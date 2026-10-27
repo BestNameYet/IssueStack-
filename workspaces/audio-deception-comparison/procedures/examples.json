@@ -1,0 +1,167 @@
+{
+  "purpose": "Synthetic shape fixtures only; never submit these as factual procedure answers.",
+  "steps": [
+    {
+      "step_id": "verify_sources",
+      "return_value": {
+        "records": [
+          {
+            "recording": 1,
+            "source_ogg": "SYNTHETIC EXAMPLE — not execution evidence",
+            "wav_filename": "SYNTHETIC EXAMPLE — not execution evidence",
+            "wav_sha256": "SYNTHETIC EXAMPLE — not execution evidence",
+            "transcript_filename": "SYNTHETIC EXAMPLE — not execution evidence",
+            "messenger_time": "SYNTHETIC EXAMPLE — not execution evidence",
+            "duration_seconds": 1.25,
+            "window_count": 1,
+            "word_count": 1
+          }
+        ],
+        "artifacts": [
+          {
+            "uri": "SYNTHETIC EXAMPLE — not execution evidence",
+            "sha256": "SYNTHETIC EXAMPLE — not execution evidence",
+            "description": "SYNTHETIC EXAMPLE — not execution evidence"
+          }
+        ],
+        "window_count": 1,
+        "timed_word_count": 1,
+        "source_identity_matched": false,
+        "checks": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ],
+        "follow_up": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ]
+      }
+    },
+    {
+      "step_id": "configure_review",
+      "return_value": {
+        "decision": "SYNTHETIC EXAMPLE — not execution evidence",
+        "user_message": "SYNTHETIC EXAMPLE — not execution evidence",
+        "recording_ids": [
+          1
+        ],
+        "window_seconds": [
+          1
+        ],
+        "step_seconds": 1.25,
+        "review_order": "SYNTHETIC EXAMPLE — not execution evidence",
+        "granularity": "SYNTHETIC EXAMPLE — not execution evidence",
+        "reuse_existing_results": false,
+        "show_raw_and_edited": false,
+        "deploy_site": false
+      }
+    },
+    {
+      "step_id": "align_transcripts",
+      "return_value": {
+        "artifact_uri": "SYNTHETIC EXAMPLE — not execution evidence",
+        "artifact_sha256": "SYNTHETIC EXAMPLE — not execution evidence",
+        "recording_count": 1,
+        "item_count": 1,
+        "unresolved": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ],
+        "checks_passed": false
+      }
+    },
+    {
+      "step_id": "extract_claims",
+      "return_value": {
+        "artifacts": [
+          {
+            "uri": "SYNTHETIC EXAMPLE — not execution evidence",
+            "sha256": "SYNTHETIC EXAMPLE — not execution evidence",
+            "description": "SYNTHETIC EXAMPLE — not execution evidence"
+          }
+        ],
+        "recording_count": 1,
+        "claim_count": 1,
+        "unresolved": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ],
+        "checks_passed": false
+      }
+    },
+    {
+      "step_id": "join_windows",
+      "return_value": {
+        "artifacts": [
+          {
+            "uri": "SYNTHETIC EXAMPLE — not execution evidence",
+            "sha256": "SYNTHETIC EXAMPLE — not execution evidence",
+            "description": "SYNTHETIC EXAMPLE — not execution evidence"
+          }
+        ],
+        "recording_count": 1,
+        "source_window_count": 1,
+        "join_count": 1,
+        "unmatched_claim_ids": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ],
+        "unmatched_window_ids": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ],
+        "checks_passed": false
+      }
+    },
+    {
+      "step_id": "review_findings",
+      "return_value": {
+        "decision": "SYNTHETIC EXAMPLE — not execution evidence",
+        "user_message": "SYNTHETIC EXAMPLE — not execution evidence",
+        "accepted_recordings": [
+          1
+        ],
+        "requested_changes": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ]
+      }
+    },
+    {
+      "step_id": "assemble_report",
+      "return_value": {
+        "artifacts": [
+          {
+            "uri": "SYNTHETIC EXAMPLE — not execution evidence",
+            "sha256": "SYNTHETIC EXAMPLE — not execution evidence",
+            "description": "SYNTHETIC EXAMPLE — not execution evidence"
+          }
+        ],
+        "recording_count": 1,
+        "claim_count": 1,
+        "window_count": 1,
+        "unresolved": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ],
+        "checks_passed": false
+      }
+    },
+    {
+      "step_id": "verify_delivery",
+      "return_value": {
+        "artifacts": [
+          {
+            "uri": "SYNTHETIC EXAMPLE — not execution evidence",
+            "sha256": "SYNTHETIC EXAMPLE — not execution evidence",
+            "description": "SYNTHETIC EXAMPLE — not execution evidence"
+          }
+        ],
+        "checks": [
+          {
+            "name": "SYNTHETIC EXAMPLE — not execution evidence",
+            "passed": false,
+            "evidence_uri": "SYNTHETIC EXAMPLE — not execution evidence"
+          }
+        ],
+        "remaining": [
+          "SYNTHETIC EXAMPLE — not execution evidence"
+        ],
+        "delivery_verified": false,
+        "publication_status": "SYNTHETIC EXAMPLE — not execution evidence"
+      }
+    }
+  ]
+}

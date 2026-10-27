@@ -1,24 +1,50 @@
-# Audio deception-model comparison (candidate)
+# Audio-only deception classifier (IssueStack staging candidate)
 
-This isolated IssueStack workspace is a **staged, unapproved implementation**. No production deployment or actual inference validation has been completed.
+This isolated workspace accepts **WAV audio only**. Exactly one experimentally trained acoustic deception model is configured. No detector that requires video, faces, gestures, body language, or other non-audio input is installed, imported, or represented as a second prediction. Consequently, a model-to-model comparison **cannot yet be computed**.
 
-## Models and modalities
+## Configured model and audited artifact
 
-- [sangambhamare/TruthDetection](https://huggingface.co/sangambhamare/TruthDetection): 13 MFCC means from WAV audio, scikit-learn random forest serialized as `model.joblib`. Model card claims MIT; independently verify file revision, artifact trust and license before executing untrusted joblib.
-- [sato2ru/lie-to-me-detector](https://huggingface.co/sato2ru/lie-to-me-detector): expects facial emotion, voice, body-language and linguistic features (`model.pkl`, `scaler.pkl`, `feature_cols.json`). This **audio-only** CLI intentionally returns `unsupported_missing_modalities` rather than fabricating visual or language features.
+- [sangambhamare/TruthDetection](https://huggingface.co/sangambhamare/TruthDetection): 13 MFCC averages from WAV audio; scikit-learn Random Forest; labels `True Story` / `Deceptive Story`.
+- Immutable Hugging Face revision: `63f1f11bf76fdfc8b433a99a566b6b2683c98af4`
+- Weight filename: `model.joblib`
+- Published SHA-256: `6253a168da06148d86ddf4d7473d1a6f8048ff15e40a22cfd4ece27cd864a6a9`
+- The model card states MIT license and 91% accuracy, neither independently verified for this workspace. Its published inference code specifies `librosa.load(..., sr=None)` and 13 mean MFCCs.
+- A pickle/joblib artifact is executable input. Pinning a hash does **not** make deserialization safe: review the precise file and run it only in an appropriate isolated environment.
 
-## Build and run
+## Build: install the verified model weights in the image
+
+From this workspace directory:
 
 ```sh
-docker build -t issuestack-audio-compare .
-docker run --rm -v "$PWD/input:/data/input:ro" -v "$PWD/output:/data/output" -v "$PWD/model-cache:/models/hf" issuestack-audio-compare /data/input/sample.wav /data/output/report.json
-docker run --rm --entrypoint npm issuestack-audio-compare test
+docker build -t issuestack-audio-only .
 ```
 
-Model weights are **not baked into the image**. By default the TruthDetection adapter reports `model_not_installed`. Downloading/loading a `joblib` model may execute arbitrary code; review and pin the specific Hugging Face commit and artifact before enabling `ALLOW_TRUSTED_MODEL_DOWNLOAD=1`. To opt in, add `-e ALLOW_TRUSTED_MODEL_DOWNLOAD=1 -e TRUTH_MODEL_REVISION=<reviewed-commit-sha>` after completing this review. Persist Hugging Face cache via `/models/hf`. Network is required on first download.
+The default `BUNDLE_TRUTH_MODEL=1` downloads `model.joblib` at the pinned immutable revision and checks its SHA-256 **without deserializing it**. If the download, hash validation or package installation fails, the image build fails. To build a lightweight test image without weights:
 
-Audio recordings remain on user-provided mounts; do not upload private recordings or commit generated results. The image needs no always-on server. Reports use `issuestack.audio-deception-comparison.v1` and explicitly indicate unavailable models and modalities.
+```sh
+docker build --build-arg BUNDLE_TRUTH_MODEL=0 -t issuestack-audio-only-test .
+```
 
-## Validation status
+## Run with consent and restricted privileges
 
-Contract tests are provided. Docker build, real-model inference, licenses/dependency resolution, feature-column fidelity, audio-format conversion and representative-data benchmarking **remain unverified**. Neither model is a forensic truth detector; model-card performance claims are not independent evaluations. Do not use classifications to make legal, employment or other consequential decisions.
+```sh
+mkdir -p input output
+# Place a consensually recorded sample.wav into ./input
+docker run --rm --network none --cap-drop ALL \
+  -e ALLOW_TRUSTED_MODEL_LOAD=1 \
+  -v "$PWD/input:/data/input:ro" -v "$PWD/output:/data/output" \
+  issuestack-audio-only /data/input/sample.wav /data/output/report.json
+```
+
+The explicit environment setting authorizes deserialization of the pinned `joblib` model. Without it, the adapter reports `model_load_not_authorized`; without bundled weights, it reports `model_not_installed`. The image has no required always-on server. Reports and audio remain on external mounts.
+
+```sh
+docker run --rm --entrypoint npm issuestack-audio-only test
+docker run --rm --entrypoint python issuestack-audio-only -m unittest discover -s tests -p 'test_*.py'
+```
+
+The versioned JSON report has `models.truthDetection` only and `comparison.status = "not_applicable_single_model"`, with `comparison.agreement = null`. No fabricated second result or missing-modality stand-in is included.
+
+## Validation and limits
+
+Source inspection and test code do **not** establish real inference. The staged candidate is not deployed to main. Record separately whether Docker built, the pinned weight was verified, unit tests passed, and an actual inference against a non-sensitive WAV succeeded. A label cannot establish the truthfulness of human speech; the source model's reported accuracy has not been independently replicated. False positives, language/accent bias and recording-condition sensitivity are possible. Never treat this as legal, employment or forensic evidence. Do not publish private audio or mount credentials into the container.

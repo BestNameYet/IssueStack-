@@ -2,12 +2,17 @@ name: Heather Fowle - experimental audio-model evaluation
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/heather-fowle-audio-model.yml'
 
 permissions:
   contents: read
 
 jobs:
   evaluate-seven-wav-files:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Repair seven-file audio model report permissions'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -87,6 +92,10 @@ jobs:
               subprocess.run(cmd,check=True,timeout=180)
               print('Processed',filename,flush=True)
           PY
+
+      - name: Make container-owned reports readable by runner
+        working-directory: workspaces/audio-deception-comparison
+        run: sudo chown -R "$(id -u):$(id -g)" heather-fowle/model-reports
 
       - name: Aggregate reports and validate model execution
         if: always()

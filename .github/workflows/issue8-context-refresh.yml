@@ -42,6 +42,9 @@ jobs:
             const runtime = require('./src/issue8-context-runtime.js');
             const result = await runtime.buildWithRuntime({github,context,outputPath:'context-registry-preview.json'});
             core.info(JSON.stringify(result));
+      - name: Print candidate file hashes for audited metadata
+        run: |
+          node -e "const fs=require('fs'),crypto=require('crypto');const list=['config/agent-context-registry.json','config/agent-context-fixtures.json','config/agent-context-knowledge.json','src/types/agent-context-registry.v1.json','src/agent-context-registry.js','src/issue8-context-runtime.js','src/issue8-context-publisher.js','src/issue8-context-benchmark.js','test/agent-context-registry.test.js','.github/workflows/issue8-context-refresh.yml'];for(const p of list){const b=fs.readFileSync(p);console.log('PATH_META '+JSON.stringify({path:p,size_bytes:b.length,sha256:crypto.createHash('sha256').update(b).digest('hex')}))}"
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:

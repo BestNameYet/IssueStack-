@@ -1,0 +1,54 @@
+name: Heather seven-recording word timing alignment
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/heather-seven-word-timing.yml'
+      - 'workspaces/audio-deception-comparison/heather-fowle/word_timing.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  align-existing-speech:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: workspaces/audio-deception-comparison/requirements.txt
+      - name: Install ASR word timer (not the deception model)
+        run: pip install 'faster-whisper==1.2.1'
+      - name: Timestamp words without modifying original WAVs
+        env:
+          HF_HUB_DISABLE_TELEMETRY: '1'
+        run: python workspaces/audio-deception-comparison/heather-fowle/word_timing.py
+      - name: Verify all seven timestamps and source file digests
+        run: |
+          python - <<'PY'
+          import json, wave,hashlib
+          from pathlib import Path
+          data=json.loads(Path('word-timing-output/seven_word_timestamps.json').read_text())
+          arr=data['recordings']
+          assert [x['recording'] for x in arr]==list(range(17,24))
+          for x in arr:
+              audio=Path('workspaces/audio-deception-comparison/heather-fowle')/x['wav']
+              assert hashlib.sha256(audio.read_bytes()).hexdigest()==x['wav_sha256']
+              with wave.open(str(audio),'rb') as f:
+                  duration=f.getnframes()/f.getframerate()
+              assert x['words'] and all(w['start']<=w['end']<=duration+0.5 for w in x['words'])
+              assert all(b['start']>=a['start'] for a,b in zip(x['words'],x['words'][1:]))
+          print('Word timing validated for seven recordings')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: heather-seven-word-timestamps
+          path: word-timing-output/seven_word_timestamps.json
+          retention-days: 14
+          if-no-files-found: error

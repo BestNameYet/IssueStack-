@@ -1,0 +1,67 @@
+{
+  "schema": "issuestack.agent-context.fixtures.v1",
+  "fixtures": [
+    {
+      "id": "Q01",
+      "question": "Which Issue accepts new static tasks?",
+      "expected": "issue:1",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/1"
+    },
+    {
+      "id": "Q02",
+      "question": "Where are transferred static jobs persisted?",
+      "expected": "issue:2",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/2"
+    },
+    {
+      "id": "Q03",
+      "question": "Where is the job-to-scratchpad mapping indexed?",
+      "expected": "comment:6392250512",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6392250512"
+    },
+    {
+      "id": "Q04",
+      "question": "What comment stores verified transfers?",
+      "expected": "comment:6392246635",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/1#issuecomment-6392246635"
+    },
+    {
+      "id": "Q05",
+      "question": "Does accepted intake prove successful execution?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426763341"
+    },
+    {
+      "id": "Q06",
+      "question": "Does an active scratchpad mapping mean the job is pending?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426758658"
+    },
+    {
+      "id": "Q07",
+      "question": "Where are stepwise procedure returns stored?",
+      "expected": "issue:13",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/13"
+    },
+    {
+      "id": "Q08",
+      "question": "What was the latest successful workflow run at this instant?",
+      "expected": null,
+      "evidence": "https://github.com/BestNameYet/IssueStack-/actions",
+      "requires_live_evidence": true
+    },
+    {
+      "id": "Q09",
+      "question": "What is the exact current number of pending jobs?",
+      "expected": null,
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/2",
+      "requires_live_evidence": true
+    },
+    {
+      "id": "Q10",
+      "question": "Do static task records bypass three-issue handshake?",
+      "expected": "no",
+      "evidence": "https://github.com/BestNameYet/IssueStack-/issues/6#issuecomment-6426765803"
+    }
+  ]
+}

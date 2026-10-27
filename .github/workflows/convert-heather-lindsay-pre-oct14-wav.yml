@@ -1,10 +1,6 @@
 name: Convert 18 Heather Lindsay recordings to WAV
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/convert-heather-lindsay-pre-oct14-wav.yml'
 permissions:
   contents: write
 concurrency:

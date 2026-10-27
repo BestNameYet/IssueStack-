@@ -1,0 +1,154 @@
+name: Extract verified public audio release
+
+on:
+  push:
+    branches:
+      - stage/audio-release-extraction-6437737210
+    paths:
+      - .github/workflows/extract-audio-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out source for provenance
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download and verify immutable public release asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-all-errors \
+            --connect-timeout 30 --max-time 600 \
+            'https://github.com/BestNameYet/IssueStack-/releases/download/audio-archive-20261027/all-audio-20261027-002301.zip' \
+            --output "$RUNNER_TEMP/audio-release.zip"
+          test "$(stat -c %s "$RUNNER_TEMP/audio-release.zip")" -eq 43507365
+          printf '%s  %s\n' \
+            '702482496a69a30be0467b66539e40a71196f74232a4e23c111ecf44f42b0556' \
+            "$RUNNER_TEMP/audio-release.zip" | sha256sum --check -
+
+      - name: Safely extract and verify source audio
+        env:
+          AUDIO_SOURCE_ZIP: ${{ runner.temp }}/audio-release.zip
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import hashlib
+          import json
+          import os
+          from pathlib import Path, PurePosixPath
+          import stat
+          import zipfile
+
+          archive = Path(os.environ['AUDIO_SOURCE_ZIP'])
+          base = Path('workspaces/audio-deception-comparison/audio-release-extraction')
+          destination = base / 'extracted'
+          destination.mkdir(parents=True, exist_ok=True)
+          expected_size = 43507365
+          expected_sha = '702482496a69a30be0467b66539e40a71196f74232a4e23c111ecf44f42b0556'
+          extensions = {'.mp3', '.m4a', '.ogg', '.wav', '.flac', '.amr', '.aiff'}
+          assert archive.stat().st_size == expected_size, 'Archive byte count differs from release'
+          if hashlib.sha256(archive.read_bytes()).hexdigest() != expected_sha:
+              raise ValueError('Release archive checksum mismatch')
+
+          rows = []
+          unique = set()
+          total = 0
+          with zipfile.ZipFile(archive) as source:
+              bad = source.testzip()
+              if bad is not None:
+                  raise ValueError(f'Bad ZIP member CRC: {bad}')
+              for entry in source.infolist():
+                  name = entry.filename
+                  if entry.is_dir():
+                      continue
+                  parts = name.split('/')
+                  mode = entry.external_attr >> 16
+                  if (not name or name.startswith('/') or
+                      '\\' in name or '\\x00' in name or
+                      any(part in ('', '.', '..') for part in parts) or
+                      stat.S_ISLNK(mode) or name in unique):
+                      raise ValueError(f'Unsafe or duplicate ZIP path: {name!r}')
+                  unique.add(name)
+                  suffix = PurePosixPath(name).suffix.lower()
+                  if suffix not in extensions:
+                      raise ValueError(f'Non-audio member in audio-only archive: {name!r}')
+                  total += entry.file_size
+                  if entry.file_size > 512 * 1024 * 1024 or total > 2 * 1024 * 1024 * 1024:
+                      raise ValueError('ZIP extraction size limit exceeded')
+                  if entry.file_size > 1024 * 1024 and entry.file_size > max(entry.compress_size, 1) * 500:
+                      raise ValueError('Suspicious ZIP compression ratio')
+                  target = destination.joinpath(*parts)
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  digest = hashlib.sha256()
+                  written = 0
+                  with source.open(entry) as src, target.open('xb') as dst:
+                      while True:
+                          chunk = src.read(1024 * 1024)
+                          if not chunk:
+                              break
+                          dst.write(chunk)
+                          digest.update(chunk)
+                          written += len(chunk)
+                  if written != entry.file_size:
+                      raise ValueError(f'Extracted byte count mismatch: {name}')
+                  rows.append({
+                      'source_path': name,
+                      'extension': suffix,
+                      'size_bytes': written,
+                      'sha256': digest.hexdigest(),
+                      'extracted_path': 'extracted/' + name,
+                  })
+          if len(rows) != 97:
+              raise ValueError(f'Expected 97 audio recordings, found {len(rows)}')
+          rows.sort(key=lambda item: item['source_path'])
+          with (base / 'manifest.csv').open('w', newline='', encoding='utf-8') as file:
+              writer = csv.DictWriter(file, fieldnames=list(rows[0]))
+              writer.writeheader()
+              writer.writerows(rows)
+          counts = {ext: sum(row['extension'] == ext for row in rows) for ext in sorted(extensions)}
+          evidence = {
+              'schema': 'issuestack.audio-release-extraction.v1',
+              'release_url': 'https://github.com/BestNameYet/IssueStack-/releases/tag/audio-archive-20261027',
+              'source_asset': 'all-audio-20261027-002301.zip',
+              'archive_size_bytes': expected_size,
+              'archive_sha256': expected_sha,
+              'zip_crc_verified': True,
+              'extracted_files': len(rows),
+              'extracted_total_bytes': total,
+              'extensions': counts,
+              'workflow_run_id': os.getenv('GITHUB_RUN_ID'),
+              'workspace': str(base),
+              'source_integrity': 'verified',
+              'unreadable_or_missing': [],
+          }
+          (base / 'verification.json').write_text(
+              json.dumps(evidence, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(evidence, indent=2), flush=True)
+          if os.getenv('GITHUB_STEP_SUMMARY'):
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+                  f.write(
+                      '## Public release extraction verified\n\n'
+                      f"- Extracted audio: **{len(rows)}** files\n"
+                      f"- Source ZIP SHA-256: \`{expected_sha}\`\n"
+                      f"- Extracted bytes: **{total}**\n"
+                      '- Output: Actions artifact containing extracted/, manifest.csv and verification.json\n'
+                  )
+          PY
+
+      - name: Publish extracted recordings and audit manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-audio-extraction-${{ github.run_id }}
+          path: workspaces/audio-deception-comparison/audio-release-extraction/
+          retention-days: 30
+          if-no-files-found: error

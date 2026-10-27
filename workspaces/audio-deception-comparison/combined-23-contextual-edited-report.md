@@ -1,6 +1,6 @@
-# Combined chronological audio report — Heather Lindsay / Heather Fowle
+# Heather: Recorded Statements Review — full chronological edition
 
-**Identity:** Heather Lindsay and Heather Fowle are treated as the same person in this report. Original conversation recipients are identified by their names rather than exported thread handles.
+**Identity:** Heather is the subject (Heather Lindsay and Heather Fowle refer to her). Sam is a separate person participating in the October 2026 conversations. Jason Law is the correct name for the earlier partner. Original conversation recipients are identified by their names rather than exported thread handles.
 
 **Included:** 23 recordings (16 from August–September 2025 and seven from October 2026). The two near-silent Jason Goode recordings on August 29, 2025, were excluded.
 

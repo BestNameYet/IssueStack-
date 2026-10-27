@@ -1,0 +1,82 @@
+name: Convert 18 Heather Lindsay recordings to WAV
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/convert-heather-lindsay-pre-oct14-wav.yml'
+permissions:
+  contents: write
+concurrency:
+  group: heather-lindsay-wav-conversion
+  cancel-in-progress: false
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Extract and convert the 18 source recordings
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, shutil, subprocess, tempfile, wave, zipfile
+          from pathlib import PurePosixPath
+          root = pathlib.Path('.')
+          archive_path = root / 'heather_lindsay_18_pre_oct14_audio.zip'
+          out = root / 'heather-lindsay-pre-oct14'
+          audio_dir = out / 'audio'
+          wav_dir = out / 'wav'
+          audio_dir.mkdir(parents=True, exist_ok=True)
+          wav_dir.mkdir(parents=True, exist_ok=True)
+          with zipfile.ZipFile(archive_path) as z:
+              manifest = json.loads(z.read('inventory.json'))
+              assert len(manifest) == 18, f'Expected 18 recordings, got {len(manifest)}'
+              sources = [item['audio'] for item in manifest]
+              assert len(set(sources)) == 18, 'Duplicate audio paths'
+              assert {p for p in z.namelist() if p.startswith('audio/') and not p.endswith('/')} == set(sources), 'Archive inventory does not match audio'
+              for i, item in enumerate(manifest, 1):
+                  source_name = item['audio']
+                  entry = PurePosixPath(source_name)
+                  assert len(entry.parts) == 2 and entry.parts[0] == 'audio', f'Unsafe member name: {source_name}'
+                  assert entry.suffix.lower() in ('.ogg','.wav','.mp3','.flac','.opus','.m4a')
+                  assert str(item['timestamp_pacific'])[:10] < '2026-10-14'
+                  assert item['sender'] == 'Heather Lindsay'
+                  assert z.getinfo(source_name).file_size < 32 * 1024 * 1024
+                  audio_file = audio_dir / entry.name
+                  with z.open(source_name) as src, audio_file.open('wb') as dst:
+                      shutil.copyfileobj(src,dst)
+                  digest = hashlib.sha256(audio_file.read_bytes()).hexdigest()
+                  assert digest == item['sha256'], f'Unexpected audio contents: {entry.name}'
+                  wav_file = wav_dir / (entry.stem + '.wav')
+                  subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-nostdin','-y',
+                                  '-i',str(audio_file),'-vn','-ac','1','-ar','16000',
+                                  '-c:a','pcm_s16le',str(wav_file)],check=True)
+                  with wave.open(str(wav_file),'rb') as w:
+                      assert (w.getnchannels(),w.getframerate(),w.getsampwidth()) == (1,16000,2)
+                      assert w.getnframes() > 0
+                  item['wav'] = 'wav/' + wav_file.name
+                  item['wav_sha256'] = hashlib.sha256(wav_file.read_bytes()).hexdigest()
+                  print(f'Converted {i}/18: {entry.name}',flush=True)
+          assert len(list(audio_dir.iterdir())) == len(list(wav_dir.iterdir())) == 18
+          (out/'wav-inventory.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
+          print('Verified 18 originals and 18 16kHz mono 16-bit PCM WAV files')
+          PY
+      - name: Commit WAV conversion and mapping
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- workspaces/audio-deception-comparison/heather-lindsay-pre-oct14/audio/ workspaces/audio-deception-comparison/heather-lindsay-pre-oct14/wav/ workspaces/audio-deception-comparison/heather-lindsay-pre-oct14/wav-inventory.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Convert 18 Heather Lindsay audio files to PCM WAV'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

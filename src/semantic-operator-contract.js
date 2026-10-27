@@ -82,8 +82,8 @@ function validateProposal(p,{contract,shots,schema}){
  if(!['pending_review','review_not_required','approved','rejected','deferred','blocked'].includes(p.review_status))throw Error('Invalid review');
  if(!['DEFER','NO_OP'].includes(p.operation)&&p.review_status==='review_not_required')throw Error('Mutation without review');
  if(['AUGMENT','REVISE','SUPERSEDE','CONFLICT'].includes(p.operation)&&!p.existing_record_ref)throw Error('Missing existing target');
- if(!['DEFER','NO_OP'].includes(p.operation)&&!p.evidence.length)throw Error('Unsupported positive claim');
  if(p.record_type==='unclassified'&&!['DEFER','NO_OP'].includes(p.operation))throw Error('Unclassified must defer');
+ if(!['DEFER','NO_OP'].includes(p.operation)&&!p.evidence.length)throw Error('Unsupported positive claim: missing evidence');
  return true;
 }
 function keyOf(command_id,chore_id,chore_version,evidence_sha256){

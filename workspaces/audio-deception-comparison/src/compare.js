@@ -7,7 +7,7 @@ import {makeReport} from './report.js';
 const pythonAdapter = fileURLToPath(new URL('./model_adapter.py', import.meta.url));
 
 export function invokeAdapter(file, {python='python3',modelDir='/opt/models',adapter=pythonAdapter}={}) {
-  const p=spawnSync(python,[adapter,file,'--model-dir',modelDir],{
+  const p=spawnSync(python,[adapter,file],{
     encoding:'utf8',timeout:120000,maxBuffer:1048576
   });
   if(p.error||p.status!==0) return {model:'sangambhamare/TruthDetection',

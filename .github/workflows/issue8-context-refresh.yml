@@ -71,6 +71,9 @@ jobs:
             if(!plan.current.ok)core.warning('Registry integrity audit failed; human review required');
             if(plan.current.stale)core.warning('Dated Issue #8 runtime evidence is stale; this is NOT a current-health claim');
             // No issue-comment writes. Reviewed human decisions remain the sole publication gate.
+      - name: Print tracked path hashes for review
+        run: |
+          node -e "const fs=require('fs'),crypto=require('crypto');const paths=['.github/workflows/issue8-context-refresh.yml','src/agent-context-registry.js','src/issue8-context-reconciler.js','src/issue8-context-benchmark.js','test/issue8-context-reconciler.test.js','config/agent-context-registry.json','config/agent-context-heldout.json'];for(const path of paths){const data=fs.readFileSync(path);console.log('CONTEXT_META '+JSON.stringify({path,size_bytes:data.length,sha256:crypto.createHash('sha256').update(data).digest('hex')}))}"
       - name: Upload immutable audit and benchmark protocol artifacts
         uses: actions/upload-artifact@v4
         with:

@@ -18,10 +18,10 @@ Each entry explains what the conversation was about, then presents an edited tra
 
 ### 1. August 28, 2025 at 2:52:18 PM PDT
 
-**Who you were speaking with:** Jael Law
+**Who you were speaking with:** Jason Law
 **Conversation context**
 
-Heather, on this recording you are speaking to Jael Law. You answer questions about a man named Leroy and whether you visited a certain street. You say you do not remember going there. Then you explain why you left an earlier situation. You describe losing your job, being stranded in Midland, and staying at a shelter. You also apologize to Jael for bringing problems into their life.
+Heather, on this recording you are speaking to Jason Law. You answer questions about a man named Leroy and whether you visited a certain street. You say you do not remember going there. Then you explain why you left an earlier situation. You describe losing your job, being stranded in Midland, and staying at a shelter. You also apologize to Jael for bringing problems into their life.
 
 **Edited transcript**
 
@@ -61,7 +61,7 @@ Heather, on this recording you are speaking to Jael Law. You answer questions ab
 
 ### 2. August 29, 2025 at 9:06:38 AM PDT
 
-**Who you were speaking with:** Jael Law
+**Who you were speaking with:** Jason Law
 **Conversation context**
 
 Heather, here you ask Jael about work. You remember Jael being willing to work even when life was hard. You know transportation has been a problem, but you want to understand what else happened.
@@ -76,7 +76,7 @@ Heather, here you ask Jael about work. You remember Jael being willing to work e
 
 ### 3. August 29, 2025 at 9:22:22 AM PDT
 
-**Who you were speaking with:** Jael Law
+**Who you were speaking with:** Jason Law
 **Conversation context**
 
 Heather, you are trying to encourage Jael during a difficult time in Channelview. You talk about the risk of other people taking advantage of Jael. You are especially worried about the two animals Jael is caring for. Your message is to stay careful, keep going, and not lose hope.
@@ -128,7 +128,7 @@ Heather, in this message to Brandon Aldridge, you talk about a police report. Yo
 
 ### 5. August 29, 2025 at 4:20:36 PM PDT
 
-**Who you were speaking with:** Jael Law
+**Who you were speaking with:** Jason Law
 **Conversation context**
 
 Heather, you tell Jael how you looked for a safe place to stay. You describe going to the Salvation Army, spending time at a park, asking churches for help, and getting clothes and food. You also talk about prayer and how your faith helped you keep going.
@@ -155,7 +155,7 @@ Heather, you tell Jael how you looked for a safe place to stay. You describe goi
 
 ### 6. August 29, 2025 at 5:56:02 PM PDT
 
-**Who you were speaking with:** Jael Law
+**Who you were speaking with:** Jason Law
 **Conversation context**
 
 Heather, you talk to Jael about making bad choices and learning from them. You admit you have made mistakes yourself. You explain that people act based on what they have learned, and that hard experiences can teach them what to do differently next time.
@@ -241,7 +241,7 @@ Heather, you update Rob Peoples about your return to the Channelview area. You d
 
 ### 10. September 12, 2025 at 4:29:37 PM PDT
 
-**Who you were speaking with:** Jael Law
+**Who you were speaking with:** Jason Law
 **Conversation context**
 
 Heather, you tell Jael about Becky. You say Becky has a painful or swollen area that you think may be a hernia. You are concerned because it does not go back in and she has felt sick. You also describe your plans to shop and mention that your voice is improving.
@@ -262,7 +262,7 @@ Heather, you tell Jael about Becky. You say Becky has a painful or swollen area 
 
 ### 11. September 12, 2025 at 6:12:41 PM PDT
 
-**Who you were speaking with:** Jael Law
+**Who you were speaking with:** Jason Law
 **Conversation context**
 
 Heather, you are trying to reach Jael because some of your earlier messages may not have gone through. You explain that you are near Market and Sheldon and walking toward a food bank. You are checking whether it is open.
@@ -390,7 +390,7 @@ Heather, you contact Howard Haudenshild about an item that sounds like a Durango
 
 ### 17. 2026-10-26 12:07:29.489 PDT
 
-**Who you were speaking with:** Personal conversation
+**Who you were speaking with:** Sam
 **Conversation context**
 
 Heather, this conversation is about an alleged sexual encounter and whether you spent a night at another man's house. You say you thought about doing something sexual but changed your mind. You also deny staying overnight. You try to explain why an earlier account may have been misunderstood.
@@ -411,7 +411,7 @@ Heather, this conversation is about an alleged sexual encounter and whether you 
 
 ### 18. 2026-10-26 12:08:39.185 PDT
 
-**Who you were speaking with:** Personal conversation
+**Who you were speaking with:** Sam
 **Conversation context**
 
 Heather, you continue talking about the man's home. You describe sexual encounters from before your current relationship and say you left afterward. You explain that even when he offered to let you stay or move in, you did not accept.
@@ -428,7 +428,7 @@ Heather, you continue talking about the man's home. You describe sexual encounte
 
 ### 19. 2026-10-26 12:19:02.415 PDT
 
-**Who you were speaking with:** Personal conversation
+**Who you were speaking with:** Sam
 **Conversation context**
 
 Heather, someone has brought up Anthony Bradford's account of seeing you with N.O. at the Crown Inn. You reject that account. You say you were not with N.O. after the shooting involving George. You point to the fact that you are not on a witness list as part of your explanation.
@@ -447,7 +447,7 @@ Heather, someone has brought up Anthony Bradford's account of seeing you with N.
 
 ### 20. 2026-10-26 12:19:20.599 PDT
 
-**Who you were speaking with:** Personal conversation
+**Who you were speaking with:** Sam
 **Conversation context**
 
 Heather, you add to your denial about the Crown Inn. You argue that other people or motel cameras would have shown you there if the reported meeting had really happened.
@@ -462,7 +462,7 @@ Heather, you add to your denial about the Crown Inn. You argue that other people
 
 ### 21. 2026-10-26 12:22:14.334 PDT
 
-**Who you were speaking with:** Personal conversation
+**Who you were speaking with:** Sam
 **Conversation context**
 
 Heather, you continue explaining why you believe the reported timeline is wrong. You deny being with N.O. around the time of the shooting. Again, you say that investigators would have contacted you if you had been present.
@@ -483,7 +483,7 @@ Heather, you continue explaining why you believe the reported timeline is wrong.
 
 ### 22. 2026-10-26 12:22:51.700 PDT
 
-**Who you were speaking with:** Personal conversation
+**Who you were speaking with:** Sam
 **Conversation context**
 
 Heather, you respond directly to the accusation that you are not telling the truth. You say you have no reason to lie and ask the other person to consider whether your explanation makes sense.
@@ -500,7 +500,7 @@ Heather, you respond directly to the accusation that you are not telling the tru
 
 ### 23. 2026-10-26 12:25:19.182 PDT
 
-**Who you were speaking with:** Personal conversation
+**Who you were speaking with:** Sam
 **Conversation context**
 
 Heather, you explain what you say was your only visit to the Crown Inn. You describe riding with two women, waiting in a truck during a short stop, and then being taken to Terry's. You say you were not there on the other occasions being discussed.

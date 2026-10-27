@@ -1,10 +1,15 @@
 name: Transcribe audio archive
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/transcribe-audio-archive.yml'
 permissions:
   contents: read
 jobs:
   transcribe:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Run transcription once (IssueStack)'
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:

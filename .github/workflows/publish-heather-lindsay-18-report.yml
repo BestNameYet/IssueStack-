@@ -1,10 +1,6 @@
 name: Publish Heather Lindsay 18-model report artifact
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/publish-heather-lindsay-18-report.yml'
 permissions:
   contents: write
   actions: read

@@ -1,17 +1,12 @@
 name: Convert Heather Fowle OGG recordings to WAV
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/convert-heather-fowle-wav.yml'
 
 permissions:
   contents: write
 
 jobs:
   convert:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Install FFmpeg and convert Heather Fowle audio'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

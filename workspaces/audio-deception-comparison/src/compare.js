@@ -1,10 +1,10 @@
 import {spawnSync} from 'node:child_process';
 import {writeFileSync, mkdirSync, statSync} from 'node:fs';
-import {resolve, basename, dirname, fileURLToPath} from 'node:url';
+import {resolve, basename, dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {makeReport} from './report.js';
 
 const pythonAdapter = fileURLToPath(new URL('./model_adapter.py', import.meta.url));
-const pathResolve = (...items) => new URL('file://' + items.join('/')).pathname;
 
 export function invokeAdapter(file, {python='python3',modelDir='/opt/models',adapter=pythonAdapter}={}) {
   const p=spawnSync(python,[adapter,file,'--model-dir',modelDir],{

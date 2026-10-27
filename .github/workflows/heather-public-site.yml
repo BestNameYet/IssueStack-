@@ -5,16 +5,18 @@ on:
     branches: [main, stage/heather-public-site-20261027]
     paths:
       - '.github/workflows/heather-public-site.yml'
+      - 'config/file-metadata.json'
       - 'workspaces/audio-deception-comparison/public-site/**'
   pull_request:
     paths:
       - '.github/workflows/heather-public-site.yml'
+      - 'config/file-metadata.json'
       - 'workspaces/audio-deception-comparison/public-site/**'
 permissions:
   contents: read
 concurrency:
   group: heather-pages-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   build:
     runs-on: ubuntu-latest

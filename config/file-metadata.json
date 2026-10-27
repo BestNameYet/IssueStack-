@@ -1,0 +1,66 @@
+{
+  "schema": "issuestack.file-metadata.v1",
+  "job_id": 6439198174,
+  "files": [
+    {
+      "path": ".github/workflows/heather-public-site.yml",
+      "size_bytes": 2546,
+      "sha256": "eec059bbd849e0ca29dca714278ce8be248c76e1b0cad516b3541acaf06a544b",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/README.md",
+      "size_bytes": 2815,
+      "sha256": "68067ece597d92e2a6300d920c903621bdd1ce3b329b4dc4d2e255af4af1b491",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/app.js",
+      "size_bytes": 6031,
+      "sha256": "3051775a327204f2e58868da2502e5d7c617fb472741d80ddccba0d1f7d6c2de",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/build.py",
+      "size_bytes": 3224,
+      "sha256": "bb033a86832a32eb3082d0fe5acd118aca698223c734c773eb79e726f12eaccb",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/icon.svg",
+      "size_bytes": 221,
+      "sha256": "85776cb3d9637a4c22ea0dabeea3651e7a9edb93d380c0531e98c5a4ac8deb98",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/index.html",
+      "size_bytes": 11607,
+      "sha256": "50fce41727d198cb1deb9fe3bac4de8f200118a0c5eed5ee4e1dc7f327108d11",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/records.json",
+      "size_bytes": 36340,
+      "sha256": "c3ec675b1c9d96f65c95a8574c35fdc0408f7f69a4b113b877ed6506f5edd71b",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/share.png.b64",
+      "size_bytes": 46045,
+      "sha256": "b99b5e5ed7ef452bbb1a66896f32182c89c0b2f4854b99ca7cfa0fedd224bc98",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/style.css",
+      "size_bytes": 10387,
+      "sha256": "4551a8f23a9ad181dfc453d1312e33b8c839eb173d7057857cd4448920db3171",
+      "purpose": "Public Heather website deployment"
+    },
+    {
+      "path": "workspaces/audio-deception-comparison/public-site/transcripts.txt",
+      "size_bytes": 36322,
+      "sha256": "a2a1e5b9e45e32215a0b9d384f07792f51117d1150964ab0b010c62debcd9aa1",
+      "purpose": "Public Heather website deployment"
+    }
+  ]
+}

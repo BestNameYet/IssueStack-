@@ -1,10 +1,15 @@
 name: Build full audio transcript table
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-transcript-table.yml'
 permissions:
   contents: write
 jobs:
   build-table:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Retry transcript table publication'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -50,5 +55,6 @@ jobs:
           git add -- workspaces/audio-deception-comparison/transcript-table.md
           if ! git diff --cached --quiet; then
             git commit -m "Publish original audio filename to full transcript table"
+            git pull --rebase origin main
             git push origin HEAD:main
           fi

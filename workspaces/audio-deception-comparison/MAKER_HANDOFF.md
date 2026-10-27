@@ -65,6 +65,18 @@ You say you saw Marland's brother and helped with food and supplies.
 
 This is a **structure example**, not a quotation to publish as written. Replace bracketed text with exact verified transcript passages.
 
+## Sam rollout — lead with the one True result
+
+**This is a central part of the story, not a footnote.** When the narrative turns to Sam, **first acknowledge the one recording TruthDetection labeled True**. Identify what Heather was saying: she described earlier visits to another man's home, said she left afterward, and said she did not stay despite invitations. **Then** contrast that result with the **six other Sam recordings labeled Deceptive**, describing the overnight-stay dispute, N.O., the Crown Inn, witnesses, and her account of the brief motel stop.
+
+Suggested ninth-grade narrative transition:
+
+> When we looked at your conversations with Sam, TruthDetection did not label everything Deceptive. **It labeled one of the seven recordings True.** In that message, you said you left after visiting another man's home, even though he wanted you to stay.
+>
+> **But it labeled the other six recordings Deceptive.** Those include your statements about spending the night, your denials about N.O. and the Crown Inn, your references to cameras and witnesses, and your description of a brief visit to the motel.
+
+**Order matters:** One True → six Deceptive → main conclusion → appendix. Give the True recording its own sentence or short paragraph, ideally with a short source excerpt. Do not flatten the Sam conversations into a single verdict. The program classified **each recording**, not each individual sentence.
+
 ## Story first, details afterward
 
 **The main report must read like a connected story, not 23 separate test reports.** Open by explaining that TruthDetection analyzed Heather's recordings, then establish the contrast: **nine labeled True** and **fourteen labeled Deceptive**. Use a few specific examples to build the narrative, moving from earlier conversations to the seven recordings with Sam (**one True; six Deceptive**). Finish the main narrative with a **short, clear conclusion** that summarizes what the program labeled.
@@ -90,6 +102,7 @@ Group appendix entries into **True (9)** and **Deceptive (14)** or supply an equ
 - **Cover:** “Recorded Statements Review” / **Heather** / “23 recordings · Aug 2025–Oct 2026”.
 - **Opening:** Quickly explain what TruthDetection did and the split: **9 True**, **14 Deceptive**.
 - **Truthful-labeled examples:** A few concrete statements to Jason Law, Rob Peoples, others, and the one recording with Sam.
+- **Sam transition:** Explicitly introduce the **one Sam recording labeled True** and what Heather said in it **before** describing the six labeled Deceptive.
 - **Deceptive-labeled examples:** Earlier conversations, then the **six recordings with Sam** receiving this label. Build toward the strongest central contentions.
 - **Conclusion:** A short, direct closing of the main narrative, **before** the detailed records.
 - **Appendix:** All 23 numbered recording results, short excerpts, and any necessary context or contention.
@@ -124,6 +137,7 @@ The clearest disputed narratives are **#1**, **#4**, and **#17–23**. They incl
 - [ ] **TruthDetection says: Deceptive / True** after each excerpt, bold red or green
 - [ ] Counts remain **14 / 9**, with one short note explaining the program's limits
 - [ ] Mobile-sized, one-column PDF; text selectable; no orphan result pages
+- [ ] Sam section gives the **one True recording** meaningful attention before the six Deceptive results
 - [ ] Main story has a clear conclusion **before** the appendix
 - [ ] Appendix accounts for all 23 recordings and lets readers inspect the exact labeled results
 - [ ] Visual phone test, full-text extraction check, and file-opening test completed

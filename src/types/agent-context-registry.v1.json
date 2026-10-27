@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IssueStack evidence-backed agent context registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at",
+    "repository",
+    "source_commit",
+    "config_sha256",
+    "pages",
+    "nodes",
+    "edges",
+    "sources",
+    "runtime",
+    "coverage",
+    "uncertainties"
+  ],
+  "properties": {
+    "schema": {
+      "const": "issuestack.agent-context.registry.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "source_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "config_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "purpose"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "evidence",
+          "verification"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "verification": {
+            "enum": [
+              "verified_static",
+              "verified_runtime",
+              "documented",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "relation",
+          "evidence",
+          "verification"
+        ],
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "verification": {
+            "enum": [
+              "verified_static",
+              "verified_runtime",
+              "documented",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256",
+          "bytes",
+          "commit",
+          "url",
+          "exports",
+          "imports",
+          "events",
+          "limitations"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "commit": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "exports": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "imports": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "observed_at",
+        "workflows",
+        "job"
+      ],
+      "properties": {
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workflows": {
+          "type": "array"
+        },
+        "job": {
+          "type": "object"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "required": [
+        "included",
+        "excluded",
+        "rejected",
+        "analyzer"
+      ],
+      "properties": {
+        "included": {
+          "type": "integer"
+        },
+        "excluded": {
+          "type": "integer"
+        },
+        "rejected": {
+          "type": "integer"
+        },
+        "analyzer": {
+          "type": "string"
+        }
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

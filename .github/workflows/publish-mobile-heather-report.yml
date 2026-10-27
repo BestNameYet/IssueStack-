@@ -10,7 +10,7 @@ permissions:
   contents: write
 jobs:
   render-mobile-report:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Publish abridged Messenger recording report'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Publish mobile report with joined transcript conclusions'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:

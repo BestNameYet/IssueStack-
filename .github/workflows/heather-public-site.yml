@@ -1,0 +1,70 @@
+name: Heather public website
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, stage/heather-public-site-20261027]
+    paths:
+      - '.github/workflows/heather-public-site.yml'
+      - 'workspaces/audio-deception-comparison/public-site/**'
+  pull_request:
+    paths:
+      - '.github/workflows/heather-public-site.yml'
+      - 'workspaces/audio-deception-comparison/public-site/**'
+permissions:
+  contents: read
+concurrency:
+  group: heather-pages-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install audio converter
+        run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Build and verify all recordings
+        run: python3 workspaces/audio-deception-comparison/public-site/build.py --public-url 'https://bestnameyet.github.io/IssueStack-'
+      - name: Upload review site
+        uses: actions/upload-artifact@v4
+        with:
+          name: heather-public-site-review
+          path: workspaces/audio-deception-comparison/public-site/_site
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: workspaces/audio-deception-comparison/public-site/_site
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          token: ${{ secrets.WORKSPACE_API || github.token }}
+          enablement: ${{ secrets.WORKSPACE_API != '' }}
+      - name: Deploy public website
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Record public URL
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: printf 'Public website deployed at %s\n' "$PAGE_URL" >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,65 @@
+name: Publish mobile Heather report for Messenger
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-mobile-heather-report.yml'
+permissions:
+  contents: write
+jobs:
+  render-mobile-report:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Render phone-friendly Heather PDF'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install PDF rendering and verification dependencies
+        run: python -m pip install 'reportlab>=4,<5' 'pypdf>=5,<7'
+      - name: Render phone-first PDF from all 23 reports
+        run: python workspaces/audio-deception-comparison/scripts/render_mobile_report.py
+      - name: Verify PDF content and page layout
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          from pypdf import PdfReader
+          p=Path('workspaces/audio-deception-comparison/heather-recorded-statements-mobile.pdf')
+          reader=PdfReader(str(p))
+          assert p.stat().st_size < 8_000_000, p.stat().st_size
+          assert len(reader.pages) >= 24, len(reader.pages)
+          assert all(abs(float(page.mediabox.width)-360)<0.1 for page in reader.pages)
+          assert all(abs(float(page.mediabox.height)-640)<0.1 for page in reader.pages)
+          text='\n'.join(page.extract_text() or '' for page in reader.pages)
+          assert text.count('MODEL CONCLUSION')==23, text.count('MODEL CONCLUSION')
+          assert text.count('DECEPTIVE STORY')==15, text.count('DECEPTIVE STORY')
+          assert text.count('TRUE STORY')==10, text.count('TRUE STORY')
+          assert 'Heather Lindsay' in text and 'Heather Fowle' in text
+          assert len(text)>18000
+          assert not re.search(r'[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}\\.(ogg|wav)',text,re.I)
+          print(f'Verified: {len(reader.pages)} small-screen pages, {len(text)} extracted characters, 23 results, {p.stat().st_size} bytes')
+          PY
+      - name: Upload Messenger-friendly PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: heather-recorded-statements-mobile-pdf
+          path: workspaces/audio-deception-comparison/heather-recorded-statements-mobile.pdf
+          retention-days: 30
+          if-no-files-found: error
+      - name: Commit PDF for direct GitHub access
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add workspaces/audio-deception-comparison/heather-recorded-statements-mobile.pdf
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish Messenger-friendly Heather statements PDF'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

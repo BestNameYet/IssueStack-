@@ -97,3 +97,17 @@ test('runtime observer verifies nonce and does not claim implementation success'
  const observed=await runtime.observe({github,owner:'BestNameYet',repo:'IssueStack-',config,now:'2026-10-27T20:03:00Z'});
  assert.equal(observed.job.status,'running');assert.equal(observed.job.outstanding,1);assert.equal(observed.job.success,null);
 });
+
+test('comparative benchmark requires independent real cohorts',()=>{
+ const benchmark=require('../src/issue8-context-benchmark.js');
+ const mk=(run_id)=>({run_id,model:'GPT-test',timestamp:'2026-10-27T20:21:00Z',provenance:'documented-session',
+   answers:fixtures.fixtures.map(f=>({id:f.id,answer:f.expected,confidence:0.8,tokens:250,retrievals:1}))});
+ const a=mk('baseline-001'),b=mk('registry-002');
+ const result=benchmark.evaluate({config,fixtures,baseline:a,registryAnswers:b});
+ assert.equal(result.baseline.accuracy,1);
+ assert.equal(result.registry.accuracy,1);
+ assert.equal(result.comparison.delta.accuracy,0);
+ assert.throws(()=>benchmark.evaluate({config,fixtures,baseline:a,registryAnswers:a}),/distinct/);
+ const bad=mk('registry-003');bad.source='synthetic';
+ assert.throws(()=>benchmark.evaluate({config,fixtures,baseline:a,registryAnswers:bad}),/Synthetic/);
+});

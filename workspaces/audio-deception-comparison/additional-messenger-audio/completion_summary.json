@@ -1,0 +1,19 @@
+{
+  "unique_recordings": 87,
+  "additional_message_events": 98,
+  "transcription_status": {
+    "asr_unverified": 54,
+    "inherited_unverified_asr": 30,
+    "no_speech_transcribed_review": 3
+  },
+  "truthdetection_status": {
+    "ok": 84,
+    "needs_human_speech_check": 3
+  },
+  "truthdetection_counts": {
+    "Deceptive Story": 63,
+    "True Story": 21
+  },
+  "prior_review_recordings_processed": 0,
+  "note": "Classifier output describes per-recording computer categories, not established truth."
+}

@@ -65,16 +65,37 @@ You say you saw Marland's brother and helped with food and supplies.
 
 This is a **structure example**, not a quotation to publish as written. Replace bracketed text with exact verified transcript passages.
 
+## Story first, details afterward
+
+**The main report must read like a connected story, not 23 separate test reports.** Open by explaining that TruthDetection analyzed Heather's recordings, then establish the contrast: **nine labeled True** and **fourteen labeled Deceptive**. Use a few specific examples to build the narrative, moving from earlier conversations to the seven recordings with Sam (**one True; six Deceptive**). Finish the main narrative with a **short, clear conclusion** that summarizes what the program labeled.
+
+**Do not interrupt the narrative** with long transcript passages, technical commentary, repeated evaluations, or an explanation of every recording. If a finding needs more explanation than fits naturally in a sentence or short quotation, provide its recording number and put the detail in an **appendix after the main conclusion**.
+
+### Appendix — results and source detail
+
+After the story and conclusion, provide a **recording-by-recording appendix covering all 23 retained recordings**. For each include:
+
+1. **Recording number, short date/time, conversation partner** (Heather is the report's subject; Sam is a different person).
+2. **What Heather said** — one or two clear sentences identifying the key claim or denial.
+3. **Selected transcript excerpts** preserving her own words, with **…** marking skipped passages and **[unclear]** where necessary.
+4. **TruthDetection says: True** or **TruthDetection says: Deceptive**, in bold green or red.
+5. **Context or contention**, only when it adds information needed to understand the result. No repeated filler.
+
+Group appendix entries into **True (9)** and **Deceptive (14)** or supply an equally clear navigation scheme; keep timestamps chronological **within each group** and retain the original recording numbers for cross-reference. Ensure every result appears in the appendix, even when only a few appear in the story.
+
+**Narrative rule:** The main story is the argument; the appendix is the supporting record. The reader should understand the contrast, the Sam findings, and the conclusion **without reading the appendix**. The appendix should make each result easy to inspect without forcing the story to become a catalog.
+
 ## Overall organization
 
-- **Cover:** “Recorded Statements Review” / **Heather** / “23 recordings · Aug 2025–Oct 2026”. One short sentence about the purpose.
-- **Quick summary:** 23 reviewed; **14** output “Deceptive Story” and **9** “True Story.” These are algorithm outputs.
-- **First section:** Deceptive (14 entries), **chronological within section**.
-- **Second section:** True (9 entries), chronological within section.
-- **Each entry:** consumer-friendly date/time; participant; 1–2 sentence context; a few selected excerpts; red/green TruthDetection says label at the bottom.
-- **Final source note:** brief account of edited transcripts, marked omissions, uncertain words, and link to full transcript source. No long closing commentary.
+- **Cover:** “Recorded Statements Review” / **Heather** / “23 recordings · Aug 2025–Oct 2026”.
+- **Opening:** Quickly explain what TruthDetection did and the split: **9 True**, **14 Deceptive**.
+- **Truthful-labeled examples:** A few concrete statements to Jason Law, Rob Peoples, others, and the one recording with Sam.
+- **Deceptive-labeled examples:** Earlier conversations, then the **six recordings with Sam** receiving this label. Build toward the strongest central contentions.
+- **Conclusion:** A short, direct closing of the main narrative, **before** the detailed records.
+- **Appendix:** All 23 numbered recording results, short excerpts, and any necessary context or contention.
+- **Source note:** Brief conventions for transcript edits, ellipses, and uncertainty. Avoid repeating this in each entry.
 
-**Date example:** `Aug 28, 2025 · 2:52 PM` (Pacific). Drop seconds, ISO dates, and repeated “PDT” on every entry. Explain Pacific time once if necessary.
+**Date example:** `Aug 28, 2025 · 2:52 PM` (Pacific). Drop seconds, ISO dates, and repeated “PDT” on every entry.
 
 ## Mobile and Messenger design requirements
 
@@ -103,6 +124,8 @@ The clearest disputed narratives are **#1**, **#4**, and **#17–23**. They incl
 - [ ] **TruthDetection says: Deceptive / True** after each excerpt, bold red or green
 - [ ] Counts remain **14 / 9**, with one short note explaining the program's limits
 - [ ] Mobile-sized, one-column PDF; text selectable; no orphan result pages
+- [ ] Main story has a clear conclusion **before** the appendix
+- [ ] Appendix accounts for all 23 recordings and lets readers inspect the exact labeled results
 - [ ] Visual phone test, full-text extraction check, and file-opening test completed
 - [ ] Share final Messenger-ready PDF **and** editable source file if possible
 

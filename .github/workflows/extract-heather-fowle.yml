@@ -9,7 +9,7 @@ permissions:
   contents: write
 jobs:
   extract:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Extract 7 Heather Fowle audio transcript pairs'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Execute corrected Heather Fowle extraction'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

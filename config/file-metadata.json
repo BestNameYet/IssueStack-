@@ -70,9 +70,17 @@
     },
     {
       "path": "config/agent-context-registry.json",
-      "size_bytes": 1153,
-      "sha256": "753a4f358ab2738382cc28ae9c70e44bc2d6097bc9a8dde1cf706dee31f2243b",
-      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+      "size_bytes": 1454,
+      "sha256": "7c7d9c7cde9674d4b77c694880d23bbdbd8cb24cc2b55603bc4f22cbf17e4628",
+      "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288",
+      "history": [
+        {
+          "sha256": "753a4f358ab2738382cc28ae9c70e44bc2d6097bc9a8dde1cf706dee31f2243b",
+          "size_bytes": 1153,
+          "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288",
+          "source_commit": "2422c64d3ecd6e99fe9d7695e381b862f91026f5"
+        }
+      ]
     },
     {
       "path": "config/agent-context-fixtures.json",
@@ -94,9 +102,17 @@
     },
     {
       "path": "src/agent-context-registry.js",
-      "size_bytes": 14498,
-      "sha256": "01a451c129a9ac66f822b2281f52a2470e5b441dc610775ba2a29396a1086b94",
-      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+      "size_bytes": 15136,
+      "sha256": "f16e4d124269d8ea0839f78afe053d48742b903d1757dc3b1821b1e4f30e2519",
+      "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288",
+      "history": [
+        {
+          "sha256": "01a451c129a9ac66f822b2281f52a2470e5b441dc610775ba2a29396a1086b94",
+          "size_bytes": 14498,
+          "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288",
+          "source_commit": "2422c64d3ecd6e99fe9d7695e381b862f91026f5"
+        }
+      ]
     },
     {
       "path": "src/issue8-context-runtime.js",
@@ -112,9 +128,17 @@
     },
     {
       "path": "src/issue8-context-benchmark.js",
-      "size_bytes": 2926,
-      "sha256": "35a7bd65759b3f4a3b0b2a3f7dfa4a83ee0cffacac0a2b13b1052dd119e0b606",
-      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+      "size_bytes": 6585,
+      "sha256": "55cd80fe1e42513723131162358b2ed900afb77911b69d1c7c09f9443a4d847e",
+      "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288",
+      "history": [
+        {
+          "sha256": "35a7bd65759b3f4a3b0b2a3f7dfa4a83ee0cffacac0a2b13b1052dd119e0b606",
+          "size_bytes": 2926,
+          "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288",
+          "source_commit": "2422c64d3ecd6e99fe9d7695e381b862f91026f5"
+        }
+      ]
     },
     {
       "path": "test/agent-context-registry.test.js",
@@ -124,9 +148,35 @@
     },
     {
       "path": ".github/workflows/issue8-context-refresh.yml",
-      "size_bytes": 2603,
-      "sha256": "80a7ab2ed5cde6fb945bc321f89b8090a4d86de2da5cf2c312d8709ea2bd6ef2",
-      "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288"
+      "size_bytes": 4923,
+      "sha256": "8d87c2ef1a88dc1b18cb14baa087f2cca886244833b5fab57ab71c80f10782be",
+      "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288",
+      "history": [
+        {
+          "sha256": "80a7ab2ed5cde6fb945bc321f89b8090a4d86de2da5cf2c312d8709ea2bd6ef2",
+          "size_bytes": 2603,
+          "purpose": "Issue #8 agent contextualization registry; staged implementation, job #6452132288",
+          "source_commit": "2422c64d3ecd6e99fe9d7695e381b862f91026f5"
+        }
+      ]
+    },
+    {
+      "path": "src/issue8-context-reconciler.js",
+      "size_bytes": 6878,
+      "sha256": "4ed86bdbb3bd733855616c78ea5d2a88640303f4db31aab19a0555ea10f4bfd4",
+      "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288"
+    },
+    {
+      "path": "test/issue8-context-reconciler.test.js",
+      "size_bytes": 6588,
+      "sha256": "9c51f8ddb80816b78db9d8f75ead44bdfaae731bf36a9a813032dced4c7f8e6c",
+      "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288"
+    },
+    {
+      "path": "config/agent-context-heldout.json",
+      "size_bytes": 3589,
+      "sha256": "db92504bb43116c9ac4e5d037208af447580ba8c22004eb6dd91980f4a29d677",
+      "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288"
     }
   ]
 }

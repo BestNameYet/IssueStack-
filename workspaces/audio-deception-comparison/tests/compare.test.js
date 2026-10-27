@@ -31,7 +31,7 @@ test('audio-only CLI writes a report without model weights',()=>{
     const report=JSON.parse(readFileSync(output,'utf8'));
     assert.equal(report.schema,'issuestack.audio-deception-comparison.v2');
     assert.deepEqual(Object.keys(report.models),['truthDetection']);
-    assert.ok(['model_not_installed','error'].includes(report.models.truthDetection.status));
+    assert.ok(['model_not_installed','model_load_not_authorized','error'].includes(report.models.truthDetection.status));
   } finally {rmSync(f.dir,{recursive:true,force:true})}
 });
 test('missing audio fails nonzero',()=>{

@@ -2,7 +2,7 @@ name: Heather public website
 on:
   workflow_dispatch:
   push:
-    branches: [main, stage/heather-public-site-20261027]
+    branches: [main, stage/heather-public-site-20261027, stage/heather-audio-reuse-20261027]
     paths:
       - '.github/workflows/heather-public-site.yml'
       - 'config/file-metadata.json'
@@ -14,13 +14,17 @@ on:
       - 'workspaces/audio-deception-comparison/public-site/**'
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: heather-pages-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -29,10 +33,56 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install audio converter
-        run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
-      - name: Build and verify all recordings
-        run: python3 workspaces/audio-deception-comparison/public-site/build.py --public-url 'https://bestnameyet.github.io/IssueStack-'
+      - name: Find reusable audio release
+        id: audio
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/heather-prebuilt"
+          if gh release download heather-site-audio-v1 --pattern audio.zip --dir "$RUNNER_TEMP/heather-prebuilt"; then
+            echo 'release=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'release=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Bootstrap from already-validated MP3 artifact
+        if: steps.audio.outputs.release != 'true'
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: BestNameYet/IssueStack-
+          run-id: 40487389391
+          artifact-ids: 12725308667
+          merge-multiple: true
+          path: ${{ runner.temp }}/heather-prebuilt
+      - name: Unpack existing release
+        if: steps.audio.outputs.release == 'true'
+        run: |
+          python3 - <<'PY'
+          import os,pathlib,zipfile
+          p=pathlib.Path(os.environ['RUNNER_TEMP'])/'heather-prebuilt'
+          allowed={f'audio/{i:02}.mp3' for i in range(1,24)}
+          with zipfile.ZipFile(p/'audio.zip') as z:
+              assert set(z.namelist())==allowed
+              z.extractall(p)
+          PY
+      - name: Verify and reuse all 23 MP3s
+        run: python3 workspaces/audio-deception-comparison/public-site/build.py --prebuilt "$RUNNER_TEMP/heather-prebuilt" --public-url 'https://bestnameyet.github.io/IssueStack-'
+      - name: Preserve validated MP3s for future deployments
+        if: github.ref == 'refs/heads/main' && steps.audio.outputs.release != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import os,pathlib,zipfile
+          p=pathlib.Path('workspaces/audio-deception-comparison/public-site/_site')
+          with zipfile.ZipFile(pathlib.Path(os.environ['RUNNER_TEMP'])/'audio.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for i in range(1,24):
+                  name=f'audio/{i:02}.mp3'
+                  z.write(p/name,name)
+          PY
+          gh release create heather-site-audio-v1 "$RUNNER_TEMP/audio.zip" --target "$GITHUB_SHA" --title 'Heather website audio assets' --notes 'Validated MP3 assets reused from approved-candidate run 40487389391. Original recordings are unchanged.' --latest=false
       - name: Upload review site
         uses: actions/upload-artifact@v4
         with:
@@ -50,7 +100,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write

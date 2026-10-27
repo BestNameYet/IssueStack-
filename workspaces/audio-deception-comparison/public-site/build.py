@@ -3,7 +3,7 @@ import argparse,base64,hashlib,json,pathlib,re,shutil,subprocess
 HERE=pathlib.Path(__file__).resolve().parent
 ROOT=HERE.parents[2]
 
-def build(public_url,output):
+def build(public_url,output,prebuilt):
     records=json.loads((HERE/'records.json').read_text())
     assert [r['n'] for r in records]==list(range(1,24))
     assert sum(r['label']=='True' for r in records)==9
@@ -21,6 +21,10 @@ def build(public_url,output):
     assert output.is_relative_to(HERE) and output!=HERE
     output.mkdir(parents=True,exist_ok=True)
     (output/'audio').mkdir(exist_ok=True)
+    receipt_bytes=(HERE/'audio-receipt.json').read_bytes()
+    assert hashlib.sha256(receipt_bytes).hexdigest()=='3c78b1d0d3f26bb9cec0f8dd6c5ad66afc37d077049dda83caf5518daaf4b4b0'
+    approved_audio=json.loads(receipt_bytes)['audio']
+    assert [a['recording'] for a in approved_audio]==list(range(1,24))
     receipts=[]
     for r in records:
         source=(ROOT/r['source_audio']).resolve()
@@ -28,8 +32,14 @@ def build(public_url,output):
         assert hashlib.sha256(source.read_bytes()).hexdigest()==r['source_sha256'], str(source)
         target=(output/r['audio']).resolve()
         assert target.is_relative_to(output/'audio')
-        subprocess.run(['ffmpeg','-v','error','-y','-i',str(source),'-codec:a','libmp3lame','-b:a','64k',str(target)],check=True)
-        duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(target)]))
+        a=approved_audio[r['n']-1]
+        assert a['source_sha256']==r['source_sha256']
+        mp3=(prebuilt/r['audio']).resolve()
+        assert mp3.is_relative_to(prebuilt.resolve())
+        content=mp3.read_bytes()
+        assert hashlib.sha256(content).hexdigest()==a['mp3_sha256'], str(mp3)
+        target.write_bytes(content)
+        duration=a['duration_seconds']
         assert duration>0
         r['duration']=f'{int(duration)//60}:{int(duration)%60:02}'
         receipts.append({'recording':r['n'],'source_sha256':r['source_sha256'],'mp3_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'duration_seconds':duration})
@@ -48,5 +58,6 @@ def build(public_url,output):
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--public-url',default='')
+    parser.add_argument('--prebuilt',type=pathlib.Path,required=True,help='Validated audio directory containing audio/01.mp3 etc.')
     parser.add_argument('--output',type=pathlib.Path,default=HERE/'_site')
-    args=parser.parse_args();build(args.public_url,args.output)
+    args=parser.parse_args();build(args.public_url,args.output,args.prebuilt)

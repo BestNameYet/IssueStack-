@@ -204,7 +204,7 @@ def select_key_excerpts(speech_paras, number, max_chars=740):
     for i, piece in enumerate(pieces):
         low = piece.casefold()
         hits = sum(1 for c in cues if c.casefold() in low)
-        score = hits * 12 + (1.1 if i == 0 else 0)
+        score = hits * 12
         score -= 1.5 if len(piece) < 14 else 0
         scored.append((score, i))
 
@@ -291,15 +291,19 @@ for group_name, group_intro, group_color, group_records in groups:
         story.append(para(item["scene"], style_body))
         shortened, abridged = select_key_excerpts(item["transcript"], item["number"])
         story.append(para("SELECTED TRANSCRIPT EXCERPTS" if abridged else "EDITED TRANSCRIPT", style_label))
-        for transcript_paragraph in shortened:
+        for transcript_paragraph in shortened[:-1]:
             story.append(para(transcript_paragraph, style_quote))
-        story.append(Spacer(1, 4))
-        story.append(HRFlowable(width="100%", color=LINE, thickness=0.8, spaceBefore=3, spaceAfter=7))
-        story.append(para("MODEL CONCLUSION", style_label))
-        if item["result"] == "Deceptive Story":
-            story.append(para("DECEPTIVE STORY", style_result_red))
-        else:
-            story.append(para("TRUE STORY", style_result_green))
+        result_style = style_result_red if item["result"] == "Deceptive Story" else style_result_green
+        conclusion = "DECEPTIVE STORY" if item["result"] == "Deceptive Story" else "TRUE STORY"
+        # Keep the end of the speaker's statement and its model conclusion
+        # on the same mobile page; prevent an orphaned result-only page.
+        story.append(KeepTogether([
+            para(shortened[-1], style_quote),
+            Spacer(1, 4),
+            HRFlowable(width="100%", color=LINE, thickness=0.8, spaceBefore=3, spaceAfter=7),
+            para("MODEL CONCLUSION", style_label),
+            para(conclusion, result_style),
+        ]))
 
 DEST.parent.mkdir(parents=True, exist_ok=True)
 doc.build(story)

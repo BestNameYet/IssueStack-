@@ -2,7 +2,7 @@
 
 **Use with:** [Complete edited transcripts](./maker-full-transcripts-23.md) and the [current Messenger PDF](./heather-recorded-statements-mobile.pdf).
 
-Each record's **summary** is a brief reading aid. Its **key claims** are attributed to the speaker, not established facts. Its **contention** identifies the issue, dispute, uncertainty, or lack of independent verification. The TruthDetection output is a weak, experimental acoustic classifier: do not frame its labels as proof of honesty or deception.
+Each record's **summary** is a brief reading aid. Its **key claims** are attributed to the speaker, not established facts. Its **contention** identifies the issue, dispute, uncertainty, or lack of independent verification. The report subject is Heather (Heather Lindsay / Heather Fowle); Sam is the separate conversation partner in recordings 17–23. Jason Law is the correct name for the earlier conversation partner. The TruthDetection output is a weak, experimental acoustic classifier: do not frame its labels as proof of honesty or deception.
 
 | No. | Date & conversation | Core claim or event | Main contention / open question | TruthDetection says |
 | --- | --- | --- | --- | --- |

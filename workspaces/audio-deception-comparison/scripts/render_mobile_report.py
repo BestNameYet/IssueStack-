@@ -144,6 +144,103 @@ for number, block in enumerate(blocks, 1):
         "result": conclusion_match.group(1).strip(),
     })
 
+
+# These are topic cues, not replacement speech. All displayed excerpts
+# are extracted verbatim from the existing edited transcripts.
+KEY_CUES = {
+    1: ["Leroy", "apologize", "fired", "shelter"],
+    2: ["enjoyed working", "transportation"],
+    3: ["Channelview", "babies", "dogs", "keep your head up"],
+    4: ["police", "Snow", "snitch"],
+    5: ["Salvation Army", "park", "churches", "praying", "God"],
+    6: ["bad choices", "responsible", "learning lesson", "don't be so harsh"],
+    7: ["brother", "groceries", "shoes", "vitamins"],
+    8: ["four", "interested", "business"],
+    9: ["got here", "Channelview", "store"],
+    10: ["Becky", "hernia", "emergency room"],
+    11: ["messages", "Market", "food bank"],
+    12: ["apologize", "wrong", "never asked"],
+    13: ["food bank", "fruit and bread", "eggs", "Market"],
+    14: ["made it in town", "trip", "see how you"],
+    15: ["Bluetooth", "knee", "brother", "seeing you"],
+    16: ["Durango", "cash", "buy"],
+    17: ["changed my mind", "didn't", "spend the night", "Autumn"],
+    18: ["fuck me", "get dressed", "drop me off", "stay", "move in"],
+    19: ["shot", "George", "witness list", "Amy"],
+    20: ["surveillance", "mentioned", "motel"],
+    21: ["never seen", "shooting", "witness", "testify"],
+    22: ["no reason", "lie", "truth"],
+    23: ["Crown", "picked me up", "truck", "Terry"],
+}
+
+def select_key_excerpts(speech_paras, number, max_chars=740):
+    """Select contiguous source-text spans, marking every omission with an ellipsis."""
+    original = " ".join(speech_paras).strip()
+    if len(original) <= max_chars:
+        return speech_paras, False
+
+    # The base paragraphs already break at plausible pauses. For long
+    # paragraphs, split ONLY on sentence boundaries, without rewriting text.
+    chunks = []
+    for paragraph in speech_paras:
+        sentences = re.split(r"(?<=[.!?])\s+(?=[A-Z\[])", paragraph)
+        chunks.extend(sentences if len(sentences) > 1 else [paragraph])
+    # A long ASR run-on can lack sentence punctuation. Use comma pauses if needed.
+    pieces = []
+    for c in chunks:
+        if len(c) <= 270:
+            pieces.append(c)
+        else:
+            pieces.extend(re.split(r"(?<=,)\s+", c))
+    pieces = [p.strip() for p in pieces if p.strip()]
+    if len(pieces) < 2:
+        # Never invent an ending: visibly mark a truncated source excerpt.
+        return [original[:max_chars].rsplit(" ", 1)[0] + " …"], True
+
+    cues = KEY_CUES[number]
+    # Reward chunks containing the speaker's central claims. Include the
+    # opening context when short; avoid saturating the budget with filler.
+    scored = []
+    for i, piece in enumerate(pieces):
+        low = piece.casefold()
+        hits = sum(1 for c in cues if c.casefold() in low)
+        score = hits * 12 + (1.1 if i == 0 else 0)
+        score -= 1.5 if len(piece) < 14 else 0
+        scored.append((score, i))
+
+    selected = set()
+    size = 0
+    for _, i in sorted(scored, key=lambda pair:(-pair[0], pair[1])):
+        length = len(pieces[i])
+        if length > max_chars:
+            continue
+        if size + length + 4 > max_chars:
+            continue
+        if len(selected) >= 7:
+            break
+        selected.add(i)
+        size += length + 4
+
+    if not selected:
+        return [original[:max_chars].rsplit(" ", 1)[0] + " …"], True
+
+    excerpts = []
+    indexes = sorted(selected)
+    for j, i in enumerate(indexes):
+        # Mark words omitted before, between, or after the selected spans.
+        prefix = "… " if i > 0 and (j == 0 or i != indexes[j-1] + 1) else ""
+        excerpts.append(prefix + pieces[i])
+    if indexes[-1] < len(pieces) - 1:
+        excerpts[-1] += " …"
+    # Validate that each selected span actually appeared in source order.
+    cursor = 0
+    for i in indexes:
+        pos = original.find(pieces[i], cursor)
+        if pos < 0:
+            raise AssertionError(f"Excerpt mismatch in recording {number}: {pieces[i][:40]}")
+        cursor = pos + len(pieces[i])
+    return excerpts, True
+
 assert sum(x["result"] == "Deceptive Story" for x in parsed) == 14
 assert sum(x["result"] == "True Story" for x in parsed) == 9
 
@@ -169,8 +266,8 @@ story.append(para("23 messages  |  August 2025 - October 2026", style_deck))
 story.append(HRFlowable(width="100%", color=LINE, thickness=0.8, spaceBefore=5, spaceAfter=18))
 story.append(para("Heather, this review brings together your recorded messages in time order. Each entry starts with the conversation background, followed by the edited transcript and the audio model's classification.", style_body))
 story.append(para("Sixteen recordings are from August-September 2025 and seven are from October 2026. Two near-silent recordings were excluded.", style_body))
-story.append(para("About the transcripts", style_label))
-story.append(para("Spelling and punctuation have been edited for reading. Words marked [unclear] could not be confirmed. The original model classifications are retained, but a classification does not establish whether a statement was true or false.", style_body))
+story.append(para("About the selected excerpts", style_label))
+story.append(para("For longer recordings, only selected passages are shown. An ellipsis (…) marks omitted words. The excerpts retain the wording of the edited transcripts. [Unclear] marks words not confirmed. A model label does not establish whether a statement was true or false.", style_body))
 story.append(Spacer(1, 14))
 story.append(para("23 RECORDINGS", style_sec))
 story.append(para("14 model labels: Deceptive Story", style_result_red))
@@ -192,8 +289,9 @@ for group_name, group_intro, group_color, group_records in groups:
         story.append(para("Conversation: " + item["conversation"], style_meta))
         story.append(para("CONVERSATION CONTEXT", style_label))
         story.append(para(item["scene"], style_body))
-        story.append(para("EDITED TRANSCRIPT", style_label))
-        for transcript_paragraph in item["transcript"]:
+        shortened, abridged = select_key_excerpts(item["transcript"], item["number"])
+        story.append(para("SELECTED TRANSCRIPT EXCERPTS" if abridged else "EDITED TRANSCRIPT", style_label))
+        for transcript_paragraph in shortened:
             story.append(para(transcript_paragraph, style_quote))
         story.append(Spacer(1, 4))
         story.append(HRFlowable(width="100%", color=LINE, thickness=0.8, spaceBefore=3, spaceAfter=7))

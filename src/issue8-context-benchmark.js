@@ -36,4 +36,54 @@ if(require.main===module){
    baseline:read(required(args,'--baseline')),registryAnswers:read(required(args,'--registry'))});
  process.stdout.write(JSON.stringify(output,null,2)+'\n');
 }
-module.exports={evaluate};
+
+function deterministicOrder(fixtures,seed) {
+ if(!Number.isSafeInteger(seed)||seed<0)throw Error('Nonnegative integer seed required');
+ let state=(seed>>>0)||1;
+ const ids=fixtures.map(f=>f.id),seen=new Set();
+ for(const id of ids){if(typeof id!=='string'||seen.has(id))throw Error('Fixture ID missing or duplicate');seen.add(id);}
+ const v=[...fixtures].map(f=>({id:f.id,question:f.question}));
+ for(let i=v.length-1;i>0;i--){
+   state=(Math.imul(1664525,state)+1013904223)>>>0;
+   const j=state%(i+1);
+   [v[i],v[j]]=[v[j],v[i]];
+ }
+ return v;
+}
+function buildProtocol({fixtures,heldout,seed=20261027}) {
+ if(fixtures?.schema!=='issuestack.agent-context.fixtures.v1'||heldout?.schema!=='issuestack.agent-context.heldout.v1')throw Error('Fixture schema mismatch');
+ const ids=new Set();
+ for(const f of [...fixtures.fixtures,...heldout.fixtures]){
+   if(!f.question||typeof f.id!=='string'||ids.has(f.id))throw Error('Fixture invalid or duplicate');
+   ids.add(f.id);
+ }
+ const prompts={
+   public:deterministicOrder(fixtures.fixtures,seed),
+   adversarial:deterministicOrder(heldout.fixtures,seed^0x4c4457)
+ };
+ return {schema:'issuestack.agent-context.protocol.v1',seed,
+   conditions:[
+     {cohort:'baseline',sources:['Repository AGENTS.md','README.md if present','Applicable Issue #6 instructions'],registry_allowed:false},
+     {cohort:'registry',sources:['Repository AGENTS.md','README.md if present','Applicable Issue #6 instructions','Issue #8 TOC and relevant pages'],registry_allowed:true}
+   ],
+   scoring_requirements:['Independent new agent context in both cohorts','Record run IDs, model, start/end time and retrievable provenance','Record each answer, calibrated confidence, tool retrieval count, and token consumption','Abstain explicitly on unverifiable live questions','Use seeded order and supplied immutable source commit','Blind evaluation requires externally hidden fixtures and a separate evaluation judge'],
+   prompts,
+   limitations:['Published adversarial fixtures are reproducible but not blind','Creating protocol is not an agent execution','No synthetic performance can substitute for separate actual agents']};
+}
+function evaluateExtended({config,fixtures,heldout,baseline,registryAnswers,seed=20261027}) {
+ const protocol=buildProtocol({fixtures,heldout,seed});
+ const valid=new Set([...fixtures.fixtures,...heldout.fixtures].map(f=>f.id));
+ for(const [kind,cohort]of [['baseline',baseline],['registry',registryAnswers]]){
+   if(cohort.cohort!==kind||cohort.seed!==seed||cohort.source_commit!==registryAnswers.source_commit || !/^[0-9a-f]{40}$/.test(cohort.source_commit||''))throw Error(kind+' cohort identity, seed or source commit mismatch');
+   if(!Array.isArray(cohort.answers)||cohort.answers.length!==valid.size||cohort.answers.some(a=>!valid.has(a.id)))throw Error(kind+' cohort fixture coverage mismatch');
+   if(cohort.answers.some(a=>typeof a.tokens!=='number'||typeof a.retrievals!=='number'||typeof a.confidence!=='number'))throw Error(kind+' missing token/retrieval/calibration measurements');
+ }
+ const primary=evaluate({config,fixtures,baseline,registryAnswers});
+ const adversarial=evaluate({config,fixtures:{fixtures:heldout.fixtures},baseline,registryAnswers});
+ return {schema:'issuestack.agent-context.extended-comparison.v1',
+   protocol_version:protocol.schema,seed,source_commit:baseline.source_commit,
+   public:primary,adversarial,complete_runs:true,
+   limitations:['A score requires independently collected non-synthetic actual agent answers; caller-supplied provenance must be audited','Published adversarial fixtures are not truly blind']};
+}
+
+module.exports={evaluate,deterministicOrder,buildProtocol,evaluateExtended};

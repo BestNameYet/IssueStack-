@@ -1,0 +1,94 @@
+name: Heather seven-recording windowed TruthDetection analysis
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/heather-seven-window-analysis.yml'
+      - 'workspaces/audio-deception-comparison/heather-fowle/segment_analysis.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  window-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout candidate source without write credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify exactly seven existing source WAV files
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python3 - <<'PY'
+          import json, wave
+          from pathlib import Path
+          base=Path('heather-fowle')
+          inventory=json.loads((base/'wav-inventory.json').read_text())
+          assert len(inventory)==7
+          assert len({x['wav'] for x in inventory})==7
+          assert len(list((base/'wav').glob('*.wav')))==7
+          for item in inventory:
+              path=base/item['wav']
+              assert path.is_file()
+              with wave.open(str(path),'rb') as w:
+                  assert (w.getnchannels(), w.getsampwidth(), w.getframerate())==(1,2,16000)
+                  assert w.getnframes()>0
+          print('Validated seven 16 kHz mono WAV recordings')
+          PY
+
+      - name: Build existing pinned TruthDetection image
+        working-directory: workspaces/audio-deception-comparison
+        run: docker build --progress=plain --build-arg BUNDLE_TRUTH_MODEL=1 -t issuestack-truth-window:seven .
+
+      - name: Run isolated windowed inference
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          set -euo pipefail
+          mkdir -p heather-fowle/window-reports
+          chmod 777 heather-fowle/window-reports
+          docker run --rm --network none --cap-drop ALL \
+            --security-opt no-new-privileges --pids-limit 128 --memory 3g --cpus 2 \
+            --read-only --tmpfs /tmp:rw,nosuid,size=512m --user 65534:65534 \
+            -e HOME=/tmp -e NUMBA_CACHE_DIR=/tmp/numba \
+            -e ALLOW_TRUSTED_MODEL_LOAD=1 \
+            -v "$PWD/heather-fowle/wav:/data/input:ro" \
+            -v "$PWD/heather-fowle/wav-inventory.json:/data/inventory.json:ro" \
+            -v "$PWD/heather-fowle/segment_analysis.py:/analysis/segment_analysis.py:ro" \
+            -v "$PWD/heather-fowle/window-reports:/data/output" \
+            --entrypoint python issuestack-truth-window:seven \
+            /analysis/segment_analysis.py
+          sudo chown -R "$(id -u):$(id -g)" heather-fowle/window-reports
+
+      - name: Independently validate emitted window results
+        working-directory: workspaces/audio-deception-comparison
+        run: |
+          python3 - <<'PY'
+          import json,csv
+          from pathlib import Path
+          p=Path('heather-fowle/window-reports/segment_results.json')
+          r=json.loads(p.read_text())
+          records=r['recordings'];windows=r['windows']
+          assert len(records)==7 and len({x['number'] for x in records})==7
+          assert all(x['exact_previous_result_reproduced'] for x in records)
+          assert {x['mode'] for x in windows}=={'30s','10s'}
+          assert all(x['start_seconds']>=0 and x['end_seconds']>x['start_seconds'] and x['raw_prediction'] in (0,1) for x in windows)
+          assert all(0<=x['forest_vote_true']<=1 for x in windows if x['forest_vote_true'] is not None)
+          assert all(x['forest_vote_true'] is None or abs(x['forest_vote_true']+x['forest_vote_deceptive']-1)<1e-5 for x in windows)
+          with Path('heather-fowle/window-reports/segment_results.csv').open(newline='') as f:
+              rows=list(csv.DictReader(f))
+          assert len(rows)==len(windows)
+          print('Validated',len(windows),'windowed inference rows across seven source recordings')
+          PY
+
+      - name: Upload segment-level model report only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heather-seven-truthdetection-windows-candidate
+          path: workspaces/audio-deception-comparison/heather-fowle/window-reports/segment_results.*
+          retention-days: 14
+          if-no-files-found: warn

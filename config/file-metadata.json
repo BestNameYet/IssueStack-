@@ -180,9 +180,17 @@
     },
     {
       "path": "AGENTS.md",
-      "size_bytes": 15858,
-      "sha256": "3c3f15cd1af8527581a21194d6ec52d71281c91650224270f7c24ecd3bce1b21",
-      "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+      "size_bytes": 17504,
+      "sha256": "7ead1a97ba54aebf817d36df699a2e74b0af1b32bdee3ba030b4bc8807051981",
+      "purpose": "IssueStack chat title follows active top-level job with capability-aware verification",
+      "history": [
+        {
+          "sha256": "3c3f15cd1af8527581a21194d6ec52d71281c91650224270f7c24ecd3bce1b21",
+          "size_bytes": 15858,
+          "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)",
+          "source_commit": "3341a8a7ea4550641baddd4dc5232066560dee90"
+        }
+      ]
     },
     {
       "path": "config/semantic-operator-contract.v1.json",

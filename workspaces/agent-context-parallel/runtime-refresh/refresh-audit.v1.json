@@ -1,0 +1,210 @@
+{
+  "schema": "issuestack.agent-context.parallel.refresh-audit.v1",
+  "child_job_id": 6456876636,
+  "parent_requirement_ids": [
+    "R4",
+    "R8"
+  ],
+  "source_commit": "9755518bd25180437f95e5b4452609f0904d0ec4",
+  "source_state": "read_only",
+  "config_policy": {
+    "policy_version": "issuestack.agent-context.refresh.v1",
+    "schedule_utc": "31 2 * * *",
+    "mode": "read_only_review_gated",
+    "runtime_observation_max_hours": 48,
+    "detect_source_drift": true,
+    "verify_toc_hashes": true,
+    "allow_unattended_issue_writes": false
+  },
+  "checks": [
+    {
+      "check_id": "A01",
+      "check": "Scheduled cron is declared",
+      "state": "implemented",
+      "reason": "Workflow defines 02:31 UTC daily schedule; this proves configuration only.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/.github/workflows/issue8-context-refresh.yml"
+      ],
+      "next_action": "Observe an actual scheduled production run and artifact after trigger."
+    },
+    {
+      "check_id": "A02",
+      "check": "Automated static refresh on main source push",
+      "state": "missing_implementation",
+      "reason": "Push trigger is restricted to the old staging branch; ordinary main source updates will not cause refresh. Scheduled run is a separate delayed mechanism.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/.github/workflows/issue8-context-refresh.yml"
+      ],
+      "next_action": "Propose and review main-eligible trigger or source-change event path with concurrency safeguards."
+    },
+    {
+      "check_id": "A03",
+      "check": "Static and live runtime observations are independently gathered",
+      "state": "implemented_not_fully_validated",
+      "reason": "Workflow checks out main as production-source and separately queries workflow runs/job status. Sources remain dated and run-list limited.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/.github/workflows/issue8-context-refresh.yml"
+      ],
+      "next_action": "Verify running scheduled job receipts and static/runtime reconciliation on a real main change."
+    },
+    {
+      "check_id": "A04",
+      "check": "Issue8 pages update automatically after a source change",
+      "state": "missing_implementation",
+      "reason": "Publication is disabled, and audit writes preview and drift artifacts only. This is appropriate for review-gated safety but does not meet literal automatic update acceptance.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/config/agent-context-registry.json",
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/.github/workflows/issue8-context-refresh.yml"
+      ],
+      "next_action": "Obtain explicit governance decision: approve per-change staged publication proposals, not unattended edits."
+    },
+    {
+      "check_id": "A05",
+      "check": "No-op and stale detection implemented and CI-tested",
+      "state": "tested",
+      "reason": "Staging run #40590076691 was successful with 16/16 Node tests, covering semantic no-op, stale timestamps and integrity conditions.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/actions/runs/40590076691",
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/src/issue8-context-reconciler.js"
+      ],
+      "next_action": "Run production scheduled audit and inspect generated artifacts; add idempotent real publication test once separately approved."
+    },
+    {
+      "check_id": "A06",
+      "check": "Live registry snapshot source commit matches main",
+      "state": "failed_observation",
+      "reason": "Issue8 source commit 2422c64 differs from current main and C003/C004 deployments; live parent remaining count increased in snapshot (11) compared to current 10.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453791402",
+        "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453775750"
+      ],
+      "next_action": "Generate reviewed updated Issue8 pages and TOC from a controlled source commit, preserving before/after exact hashes."
+    },
+    {
+      "check_id": "A07",
+      "check": "Runtime observation remains within configured age threshold",
+      "state": "verified_time_bounded",
+      "reason": "As of latest collected Action timestamp 2026-10-28T00:14:17Z, runtime observation was approximately 3.4h old (less than 48h), but source identity is stale.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453775750",
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/config/agent-context-registry.json"
+      ],
+      "next_action": "Keep age freshness distinct from source drift and live job status."
+    },
+    {
+      "check_id": "A08",
+      "check": "Published TOC supports hash verification after publisher updates",
+      "state": "implementation_conflict",
+      "reason": "Publisher constructs updated TOC page entries with page_id/comment_id/url only; reconciler requires an additional per-page sha256. A future publication using current publisher output would fail the audit contract.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/src/issue8-context-publisher.js",
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/src/issue8-context-reconciler.js"
+      ],
+      "next_action": "Introduce page SHA-256 into publisher TOC entries, add strict schema and end-to-end publishing/reconciliation negative tests, then review."
+    },
+    {
+      "check_id": "A09",
+      "check": "Workflow permissions restrict unintended public registry mutation",
+      "state": "verified_static",
+      "reason": "Workflow grants issues:read and contents:read; publisher requires a config flag and explicit review receipt. No automatic Issue8 edit is authorized.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/.github/workflows/issue8-context-refresh.yml",
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/config/agent-context-registry.json"
+      ],
+      "next_action": "Retain static check and add enforcement test to validate authorization edge cases."
+    },
+    {
+      "check_id": "A10",
+      "check": "Repeated scheduled runs and production reliability",
+      "state": "unverified",
+      "reason": "No scheduled production audit run appeared among the inspected latest 100 repository runs. This does not prove no such run ever occurred; CI success was on staging.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/.github/workflows/issue8-context-refresh.yml",
+        "https://github.com/BestNameYet/IssueStack-/actions/runs/40590076691"
+      ],
+      "next_action": "Collect true scheduled-event run with artifact, timing and failure handling; avoid claims about uptime."
+    },
+    {
+      "check_id": "A11",
+      "check": "Only changed registry entries are updated",
+      "state": "not_demonstrated",
+      "reason": "Reconciler computes per-page differences; every page includes config_sha256 and source_commit, so global config/hash changes may mark all pages changed. No production partial update sequence has been verified.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/src/issue8-context-reconciler.js",
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/src/issue8-context-publisher.js"
+      ],
+      "next_action": "Test targeted file change to affected page set, TOC version and user-approved publication."
+    },
+    {
+      "check_id": "A12",
+      "check": "One genuine Issue1→Issue2→Issue3→archive instance",
+      "state": "verified_historical",
+      "reason": "Independent record, transfer ledger, active/archived index, pad identity and exact archival content all matched for past job 6418283367.",
+      "evidence": [
+        "https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6418283367",
+        "https://github.com/BestNameYet/IssueStack-/blob/9755518bd25180437f95e5b4452609f0904d0ec4/scratchpads/archive.json"
+      ],
+      "next_action": "Do not extrapolate sample to current system reliability; test fresh and blocked paths separately."
+    }
+  ],
+  "negative_test_protocols": [
+    {
+      "id": "N01",
+      "case": "Edited source file with main push and no cron",
+      "expected": "Warn about delayed-only scan rather than invent immediate refresh.",
+      "actual": "Current trigger lacks main source push; not executed as CI regression."
+    },
+    {
+      "id": "N02",
+      "case": "Publisher emits TOC entry without sha256",
+      "expected": "Deterministic reconciler rejects malformed links.",
+      "actual": "Code-level mismatch verified, integration test pending."
+    },
+    {
+      "id": "N03",
+      "case": "Runtime timestamp still within 48h but commit mismatches",
+      "expected": "Source drift true regardless of age threshold.",
+      "actual": "Observed in live Issue8 as of 2026-10-28T00:14Z."
+    },
+    {
+      "id": "N04",
+      "case": "Readonly audit detects new evidence",
+      "expected": "No Issue8 write without separate user exact-change approval.",
+      "actual": "Source configuration and granted permissions verify nonmutation; staging CI passed."
+    },
+    {
+      "id": "N05",
+      "case": "No run in sample of latest N actions",
+      "expected": "Return unknown rather than infer the workflow never executed.",
+      "actual": "Observed the last 100 repository runs; no claim of exhaustive scheduled-run search."
+    }
+  ],
+  "acceptance_assessment": {
+    "R4": {
+      "status": "partially_verified",
+      "positive": [
+        "Dated per-subsystem observations and real success/archive receipt"
+      ],
+      "open": [
+        "Current freshness beyond sample subsystem coverage",
+        "Operational dashboard distinct state levels and missing subsystem statuses",
+        "Fresh end-to-end acceptance test across event changes"
+      ]
+    },
+    "R8": {
+      "status": "not_verified",
+      "positive": [
+        "Staging deterministic reconciliation and read-only cron workflow",
+        "No-op/stale checks and review gate"
+      ],
+      "open": [
+        "Main source push refresh missing",
+        "No approved source-driven page updates",
+        "Publisher TOC checksum incompatibility",
+        "Full affected-only and production scheduled run tests absent"
+      ]
+    }
+  },
+  "proposed_change_scope": "Isolated findings only; do not edit existing Issue8 or main. Parent/worker must prepare separate atomic reviewed change manifest for fix.",
+  "security_note": "Never infer current health from a prior successful CI run or make public unreviewed issue edits."
+}

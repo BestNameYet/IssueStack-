@@ -108,121 +108,215 @@ function blockPending(job) {
   return blocked;
 }
 
-async function run({github, context, core}) {
-  if (context.eventName!=='issue_comment' || !['created','edited'].includes(context.payload.action) ||
-      context.payload.issue?.number!==ISSUE_INTAKE || context.payload.issue?.pull_request) return;
-  const {owner,repo} = context.repo;
-  const commentId=context.payload.comment.id;
-  // Only the repository owner can issue work. Overflow comments are removed
-  // regardless of author; the bot and all other writers use the pinned slots.
+// Source and status stay in one fixed comment. The source is base64-encoded
+// for lossless recovery, NOT encrypted; issue comments are public.
+const PROGRESS_MARKER = 'ISSUESTACK_INTAKE_PROGRESS_V1';
+const progressSuffix = new RegExp('\\n<!-- '+PROGRESS_MARKER+' ([A-Za-z0-9+/=]+) -->\\s*$');
+const workflowUrl = (context) => 'https://github.com/'+context.repo.owner+'/'+context.repo.repo+
+  '/actions/runs/'+context.runId;
+const parseProgress = (body) => {
+  const m=progressSuffix.exec(String(body||''));
+  if(!m)return null;
+  let state;
+  try {state=JSON.parse(Buffer.from(m[1],'base64').toString('utf8'));}catch{return null;}
+  if(state?.version!==1||typeof state.run_id!=='number'||typeof state.source!=='string'||
+      !Array.isArray(state.events))return null;
+  return state;
+};
+function renderProgress(state){
+  const phase=state.phase==='succeeded'?'completed':state.phase==='failed'?'failed':'running';
+  const header='## IssueStack intake — workflow '+phase;
+  const eventLines=state.events.map(e=>'- '+e);
+  const encoded=Buffer.from(JSON.stringify(state),'utf8').toString('base64');
+  return [header,'',
+    '- Workflow: [run #'+state.run_id+']('+state.run_url+')',
+    '- Source slot: #'+state.slot_id,
+    ...eventLines,
+    '',
+    'Original submitted JSON is retained in the machine-readable comment record until cleanup.',
+    '',
+    '<!-- '+PROGRESS_MARKER+' '+encoded+' -->'].join('\n');
+}
+function safeError(error){
+  if(error?.intakeValidation===true)return String(error.message).replace(/[\r\n\t]/g,' ').slice(0,300);
+  const code=Number(error?.status||error?.response?.status);
+  return 'Operation failed'+(Number.isInteger(code)?' (HTTP '+code+')':'')+
+    '. Inspect the linked workflow run for details; no success was inferred.';
+}
+function validationError(message){
+  const err=new Error(message);err.intakeValidation=true;return err;
+}
+async function progressWriter({github,context,commentId,sourceText}){
+  const {owner,repo}=context.repo;
+  const state={
+    version:1,run_id:Number(context.runId)||0,run_url:workflowUrl(context),
+    slot_id:commentId,source:sourceText,phase:'running',stage:'initialize',
+    events:['Workflow running; validating submitted instruction.'],finished_at:null
+  };
+  const publish=async()=>{
+    const observed=(await github.rest.issues.getComment({owner,repo,comment_id:commentId})).data;
+    const previous=parseProgress(observed.body);
+    // Prevent a stale workflow from clobbering a newer user edit or another run.
+    if(previous){
+      if(previous.run_id!==state.run_id||previous.source!==state.source){
+        throw Error('Stale intake status: another run owns slot '+commentId);
+      }
+    }else if(observed.body!==sourceText){
+      throw Error('Source slot changed since intake started');
+    }
+    await writeVerified(github,owner,repo,commentId,renderProgress(state));
+  };
+  await publish();
+  return {
+    state,
+    async stage(stage){state.stage=stage;},
+    async append(line){
+      state.events.push(line);await publish();
+    },
+    async finish(){
+      state.stage='complete';state.phase='succeeded';state.finished_at=new Date().toISOString();
+      state.events.push('Transfer verified; progress display retained for five minutes.');
+      await publish();
+    },
+    async fail(error){
+      state.phase='failed';state.finished_at=new Date().toISOString();
+      state.events.push('Error at '+state.stage+': '+safeError(error));
+      state.events.push('Workflow details: '+state.run_url);
+      await publish();
+    }
+  };
+}
+async function run({github,context,core}){
+  if(context.eventName!=='issue_comment'||!['created','edited'].includes(context.payload.action)||
+      context.payload.issue?.number!==ISSUE_INTAKE||context.payload.issue?.pull_request)return;
+  const {owner,repo}=context.repo,commentId=context.payload.comment.id;
   const source=(await github.rest.issues.getComment({owner,repo,comment_id:commentId})).data;
-  if (commentId===LEDGER_ID) {core.info('Ledger is not an intake slot.');return;}
-  if (slotNumber(commentId)===null) {
-    await pruneOverflow(github,owner,repo,core);
+  if(commentId===LEDGER_ID){core?.info?.('Ledger is not an intake slot');return;}
+  if(slotNumber(commentId)===null){await pruneOverflow(github,owner,repo,core);return;}
+  if(source.user?.login!==owner){core?.info?.('Owner-only slot ignored');return;}
+  if(source.body.trim()===SLOT_PROMPT){core?.info?.('Slot available');await pruneOverflow(github,owner,repo,core);return;}
+  if(parseProgress(source.body)){
+    core?.info?.('Slot is already being processed or displayed; do not replay');
     return;
   }
-  if (source.user?.login!==owner) {core.info('Owner-only slot '+commentId+' ignored.');return;}
-
-  // A placeholder is a ready-to-edit slot, not malformed JSON.
-  if (source.body.trim()!==SLOT_PROMPT) {
-    // Explicit schema-based dispatch. A pre-existing stepwise procedure is
-    // a different record kind: it goes straight to Issue #13, never Issue #2.
-    const {recordText}=splitComment(source.body);
+  const {recordText}=splitComment(source.body);
+  // Preserve submitted text verbatim in the status record, including existing
+  // validator diagnostics, before making any queue or scratchpad changes.
+  const progress=await progressWriter({github,context,commentId,sourceText:source.body});
+  try{
+    await progress.stage('parse');
     let submitted;
-    try {submitted=JSON.parse(recordText);}catch{}
-    if (submitted?.schema===DECLARATION) {
+    try{submitted=JSON.parse(recordText);}catch{throw validationError('Invalid JSON');}
+    if(submitted?.schema===DECLARATION){
+      await progress.stage('procedure_validation');
       const error=validateDeclaration(submitted);
-      if(error){
-        const annotated=addError(source.body,error);
-        if(annotated!==source.body)await writeVerified(github,owner,repo,commentId,annotated);
-        core.info('Invalid procedure declaration: '+error);
-        return;
-      }
+      if(error)throw validationError(error);
+      await progress.stage('issue13_create_verify');
       const id=await ensureDeclaredProcedure({github,owner,repo,declaration:submitted,sourceId:commentId,core});
-      const when=new Date().toISOString();
-      const entry='- '+when+' | slot '+slotNumber(commentId)+' | source #'+commentId+
-        ' | nonce '+JSON.stringify(submitted.nonce)+
-        ' | [Issue #13 procedure #'+id+'](https://github.com/'+owner+'/'+repo+
-        '/issues/13#issuecomment-'+id+') | receipt: PROCEDURE:'+id;
+      await progress.append('Issue #13 procedure found at commentID ['+id+'](https://github.com/'+owner+'/'+repo+'/issues/13#issuecomment-'+id+').');
+      await progress.stage('ledger');
+      const entry='- '+new Date().toISOString()+' | slot '+slotNumber(commentId)+' | source #'+commentId+
+        ' | nonce '+JSON.stringify(submitted.nonce)+' | [Issue #13 procedure #'+id+
+        '](https://github.com/'+owner+'/'+repo+'/issues/13#issuecomment-'+id+') | receipt: PROCEDURE:'+id;
       await appendLedger(github,owner,repo,entry,'PROCEDURE:'+id);
-      await writeVerified(github,owner,repo,commentId,SLOT_PROMPT);
-      core.info('Verified declared-procedure transfer '+id+'; reset slot '+slotNumber(commentId));
+      await progress.append('Issue #1 procedure transfer receipt verified: PROCEDURE:'+id+'.');
+      await progress.finish();
       return;
     }
+    await progress.stage('task_validation');
     const issue=(await github.rest.issues.get({owner,repo,issue_number:ISSUE_INTAKE})).data;
     const {template,registry}=readDefinition(issue.body);
-    let record,error;
-    try {record=JSON.parse(recordText);}catch{error='Invalid JSON';}
-    if (!error) error=validateIntake(record,template,registry);
-
-    const queue=await github.paginate(github.rest.issues.listComments,
-      {owner,repo,issue_number:ISSUE_QUEUE,per_page:100});
+    const error=validateIntake(submitted,template,registry);
+    if(error)throw validationError(error);
+    await progress.stage('queue_deduplication');
+    const queue=await github.paginate(github.rest.issues.listComments,{owner,repo,issue_number:ISSUE_QUEUE,per_page:100});
     const jobs=[];
-    for (const q of queue) {
-      let job;try{job=JSON.parse(q.body);}catch{continue;}
-      if (job && typeof job==='object' && !Array.isArray(job))jobs.push({comment:q,job});
+    for(const q of queue){let job;try{job=JSON.parse(q.body);}catch{continue;}
+      if(job&&typeof job==='object'&&!Array.isArray(job))jobs.push({comment:q,job});
     }
-    const sameNonce=error?[]:jobs.filter(o=>nonceOf(o.job)===record['nonce[string]']);
-    if (!error && sameNonce.some(o=>sourceId(o.job)!==commentId)) error='Nonce already used by another instruction.';
-    if (!error && sameNonce.length>1) error='Multiple jobs with this nonce; manual repair required.';
-
-    if (error) {
-      // Retain the user's payload plus one visible error tag.
-      const prior=jobs.filter(o=>sourceId(o.job)===commentId && statusOf(o.job)==='pending');
-      // A reusable slot may have multiple historical jobs. Do not invalidate
-      // an unrelated earlier instruction merely because its slot was reused.
-      // Blocking requires the currently submitted nonce to identify that job.
-      const submittedNonce=record?.['nonce[string]'];
-      for(const candidate of prior) {
-        if(!submittedNonce || nonceOf(candidate.job)!==submittedNonce)continue;
-        await writeVerified(github,owner,repo,candidate.comment.id,JSON.stringify(blockPending(candidate.job),null,2));
-      }
-      const annotated=addError(source.body,error);
-      if(annotated!==source.body) await writeVerified(github,owner,repo,commentId,annotated);
-      core.info('Invalid slot '+slotNumber(commentId)+' entry: '+error);
-      return;
-    }
-
+    const nonce=submitted['nonce[string]'];
+    const sameNonce=jobs.filter(o=>nonceOf(o.job)===nonce);
+    if(sameNonce.some(o=>sourceId(o.job)!==commentId))throw validationError('Nonce already used by another instruction.');
+    if(sameNonce.length>1)throw validationError('Multiple jobs with this nonce; manual repair required.');
     let queueId,queuedRecord;
-    if (sameNonce.length) {
+    if(sameNonce.length){
       queueId=sameNonce[0].comment.id;
       queuedRecord=sameNonce[0].job;
-      // Prior accepted payload is immutable after publication.
-      if(statusOf(queuedRecord)!=='pending') core.info('Existing job status: '+statusOf(queuedRecord));
-    } else {
-      queuedRecord=copy(record);
+      core?.info?.('Retry-safe recovery of queued job '+queueId);
+    }else{
+      await progress.stage('issue2_creation');
+      queuedRecord=copy(submitted);
       queuedRecord['source[object<Source>]']['issue[number]']=ISSUE_INTAKE;
       queuedRecord['source[object<Source>]']['comment_id[number|null]']=commentId;
       queuedRecord['execution[object<Execution>]']['enqueued_at[string|null]']=new Date().toISOString();
       queuedRecord['execution[object<Execution>]']['status[string]']='pending';
-      const body=JSON.stringify(queuedRecord,null,2);
-      const posted=await github.rest.issues.createComment({owner,repo,issue_number:ISSUE_QUEUE,body});
+      const posted=await github.rest.issues.createComment({
+        owner,repo,issue_number:ISSUE_QUEUE,body:JSON.stringify(queuedRecord,null,2)
+      });
       queueId=posted.data.id;
     }
-
-    // The same transfer can be retried safely after a partial ledger/reset failure.
+    await progress.stage('issue2_readback');
     const verified=(await github.rest.issues.getComment({owner,repo,comment_id:queueId})).data;
     const actual=JSON.parse(verified.body);
-    if(nonceOf(actual)!==record['nonce[string]'] || sourceId(actual)!==commentId) {
-      throw new Error('Queue verification failed; source slot was not reset.');
-    }
-    // In this SAME handoff run, create/verify the Issue #3 scratchpad and
-    // link its ID to the Issue #2 job ID in Issue #2 comment 1. A failure
-    // leaves the Issue #1 slot intact so a retry can recover both records.
-    const scratchpadId=await ensureScratchpad({
-      github,owner,repo,jobId:queueId,jobNonce:nonceOf(actual),core
-    });
-    // Static task records deliberately stop at Issue #2 plus their Issue #3 pad.
-    const enqueued=actual['execution[object<Execution>]']?.['enqueued_at[string|null]'] || new Date().toISOString();
+    if(nonceOf(actual)!==nonce||sourceId(actual)!==commentId)throw Error('Issue #2 verification mismatch');
+    await progress.append('Issue #2 comment found at commentID ['+queueId+
+      '](https://github.com/'+owner+'/'+repo+'/issues/2#issuecomment-'+queueId+').');
+    await progress.stage('issue3_create_verify');
+    const padId=await ensureScratchpad({github,owner,repo,jobId:queueId,jobNonce:nonceOf(actual),core});
+    await progress.append('Issue #3 scratchpad found at commentID ['+padId+
+      '](https://github.com/'+owner+'/'+repo+'/issues/3#issuecomment-'+padId+').');
+    await progress.stage('ledger');
+    const enqueued=actual['execution[object<Execution>]']?.['enqueued_at[string|null]']||new Date().toISOString();
     await appendLedger(github,owner,repo,
       transferLine(slotNumber(commentId),commentId,nonceOf(actual),queueId,enqueued,owner+'/'+repo),
       'TRANSFER:'+queueId);
-    await writeVerified(github,owner,repo,commentId,SLOT_PROMPT);
-    core.info('Verified transfer '+queueId+' with scratchpad '+scratchpadId+'; reset Issue #1 slot '+slotNumber(commentId));
+    await progress.append('Issue #1 ledger transfer verified: TRANSFER:'+queueId+'.');
+    await progress.finish();
+    core?.info?.('Verified transfer '+queueId+' with pad '+padId+'; delayed cleanup pending');
+  }catch(error){
+    try{await progress.fail(error);}catch(reportError){
+      core?.error?.('Unable to persist intake error to Issue #1 slot: '+String(reportError?.message||reportError));
+    }
+    core?.error?.('Issue #1 intake failed at '+progress.state.stage+': '+String(error?.message||error));
+    core?.setFailed?.('Issue #1 intake failed; inspect visible status and workflow logs.');
+    if(!error?.intakeValidation)throw error;
+  }
+}
+// Cleanup runs in a separate job, never in the serialized intake job.
+// It is intentionally best-effort: status must not be deleted if the slot
+// changed, the run is different, or the five-minute interval is incomplete.
+async function finishOrphan({github,context,core}){
+  if(context.payload.issue?.number!==1||!SLOT_IDS.includes(context.payload.comment?.id))return;
+  const {owner,repo}=context.repo,id=context.payload.comment.id;
+  const c=(await github.rest.issues.getComment({owner,repo,comment_id:id})).data;
+  const state=parseProgress(c.body);
+  if(!state||state.run_id!==(Number(context.runId)||0)||state.phase!=='running')return;
+  state.phase='failed';state.stage='interrupted';state.finished_at=new Date().toISOString();
+  state.events.push('Error: Intake job terminated before completion. Inspect workflow '+state.run_url+'.');
+  await writeVerified(github,owner,repo,id,renderProgress(state));
+  core?.warning?.('Recorded interrupted intake run '+state.run_id);
+}
+async function cleanup({github,context,core}){
+  if(context.payload.issue?.number!==1||!SLOT_IDS.includes(context.payload.comment?.id))return;
+  const {owner,repo}=context.repo,id=context.payload.comment.id;
+  const c=(await github.rest.issues.getComment({owner,repo,comment_id:id})).data;
+  const state=parseProgress(c.body);
+  if(!state||state.run_id!==(Number(context.runId)||0))return;
+  if(!['succeeded','failed'].includes(state.phase)||!Number.isFinite(Date.parse(state.finished_at)))return;
+  if(Date.now()-Date.parse(state.finished_at)<300000){
+    core?.warning?.('Five-minute retention has not elapsed; refusing early reset');
     return;
   }
-  core.info('Slot '+slotNumber(commentId)+' is available.');
-  await pruneOverflow(github,owner,repo,core);
+  // Recheck immediately before write; an unconditional GitHub issue-comment
+  // update has no compare-and-swap primitive, so concurrent owner edits are
+  // still a documented risk, even with this stale-run guard.
+  const latest=(await github.rest.issues.getComment({owner,repo,comment_id:id})).data;
+  const newer=parseProgress(latest.body);
+  if(!newer||newer.run_id!==state.run_id||newer.finished_at!==state.finished_at){
+    core?.warning?.('Slot changed since cleanup read; preserve user content');return;
+  }
+  await writeVerified(github,owner,repo,id,SLOT_PROMPT);
+  core?.info?.('Five-minute display expired; cleared slot '+id);
 }
-
-module.exports={run,appendLedger,slotNumber,initialLedger,transferLine,rejectedLine,LEDGER_ID,SLOT_IDS,SLOT_PROMPT};
+module.exports={run,cleanup,finishOrphan,parseProgress,renderProgress,
+  appendLedger,slotNumber,initialLedger,transferLine,rejectedLine,LEDGER_ID,SLOT_IDS,SLOT_PROMPT};

@@ -219,6 +219,24 @@
       "size_bytes": 1686,
       "sha256": "cecdf58884ca8d44b24bc7c3301ba5378b526a915b03770964d2d96e9b94b2cc",
       "purpose": "Post-command semantic operator contract, versioned contrastive few-shots, validation and governing lifecycle routing (candidate review 2026-10-27)"
+    },
+    {
+      "path": "workspaces/agent-context-parallel/runtime-refresh/operational-evidence.v1.json",
+      "size_bytes": 9377,
+      "sha256": "576d22eb48c0fc58f6831f42235e60022b7ae7497c0b5b3356a7dd22a2359da3",
+      "purpose": "Independent runtime/refresh evidence and verified staged R4/R8 handoff for child job 6456876636"
+    },
+    {
+      "path": "workspaces/agent-context-parallel/runtime-refresh/refresh-audit.v1.json",
+      "size_bytes": 11274,
+      "sha256": "62f8d9caa6c104345c5dcee258f9d60bbb4f227211124657eebd789049a6a14e",
+      "purpose": "Independent runtime/refresh evidence and verified staged R4/R8 handoff for child job 6456876636"
+    },
+    {
+      "path": "workspaces/agent-context-parallel/runtime-refresh/README.md",
+      "size_bytes": 4240,
+      "sha256": "661ff3a460f7a55b9671ef60b7ef71eb9e2658e8ee9ac5643fd5b007cc3cf1e2",
+      "purpose": "Independent runtime/refresh evidence and verified staged R4/R8 handoff for child job 6456876636"
     }
   ]
 }

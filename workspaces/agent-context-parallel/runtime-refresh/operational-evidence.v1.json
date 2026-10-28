@@ -115,7 +115,8 @@
       "invariants",
       "retrieval",
       "evaluation"
-    ]
+    ],
+    "change_compare_url": "https://github.com/BestNameYet/IssueStack-/compare/2422c64d3ecd6e99fe9d7695e381b862f91026f5...63c23c819767604f4feb2e5b5d1a5c90bc208e9c"
   },
   "workflow_observations": {
     "sample_size": 100,

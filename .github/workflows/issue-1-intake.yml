@@ -3,29 +3,70 @@ name: IssueStack Issue 1 Intake
 on:
   issue_comment:
     types: [created, edited]
+  pull_request:
+    paths:
+      - 'src/issue-1-intake.js'
+      - 'src/issue-1-intake.test.js'
+      - '.github/workflows/issue-1-intake.yml'
 
 permissions:
   contents: read
   issues: write
 
-# Serialize queue publication to prevent concurrent duplicate inserts.
-concurrency:
-  group: issuestack-issue-1-intake
-  cancel-in-progress: false
-
 jobs:
   validate-and-transfer:
     if: ${{ github.event.issue.number == 1 && !github.event.issue.pull_request && github.actor != 'github-actions[bot]' }}
+    # Only critical-section queue publication is serialized. The cleanup job
+    # below holds no intake lock and cannot prevent another slot from running.
+    concurrency:
+      group: issuestack-issue-1-intake
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check out listener source
         uses: actions/checkout@v4
-      - name: Enforce pinned slots, publish verified transfer, and update ledger
+      - name: Publish progressive intake receipts and catch failures
         uses: actions/github-script@v7
         with:
-          # GITHUB_TOKEN edits do not fire subsequent issue_comment workflow runs.
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const intake = require('./src/issue-1-intake.js');
             await intake.run({ github, context, core });
+
+  retain-status-and-reset:
+    needs: validate-and-transfer
+    if: ${{ always() && github.event.issue.number == 1 && !github.event.issue.pull_request && github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out cleanup source
+        uses: actions/checkout@v4
+      - name: Report interrupted intake if needed
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const intake = require('./src/issue-1-intake.js');
+            await intake.finishOrphan({ github, context, core });
+      - name: Retain terminal progress or error for five minutes
+        run: sleep 300
+      - name: Reset only unchanged completed source slot
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const intake = require('./src/issue-1-intake.js');
+            await intake.cleanup({ github, context, core });
+
+  test-intake:
+    if: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout reviewed intake candidate
+        uses: actions/checkout@v4
+      - name: Run deterministic lifecycle tests
+        run: node --test src/issue-1-intake.test.js

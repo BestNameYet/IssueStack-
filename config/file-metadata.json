@@ -267,6 +267,24 @@
       "size_bytes": 4240,
       "sha256": "661ff3a460f7a55b9671ef60b7ef71eb9e2658e8ee9ac5643fd5b007cc3cf1e2",
       "purpose": "Independent runtime/refresh evidence and verified staged R4/R8 handoff for child job 6456876636"
+    },
+    {
+      "path": "src/issue-1-intake.js",
+      "size_bytes": 17232,
+      "sha256": "bf6cebf00f7a1e1d07d29705aa3d63a0236073bf2b191f6e49999c6e26f13333",
+      "purpose": "Issue #1 intake progress, durable error receipts, race-guarded 5-minute display reset, and regression tests (job 6483253992)"
+    },
+    {
+      "path": "src/issue-1-intake.test.js",
+      "size_bytes": 17023,
+      "sha256": "310f8e861cbbc3d334de70e6b2465fb13f1c8117f68d881a94257a4c29d0197d",
+      "purpose": "Issue #1 intake progress, durable error receipts, race-guarded 5-minute display reset, and regression tests (job 6483253992)"
+    },
+    {
+      "path": ".github/workflows/issue-1-intake.yml",
+      "size_bytes": 2499,
+      "sha256": "9908bdf57628ae90493ca9fb7838751c814ff0a9c9fe85240a0f0a5fed7e0376",
+      "purpose": "Issue #1 intake progress, durable error receipts, race-guarded 5-minute display reset, and regression tests (job 6483253992)"
     }
   ]
 }

@@ -64,7 +64,7 @@ async function publish({github,owner,repo,config,record,knowledge={},reviewRecei
     else if(!old){const r=await github.rest.issues.createComment({owner,repo,issue_number,body});id=r.data.id;}
     const check=(await github.rest.issues.getComment({owner,repo,comment_id:id})).data;
     if(check.body!==body)throw Error('Context page readback failed '+page.id);
-    linked.push({page_id:page.id,comment_id:id,url:'https://github.com/'+owner+'/'+repo+'/issues/8#issuecomment-'+id});
+    linked.push({page_id:page.id,comment_id:id,url:'https://github.com/'+owner+'/'+repo+'/issues/8#issuecomment-'+id,sha256:registry.sha(body)});
   }
   const toc={schema:'issuestack.agent-context.toc.v1',generated_at:record.generated_at,commit:record.source_commit,
     config_sha256:record.config_sha256,review_manifest_sha256:reviewReceipt,pages:linked};

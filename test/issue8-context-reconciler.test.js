@@ -97,3 +97,46 @@ test('extended evaluator rejects missing actual-cohort evidence and verifies bot
  const noMeasurements=mk('registry','registry-102');delete noMeasurements.answers[0].tokens;
  assert.throws(()=>bench.evaluateExtended({config,fixtures:publicFixtures,heldout,baseline:a,registryAnswers:noMeasurements}),/missing token/i);
 });
+
+test('publisher writes hash-complete TOC links accepted by reconciler; tampering is detected',async()=>{
+ const receipt='a'.repeat(64),when='2026-10-27T20:00:00Z',comments=new Map();
+ let nextId=100;
+ const github={
+  paginate:async()=>[...comments.values()],
+  rest:{issues:{
+   listComments:async()=>({data:[...comments.values()]}),
+   getComment:async({comment_id})=>({data:comments.get(comment_id)}),
+   createComment:async({body})=>{
+    const record={id:nextId++,body};comments.set(record.id,record);
+    return {data:record};
+   },
+   updateComment:async({comment_id,body})=>{
+    const record={id:comment_id,body};comments.set(comment_id,record);
+    return {data:record};
+   }
+  }}
+ };
+ const registry={
+  repository:'BestNameYet/IssueStack-',source_commit:HEAD,generated_at:when,
+  config_sha256:'f'.repeat(64),nodes:[],edges:[],coverage:{included:0},
+  sources:[],runtime:{observed_at:when,workflows:[]},uncertainties:[]
+ };
+ const allowed={...config,publish:{...config.publish,enabled:true}};
+ const previous=process.env.CONTEXT_APPROVED_REVIEW_SHA;
+ process.env.CONTEXT_APPROVED_REVIEW_SHA=receipt;
+ try{
+  const published=await pub.publish({github,owner:'BestNameYet',repo:'IssueStack-',config:allowed,record:registry,reviewReceipt:receipt});
+  const tocComment=comments.get(published.toc_comment_id);
+  const toc=JSON.parse(tocComment.body.slice('<!-- ISSUESTACK_CONTEXT_PAGE:toc -->\n'.length));
+  assert.equal(toc.pages.length,7);
+  for(const link of toc.pages)assert.equal(link.sha256,reg.sha(comments.get(link.comment_id).body));
+  const integrity=reconcile.audit([...comments.values()],{now:'2026-10-27T21:00:00Z'});
+  assert.equal(integrity.ok,true,JSON.stringify(integrity.problems));
+  const tampered=published.pages[0].comment_id;
+  comments.set(tampered,{...comments.get(tampered),body:comments.get(tampered).body+'\nTAMPER'});
+  assert.throws(()=>reconcile.audit([...comments.values()],{now:'2026-10-27T21:00:00Z'}),/Invalid registry JSON/);
+ }finally{
+  if(previous===undefined)delete process.env.CONTEXT_APPROVED_REVIEW_SHA;
+  else process.env.CONTEXT_APPROVED_REVIEW_SHA=previous;
+ }
+});

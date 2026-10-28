@@ -1,0 +1,548 @@
+{
+  "schema": "issuestack.serial.original-contract.v1",
+  "packet_id": "P001",
+  "packet_version": 1,
+  "purpose": "Immutable freeze of original parent acceptance contract without scope reduction",
+  "repository": "BestNameYet/IssueStack-",
+  "source": {
+    "issue": 2,
+    "comment_id": 6452132288,
+    "comment_uri": "https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6452132288",
+    "source_modified_at": "2026-10-28T06:18:01Z",
+    "nonce": "issuestack-agent-context-registry-issue8-20261027-v1",
+    "source_issue": 1,
+    "source_slot_comment_id": 6392352070,
+    "transfer_ledger_comment_id": 6392246635,
+    "source_commit_for_procedure": "7bcefec1b46b15b8cc05f108c023d7f62a5c8d1e"
+  },
+  "counts": {
+    "requirements": 11,
+    "criteria": 33,
+    "constraints": 5,
+    "planned_packets": 57
+  },
+  "requirements": [
+    {
+      "id": "R1",
+      "text": "Establish Issue #8 as a machine-readable Agent Context Registry, with permanent comment IDs, a compact JSON table of contents, a versioned schema, and clear authoritative-source references.",
+      "reported_parent_status": "verified",
+      "criteria": [
+        {
+          "id": "R1.1",
+          "text": "Registry bootstrap resolves a permanent Issue #8 TOC and all referenced sections by exact comment ID, version, and schema without relying on comment position.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P001",
+            "P035",
+            "P057"
+          ]
+        },
+        {
+          "id": "R1.2",
+          "text": "Readback checks confirm JSON validity, unique stable references, ownership, and links to Issues #1/#2/#3/#6/#7/#13.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P001",
+            "P035",
+            "P056"
+          ]
+        },
+        {
+          "id": "R1.3",
+          "text": "Any reuse of existing Issue #8 content preserves original history and follows the change review process.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P001",
+            "P054",
+            "P055"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "text": "Construct an evidence-backed executable architecture graph for IssueStack: components, actions, workflows, GitHub Issues, state stores, schemas, event triggers, data flow, ownership, and dependency edges.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R2.1",
+          "text": "Graph nodes/edges use defined types, stable IDs, provenance, source commit SHA and observed/unknown distinctions.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P020",
+            "P021",
+            "P022"
+          ]
+        },
+        {
+          "id": "R2.2",
+          "text": "Representative intake→validation→queue→scratchpad→execution→review→completion path can be traversed from graph with source evidence.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P023",
+            "P052"
+          ]
+        },
+        {
+          "id": "R2.3",
+          "text": "Graph audits dangling edges, duplicated identities, missing ownership, stale commits, and unsupported behavioral claims.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P024",
+            "P056"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "text": "Create a source-intelligence catalog of actual repository scripts, workflow YAML, schemas and configuration with interfaces, triggers, side effects, tests and canonical immutable source references, without indiscriminately copying whole files.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R3.1",
+          "text": "Inventory relevant JS, YAML/YML, JSON, schema/config and other discovered executable artifacts with canonical paths, ref/commit SHA, content hash where available, authorship and inventory coverage.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P016",
+            "P019"
+          ]
+        },
+        {
+          "id": "R3.2",
+          "text": "Index exports/functions, workflows/events, state ownership, dependencies, consumers, effects, linked tests, and gaps as verified findings or unknown.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P017",
+            "P018",
+            "P019",
+            "P020"
+          ]
+        },
+        {
+          "id": "R3.3",
+          "text": "Canonical repository objects remain authoritative; include compact excerpts only when materially useful and avoid duplicate full-source archives.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P016",
+            "P024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "text": "Maintain an independently verified operational-state view distinguishing documented, implemented, tested, currently working, degraded, failed, stale and unknown status per subsystem.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R4.1",
+          "text": "Each state assertion links to timestamped workflow run, test receipt, job record, artifact or other independently retrievable evidence, with freshness rules.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P026",
+            "P027"
+          ]
+        },
+        {
+          "id": "R4.2",
+          "text": "Dashboard/JSON distinguishes submitted vs transferred vs executed vs completed vs archived; unresolved/untested status is explicitly unknown.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P025",
+            "P027"
+          ]
+        },
+        {
+          "id": "R4.3",
+          "text": "At least one real end-to-end path is tested or clearly reported blocked with exact missing evidence.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P028",
+            "P052"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R5",
+      "text": "Capture architectural decision memory and cross-repository evolution for IssueStack, CommandLine, StateMachines, and other actually verified related predecessors or dependents.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R5.1",
+          "text": "Decision records contain motivation, constraints, alternatives, rejected approaches, tradeoffs, status and source links, and do not invent author intent.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P029",
+            "P030"
+          ]
+        },
+        {
+          "id": "R5.2",
+          "text": "Repository relationship edges identify verified origin, supersession, remaining dependencies and compatibility without assuming all prior mechanisms remain active.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P031"
+          ]
+        },
+        {
+          "id": "R5.3",
+          "text": "Unsupported relationships are labeled hypotheses, not facts.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P031"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R6",
+      "text": "Create a versioned catalog of operational invariants, failure modes, negative cases, and recovery procedures grounded in reproducible evidence.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R6.1",
+          "text": "Invariants include nonce identity, event ordering/ordinal behavior where relevant, idempotent transfer, stable comment IDs, source ownership, state transitions, receipts, and review gates.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P032"
+          ]
+        },
+        {
+          "id": "R6.2",
+          "text": "Failures link to specific tests, errors, incidents or minimal reproducible counterexamples; mitigations identify validation and recovery checks.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P033"
+          ]
+        },
+        {
+          "id": "R6.3",
+          "text": "Known failure modes and unresolved ambiguities are queryable by component and severity.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P034"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R7",
+      "text": "Provide contextualization retrieval interfaces for cold-start agents using a concise bootstrap, task-specific lookup keys, bounded context budgets, and selectively expanded source/evidence references.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R7.1",
+          "text": "A cold-start agent can retrieve essential architecture, relevant file/function, live state, and procedural rules via indexed comment IDs without fetching all 13 issues.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P035",
+            "P036",
+            "P037",
+            "P038"
+          ]
+        },
+        {
+          "id": "R7.2",
+          "text": "Retrieval records specify scope, schema version, evidence quality, dependencies, timestamp and what must be reverified before mutation.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P036",
+            "P037"
+          ]
+        },
+        {
+          "id": "R7.3",
+          "text": "Authoritative README/AGENTS and Issue #6 task instructions retain priority; registry summaries are not substitutes for mandatory reads.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P035",
+            "P038"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R8",
+      "text": "Implement source-driven refresh, observed-runtime refresh, integrity checks, change detection and stale-context warnings with bounded, idempotent updates.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R8.1",
+          "text": "Changes to indexed files or documented schedules update only affected entries and manifest version, with tests for no-op/idempotency and eventual consistency.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P039",
+            "P042",
+            "P043",
+            "P044",
+            "P055"
+          ]
+        },
+        {
+          "id": "R8.2",
+          "text": "Static source discovery and runtime observation are separate and reconcile source hash, commit, trigger, run IDs and timestamps.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P039",
+            "P040",
+            "P055"
+          ]
+        },
+        {
+          "id": "R8.3",
+          "text": "Failure to refresh cannot silently present stale data as current; expose drift or unknown with actionable recovery and protect against edit loops.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P040",
+            "P041",
+            "P042",
+            "P044"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R9",
+      "text": "Build an automated contextualization evaluation harness comparing cold-start agents with baseline repository documentation versus with the registry, using verified question-answer and diagnostic-task fixtures.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R9.1",
+          "text": "Fixtures include intake transfer, duplicate prevention, source-to-scratchpad mapping, execution receipts, workflow ownership, current health and failure recovery; each fixture has evidence-backed ground truth and explicit unanswerable cases.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P047"
+          ]
+        },
+        {
+          "id": "R9.2",
+          "text": "Report factual accuracy, unsupported assertions, relevant retrieval count, token consumption, context staleness, completion success and uncertainty calibration, with repeatable runs/seeds and configurable scoring weights.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P048",
+            "P049",
+            "P050"
+          ]
+        },
+        {
+          "id": "R9.3",
+          "text": "Include a held-out or adversarial validation set and a regression threshold configurable without modifying core logic; record benchmark artifacts and limits.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P047",
+            "P048",
+            "P049",
+            "P050"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R10",
+      "text": "Expose documented, editable configuration and evaluation surfaces for coverage, index depth, freshness limits, retrieval priorities/token budgets, benchmark weights and thresholds, and allowed repositories.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R10.1",
+          "text": "Versioned config schema, valid defaults, validation errors and example overrides can be inspected and updated without editing core analyzer logic.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P045"
+          ]
+        },
+        {
+          "id": "R10.2",
+          "text": "Automated tests demonstrate two materially different supported configurations, including lower context budget and stricter freshness policy.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P046"
+          ]
+        },
+        {
+          "id": "R10.3",
+          "text": "Measurements and evaluation criteria are inspectable, exportable and tied to configured versions.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P045",
+            "P046",
+            "P050"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R11",
+      "text": "Enforce access and change-review controls, and prove the registry works with reproducible tests and published evidence before declaring the job complete.",
+      "reported_parent_status": "in_progress",
+      "criteria": [
+        {
+          "id": "R11.1",
+          "text": "Never copy secrets, credentials, private chain-of-thought, private repository content without authorization, or other sensitive material into public Issues; protect untrusted comments and preserve source-of-truth precedence.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P051"
+          ]
+        },
+        {
+          "id": "R11.2",
+          "text": "Follow Issue #1→#2→#3 handshake, authorized workflow/file-write routes, config/file-metadata.json updates for substantive file edits, and per-change approval/revert review with byte-exact baseline and manifest.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P001",
+            "P002",
+            "P003",
+            "P004",
+            "P005",
+            "P053",
+            "P054",
+            "P057"
+          ]
+        },
+        {
+          "id": "R11.3",
+          "text": "Run schema and integrity validations, graph/link consistency checks, source indexing, refresh/drift tests, task-specific retrieval, operational observation and benchmark; record passes/failures, references and execution receipts in the mapped job and scratchpad.",
+          "original_text_immutable": true,
+          "independent_pass_state": "unassessed",
+          "planned_packets": [
+            "P015",
+            "P024",
+            "P028",
+            "P041",
+            "P044",
+            "P052",
+            "P055",
+            "P056",
+            "P057"
+          ]
+        }
+      ]
+    }
+  ],
+  "constraints": [
+    {
+      "id": "C1",
+      "text": "Do not replace source files with copied code in GitHub comments; source files and immutable commits remain canonical.",
+      "source": "User request and contextualization recommendation",
+      "applies_to": [
+        "R1",
+        "R3",
+        "R7"
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "Keep the Issue #8 context registry grounded, versioned, provenance-tagged, and explicit about unknown or stale findings.",
+      "source": "User request; evidence-preserving design",
+      "applies_to": [
+        "R2",
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R9"
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "Keep changes authorized within BestNameYet/IssueStack-; other repositories may be read where permitted but require separate authorization for mutation.",
+      "source": "IssueStack repository boundary",
+      "applies_to": [
+        "R5",
+        "R11"
+      ]
+    },
+    {
+      "id": "C4",
+      "text": "Preserve existing IssueStack intake/transfer/scratchpad/review/agent-instruction procedures; no policy bypass, undocumented state mutation, or unverifiable success.",
+      "source": "IssueStack current AGENTS.md and task instruction library",
+      "applies_to": [
+        "R1",
+        "R4",
+        "R7",
+        "R11"
+      ]
+    },
+    {
+      "id": "C5",
+      "text": "Audit and update config/file-metadata.json for substantive repository file changes if it exists and is applicable; distinguish planned changes from authorized committed changes.",
+      "source": "Project repository mutation expectations",
+      "applies_to": [
+        "R3",
+        "R8",
+        "R11"
+      ]
+    }
+  ],
+  "invariants": [
+    "Every original requirement and criterion remains authoritative and retains its verbatim text.",
+    "A failed or unverified original criterion cannot be redefined as passed by downstream procedure, documentation, or changed wording.",
+    "Each criterion requires independent acceptance evidence, not merely a source edit or a passing schema validation.",
+    "A pending publication approval cannot be used to defer feasible semantic computation; compute proposals first and review publication separately.",
+    "Packets execute strictly P001 through P057 with verified predecessor receipt and total-token budget under 10,000."
+  ],
+  "states": {
+    "pass": "Criterion independently verified by actual evidence and acceptance test",
+    "partial": "Some but not all of criterion independently verified",
+    "fail": "Observed counterexample or acceptance test failure",
+    "unknown": "Missing or stale independent evidence; no affirmative assertion"
+  },
+  "budget": {
+    "packet_max_tokens": 8400,
+    "global_per_packet_hard_cap": 9000,
+    "threshold": 10000,
+    "actual_tokens_observable": false
+  },
+  "next_packet": "P002",
+  "deployment_state": "candidate_stage_only",
+  "evidence": [
+    {
+      "type": "parent_job",
+      "uri": "https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6452132288",
+      "observation": "Original R1–R11 text preserved at P001 compilation"
+    },
+    {
+      "type": "issue_transfer",
+      "uri": "https://github.com/BestNameYet/IssueStack-/issues/1#issuecomment-6392246635",
+      "observation": "Parent transfer receipt checked"
+    },
+    {
+      "type": "job_scratchpad",
+      "uri": "https://github.com/BestNameYet/IssueStack-/issues/3#issuecomment-6452132821",
+      "observation": "P001 pre-change handshake and planned files verified"
+    }
+  ]
+}

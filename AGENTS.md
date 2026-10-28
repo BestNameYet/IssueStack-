@@ -32,6 +32,14 @@
 
 **Precedence and limits:** This rule supersedes older Issue #5 language describing projections only as generic "display as Markdown" instructions and any lower-priority preference to narrate work before the UI. Existing schema, pairing, job-intake, authorization, review, security and source-ownership requirements continue to govern their respective stages.
 
+## Chat title tracks the active job
+
+**Required whenever the ChatGPT session is assigned or switches a top-level job.** Treat the ChatGPT conversation title as the visible identifier of the current assignment. Resolve the active job's authoritative Issue #2 comment ID and concise task description from the job record (not from guesses or an old title). Set or update this conversation's title to `IssueStack #<job-comment-id> — <short job description>` as soon as the assignment is identified, and repeat whenever the primary job changes. For an ad hoc command with no Issue #2 job, use `IssueStack — <short current task>`. Keep titles short and omit personal, sensitive, or private content.
+
+**Execution and verification.** Use only a supported ChatGPT conversation-rename capability or user-authorized host UI action to rename **this conversation**, not a GitHub issue, job comment, or unrelated chat. Verify the resulting title when the host exposes it, and never describe the rename as complete unless it actually occurred. If no chat-renaming action is available in the active environment, explicitly record `chat_title_update=unavailable` and the exact proposed title in the job's existing scratchpad or command handoff, and communicate the proposed title without claiming a rename. Do not block the primary job on an unavailable UI capability.
+
+**Scope.** Subtasks, semantic maintenance chores, tool calls, and internal steps do not change the title independently; keep it keyed to the active top-level job. The mandatory Issue #5 → #7 response gate and existing authority, privacy, and job-handshake requirements remain in force.
+
 ## Mandatory post-command semantic chore gate — before operator idle
 
 **Operator responsibility, not registry autonomy.** Whenever an **assigned top-level command or job** reaches a reportable primary-result boundary (succeeded, failed, blocked, or handed off), the **same active operator** MUST consult `config/semantic-operator-contract.v1.json`, `config/semantic-operator-fewshots.v1.json` and `src/types/semantic-operator.v1.json`, then evaluate and perform eligible **bounded semantic maintenance chores** before yielding to idle. Apply this to ordinary top-level commands as well as formal Issue #2 jobs. An individual tool call, internal command step, and a semantic chore itself **must not recursively trigger** another post-command cycle. This gate creates a child subtask/receipt scoped to the originating command; it **does not** insert new requirements into an existing `issuestack.task.v3` job or automatically enqueue an Issue #2 job.

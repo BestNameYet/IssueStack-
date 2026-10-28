@@ -13,7 +13,9 @@
     "source_issue": 1,
     "source_slot_comment_id": 6392352070,
     "transfer_ledger_comment_id": 6392246635,
-    "source_commit_for_procedure": "7bcefec1b46b15b8cc05f108c023d7f62a5c8d1e"
+    "source_commit_for_procedure": "7bcefec1b46b15b8cc05f108c023d7f62a5c8d1e",
+    "source_body_sha256": "6187689bb9bb8d8693567a5d0270be2c35876042b725d8d3903c40a694a0b86b",
+    "recording_method": "Parent job comment frozen by P001 including original acceptance text, with independently recorded source comment SHA-256"
   },
   "counts": {
     "requirements": 11,

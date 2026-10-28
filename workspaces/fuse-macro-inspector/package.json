@@ -1,0 +1,9 @@
+{
+  "name": "fuse-macro-inspector",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-only macro fuse comparison",
+  "scripts": {"test": "node --test image-ops.test.mjs"},
+  "engines": {"node": ">=18"}
+}

@@ -134,7 +134,7 @@ test('publisher writes hash-complete TOC links accepted by reconciler; tampering
   assert.equal(integrity.ok,true,JSON.stringify(integrity.problems));
   const tampered=published.pages[0].comment_id;
   comments.set(tampered,{...comments.get(tampered),body:comments.get(tampered).body+'\nTAMPER'});
-  assert.equal(reconcile.audit([...comments.values()],{now:'2026-10-27T21:00:00Z'}).ok,false);
+  assert.throws(()=>reconcile.audit([...comments.values()],{now:'2026-10-27T21:00:00Z'}),/Invalid registry JSON/);
  }finally{
   if(previous===undefined)delete process.env.CONTEXT_APPROVED_REVIEW_SHA;
   else process.env.CONTEXT_APPROVED_REVIEW_SHA=previous;

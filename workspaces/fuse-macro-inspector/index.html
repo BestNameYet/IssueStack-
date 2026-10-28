@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><title>Fuse Bridge Macro Inspector</title><link rel="stylesheet" href="./styles.css"></head>
+<body><main>
+<header><p class="eyebrow">Local-only image analysis</p><h1>Fuse Bridge Macro Inspector</h1><p>Compare a suspected broken fuse element with an intact reference at the pixel level. Photos remain in your browser; no upload.</p></header>
+<section class="tools" aria-label="Shared image controls">
+<label>Region center X <output id="cx-value">50%</output><input id="cx" type="range" min="0" max="100" value="50"></label>
+<label>Region center Y <output id="cy-value">50%</output><input id="cy" type="range" min="0" max="100" value="50"></label>
+<label>Brightness <output id="brightness-value">0</output><input id="brightness" type="range" min="-100" max="100" value="0"></label>
+<label>Contrast <output id="contrast-value">1.0</output><input id="contrast" type="range" min="0.5" max="3" step="0.1" value="1"></label>
+<label>Gamma <output id="gamma-value">1.0</output><input id="gamma" type="range" min="0.4" max="2.5" step="0.1" value="1"></label>
+<button id="reset" type="button">Reset adjustments</button><button id="export" type="button">Export comparison PNG</button>
+</section>
+<section class="panels" aria-label="Image comparison">
+<article class="panel" id="panel-a"><h2>1. Removed / suspect fuse</h2><label class="upload">Choose local photo<input id="file-a" type="file" accept="image/*"></label>
+<div class="controls"><label>View <select id="mode-a"><option value="original">Original</option><option value="clahe">Local contrast (CLAHE)</option><option value="sharpen">Sharpen</option><option value="edges">Sobel edges</option><option value="grayscale">Grayscale</option><option value="invert">Inverted</option></select></label><label>Magnify <output id="zoom-a-value">4×</output><input type="range" id="zoom-a" min="1" max="20" value="4"></label></div>
+<canvas id="canvas-a" width="512" height="512" aria-label="Suspect fuse image; click twice to mark possible gap endpoints"></canvas>
+<p class="caption" id="status-a">Choose an image to begin. Tap twice to measure a visible gap or bridge.</p><button id="clear-a">Clear suspect markers</button></article>
+<article class="panel" id="panel-b"><h2>2. Installed / intact reference</h2><label class="upload">Choose local photo<input id="file-b" type="file" accept="image/*"></label>
+<div class="controls"><label>View <select id="mode-b"><option value="original">Original</option><option value="clahe">Local contrast (CLAHE)</option><option value="sharpen">Sharpen</option><option value="edges">Sobel edges</option><option value="grayscale">Grayscale</option><option value="invert">Inverted</option></select></label><label>Magnify <output id="zoom-b-value">4×</output><input type="range" id="zoom-b" min="1" max="20" value="4"></label></div>
+<canvas id="canvas-b" width="512" height="512" aria-label="Reference fuse image; click twice to mark metal bridge endpoints"></canvas>
+<p class="caption" id="status-b">Choose the intact-reference photo. Tap twice to mark corresponding endpoints.</p><button id="clear-b">Clear reference markers</button></article>
+</section>
+<section class="instructions"><h2>How to interpret</h2><p><strong>A continuous metallic bridge in one photo versus a dark discontinuity in the other is evidence consistent with a blown fuse.</strong> Switch each image between Original, CLAHE and Sobel edge views; adjust the region sliders to align the same feature. On each panel, tap two endpoints to measure their spacing in original image pixels. Enhancement creates contrast artifacts: always switch back to Original before concluding anything.</p><p class="warning">A photograph does not prove electrical continuity. Verify with a multimeter on the removed, unpowered fuse. Never bypass a fuse or increase its amperage.</p><p class="small">All processing is on-device using Canvas and JavaScript. No remote image analysis, uploads, third-party dependencies or tracking.</p></section>
+<footer><span id="message" role="status" aria-live="polite">Ready for local images.</span></footer>
+</main><script type="module" src="./app.mjs"></script></body></html>

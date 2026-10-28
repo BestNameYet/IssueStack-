@@ -307,3 +307,35 @@ test('orphaned workflow can report interruption without inserting a fake transfe
   assert.ok(final.events.join('\n').includes('terminated before completion'));
   assert.ok(!f.docs.get(ledgerId).body.includes('TRANSFER:'));
 });
+
+test('failed status remains readable for five minutes then resets',async()=>{
+ const f=makeTaskIntake({payload:'not-json'});
+ await intake.run(f);
+ const st=intake.parseProgress(f.docs.get(slotId).body);
+ assert.equal(st.phase,'failed');
+ await intake.cleanup(f);
+ assert.ok(intake.parseProgress(f.docs.get(slotId).body));
+ st.finished_at=new Date(Date.now()-301000).toISOString();
+ f.docs.get(slotId).body=intake.renderProgress(st);
+ await intake.cleanup(f);
+ assert.equal(f.docs.get(slotId).body,intake.SLOT_PROMPT);
+});
+test('same nonce replay recovers existing Issue #2 and Issue #3 records without duplicates',async()=>{
+ const f=makeTaskIntake();
+ await intake.run(f);
+ assert.equal(f.lists[2].length,1);
+ assert.equal(f.lists[3].length,1);
+ f.docs.get(slotId).body=f.original;
+ await intake.run(f);
+ assert.equal(f.lists[2].length,1);
+ assert.equal(f.lists[3].length,1);
+ assert.ok(intake.parseProgress(f.docs.get(slotId).body).events.some(x=>x.includes('TRANSFER:8000')));
+ assert.equal(f.docs.get(ledgerId).body.split('\n').filter(s=>s.includes('TRANSFER:8000')).length,1);
+});
+test('owner check rejects foreign edit without status mutation',async()=>{
+ const f=makeTaskIntake();
+ f.docs.get(slotId).user={login:'other'};
+ await intake.run(f);
+ assert.equal(f.docs.get(slotId).body,f.original);
+ assert.equal(f.lists[2].length,0);
+});

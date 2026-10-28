@@ -1,0 +1,254 @@
+{
+  "schema": "issuestack.agent-context.parallel.runtime-observations.v1",
+  "parent_job_id": 6452132288,
+  "child_job_id": 6456876636,
+  "evidence_observation_at": "2026-10-28T00:16:29Z",
+  "repository": "BestNameYet/IssueStack-",
+  "main_sha_at_observation": "63c23c819767604f4feb2e5b5d1a5c90bc208e9c",
+  "sources": [
+    {
+      "kind": "main_ref",
+      "url": "https://github.com/BestNameYet/IssueStack-/commit/63c23c819767604f4feb2e5b5d1a5c90bc208e9c"
+    },
+    {
+      "kind": "registry_toc",
+      "url": "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453791402"
+    },
+    {
+      "kind": "published_runtime",
+      "url": "https://github.com/BestNameYet/IssueStack-/issues/8#issuecomment-6453775750"
+    },
+    {
+      "kind": "parent_job",
+      "url": "https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6452132288"
+    },
+    {
+      "kind": "archival_sample",
+      "url": "https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6418283367"
+    }
+  ],
+  "registry": {
+    "published_source_commit": "2422c64d3ecd6e99fe9d7695e381b862f91026f5",
+    "current_source_commit": "63c23c819767604f4feb2e5b5d1a5c90bc208e9c",
+    "source_drift": true,
+    "published_generated_at": "2026-10-27T20:51:00.154Z",
+    "runtime_observed_at": "2026-10-27T20:51:00.181Z",
+    "age_hours_at_latest_action": 3.42,
+    "max_freshness_hours": 48,
+    "runtime_time_stale_under_config": false,
+    "source_state_stale": true,
+    "published_job_remaining": 11,
+    "observed_parent_remaining": 10,
+    "parent_remaining_mismatch": true,
+    "changed_paths_since_published_source": [
+      {
+        "path": ".github/workflows/issue8-context-refresh.yml",
+        "operation": "modified"
+      },
+      {
+        "path": ".github/workflows/semantic-operator-contract-validation.yml",
+        "operation": "added"
+      },
+      {
+        "path": "AGENTS.md",
+        "operation": "modified"
+      },
+      {
+        "path": "config/agent-context-heldout.json",
+        "operation": "added"
+      },
+      {
+        "path": "config/agent-context-registry.json",
+        "operation": "modified"
+      },
+      {
+        "path": "config/file-metadata.json",
+        "operation": "modified"
+      },
+      {
+        "path": "config/semantic-operator-contract.v1.json",
+        "operation": "added"
+      },
+      {
+        "path": "config/semantic-operator-fewshots.v1.json",
+        "operation": "added"
+      },
+      {
+        "path": "scratchpads/archive.json",
+        "operation": "modified"
+      },
+      {
+        "path": "src/agent-context-registry.js",
+        "operation": "modified"
+      },
+      {
+        "path": "src/issue8-context-benchmark.js",
+        "operation": "modified"
+      },
+      {
+        "path": "src/issue8-context-reconciler.js",
+        "operation": "added"
+      },
+      {
+        "path": "src/semantic-operator-contract.js",
+        "operation": "added"
+      },
+      {
+        "path": "src/types/semantic-operator.v1.json",
+        "operation": "added"
+      },
+      {
+        "path": "test/issue8-context-reconciler.test.js",
+        "operation": "added"
+      },
+      {
+        "path": "test/semantic-operator-contract.test.js",
+        "operation": "added"
+      }
+    ],
+    "toc_page_count": 7,
+    "issue8_page_ids": [
+      "architecture",
+      "sources-01",
+      "runtime",
+      "decisions",
+      "invariants",
+      "retrieval",
+      "evaluation"
+    ]
+  },
+  "workflow_observations": {
+    "sample_size": 100,
+    "sample_total_repository_runs": 1705,
+    "sampling_limitation": "Last 100 repository runs are not exhaustive and may be dominated by unrelated issue_comment events; a missing workflow is not proof of no run ever.",
+    "observations": [
+      {
+        "name": "IssueStack Issue 1 Intake",
+        "status": {
+          "execution": "completed",
+          "conclusion": "skipped",
+          "classification": "last_observed_nonapplicable_not_failed"
+        },
+        "observed_run": {
+          "id": 40607704627,
+          "event": "issue_comment",
+          "created_at": "2026-10-28T00:16:29Z",
+          "updated_at": "2026-10-28T00:16:38Z",
+          "url": "https://github.com/BestNameYet/IssueStack-/actions/runs/40607704627",
+          "source_commit": "63c23c819767604f4feb2e5b5d1a5c90bc208e9c"
+        },
+        "claim_scope": "Only the particular dated run; no current end-to-end health inferred"
+      },
+      {
+        "name": "IssueStack Issue 2 Scratchpad Completion",
+        "status": {
+          "execution": "completed",
+          "conclusion": "skipped",
+          "classification": "last_observed_nonapplicable_not_failed"
+        },
+        "observed_run": {
+          "id": 40607704853,
+          "event": "issue_comment",
+          "created_at": "2026-10-28T00:16:29Z",
+          "updated_at": "2026-10-28T00:16:35Z",
+          "url": "https://github.com/BestNameYet/IssueStack-/actions/runs/40607704853",
+          "source_commit": "63c23c819767604f4feb2e5b5d1a5c90bc208e9c"
+        },
+        "claim_scope": "Only the particular dated run; no current end-to-end health inferred"
+      },
+      {
+        "name": "IssueStack Issue5 Conversation Projection",
+        "status": {
+          "execution": "completed",
+          "conclusion": "skipped",
+          "classification": "last_observed_nonapplicable_not_failed"
+        },
+        "observed_run": {
+          "id": 40607704632,
+          "event": "issue_comment",
+          "created_at": "2026-10-28T00:16:29Z",
+          "updated_at": "2026-10-28T00:16:39Z",
+          "url": "https://github.com/BestNameYet/IssueStack-/actions/runs/40607704632",
+          "source_commit": "63c23c819767604f4feb2e5b5d1a5c90bc208e9c"
+        },
+        "claim_scope": "Only the particular dated run; no current end-to-end health inferred"
+      },
+      {
+        "name": "IssueStack Declared Procedures",
+        "status": {
+          "execution": "completed",
+          "conclusion": "skipped",
+          "classification": "last_observed_nonapplicable_not_failed"
+        },
+        "observed_run": {
+          "id": 40607704749,
+          "event": "issue_comment",
+          "created_at": "2026-10-28T00:16:29Z",
+          "updated_at": "2026-10-28T00:16:36Z",
+          "url": "https://github.com/BestNameYet/IssueStack-/actions/runs/40607704749",
+          "source_commit": "63c23c819767604f4feb2e5b5d1a5c90bc208e9c"
+        },
+        "claim_scope": "Only the particular dated run; no current end-to-end health inferred"
+      },
+      {
+        "name": "Semantic Operator Contract Validation",
+        "status": {
+          "execution": "unknown",
+          "conclusion": null,
+          "classification": "not_observed_in_last_100_repository_runs"
+        },
+        "observed_run": null,
+        "claim_scope": "Only the particular dated run; no current end-to-end health inferred"
+      },
+      {
+        "name": "IssueStack Agent Context Registry Drift Audit",
+        "status": {
+          "execution": "unknown",
+          "conclusion": null,
+          "classification": "not_observed_in_last_100_repository_runs"
+        },
+        "observed_run": null,
+        "claim_scope": "Only the particular dated run; no current end-to-end health inferred"
+      }
+    ]
+  },
+  "verified_lifecycle_sample": {
+    "kind": "previous_verified_IssueStack_job",
+    "job_id": 6418283367,
+    "pad_id": 6418284174,
+    "source_slot": 6392297975,
+    "source_transfer_verified": true,
+    "index_archived_verified": true,
+    "pad_identity_verified": true,
+    "pad_archive_byte_equivalence": true,
+    "job_status": "succeeded",
+    "job_success": true,
+    "remaining_requirements": 0,
+    "archive_at": "2026-10-26T16:54:33.177Z",
+    "evidence": [
+      "https://github.com/BestNameYet/IssueStack-/issues/2#issuecomment-6418283367",
+      "https://github.com/BestNameYet/IssueStack-/issues/3#issuecomment-6418284174",
+      "https://github.com/BestNameYet/IssueStack-/blob/63c23c819767604f4feb2e5b5d1a5c90bc208e9c/scratchpads/archive.json"
+    ],
+    "limitations": [
+      "This proves a historical transfer/job/receipt/archive instance; it does not by itself prove present reliability for all jobs."
+    ]
+  },
+  "staging_test_receipt": {
+    "id": 40590076691,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "source_commit": "c82f3836fdb7a4795f9652561b17cbbd631b0e00",
+    "url": "https://github.com/BestNameYet/IssueStack-/actions/runs/40590076691",
+    "scope": "Staging CI. It is not a verified post-deployment scheduled production run."
+  },
+  "confidence": "verified_or_explicitly_unknown",
+  "limitations": [
+    "Published run states are time-scoped",
+    "Main's archive-only successor commits can change even when registry source files have not",
+    "Scheduled audit exists in YAML but no scheduled production result observed in last 100 repository runs",
+    "No review authorization to publish modified Issue8 pages"
+  ],
+  "summary": "Runtime snapshot is under 48h by wall age but refers to a superseded source commit and 11 outstanding parent requirements versus 10 now. Historic successful transfer-to-archive path verified separately; production scheduled audit not demonstrated."
+}

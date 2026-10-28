@@ -97,7 +97,10 @@ test('failed Issue 13 procedure readback leaves no ledger receipt and keeps inpu
  await assert.rejects(intake.run(f),/simulated installation readback failed/);
  assert.equal(f.procedures.length,1);
  assert.ok(!f.docs.get(ledgerId).body.includes('PROCEDURE:'));
- assert.equal(f.docs.get(slotId).body,JSON.stringify(definition));
+ const state=intake.parseProgress(f.docs.get(slotId).body);
+ assert.equal(state.phase,'failed');
+ assert.equal(state.source,JSON.stringify(definition));
+ assert.equal(state.stage,'issue13_create_verify');
 });
 
 // Guard template discovery against unrelated JSON in the Issue #1 body.

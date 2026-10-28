@@ -276,8 +276,8 @@
     },
     {
       "path": "src/issue-1-intake.test.js",
-      "size_bytes": 15540,
-      "sha256": "f58ba3e92cfc60fb57f59303aa2678eb94deab5f3b41ef226d4412f5b19f47f7",
+      "size_bytes": 17023,
+      "sha256": "310f8e861cbbc3d334de70e6b2465fb13f1c8117f68d881a94257a4c29d0197d",
       "purpose": "Issue #1 intake progress, durable error receipts, race-guarded 5-minute display reset, and regression tests (job 6483253992)"
     },
     {

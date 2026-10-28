@@ -245,6 +245,12 @@
       "size_bytes": 4240,
       "sha256": "661ff3a460f7a55b9671ef60b7ef71eb9e2658e8ee9ac5643fd5b007cc3cf1e2",
       "purpose": "Independent runtime/refresh evidence and verified staged R4/R8 handoff for child job 6456876636"
+    },
+    {
+      "path": "control/original-contract.json",
+      "size_bytes": 21493,
+      "sha256": "812e6a81799009e86e6f76ea6cd40c28db7a3fee635586d3cd3ff8e32a1ea711",
+      "purpose": "P001 immutable original 11-requirement / 33-criterion contract and serial acceptance coverage"
     }
   ]
 }

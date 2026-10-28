@@ -176,15 +176,21 @@
     },
     {
       "path": "test/issue8-context-reconciler.test.js",
-      "size_bytes": 8686,
-      "sha256": "0827e4c2f8083f5ff0d45c37d2beb33a4a04f410090cd023574b5625a1020cf1",
-      "purpose": "Issue8 publisher→reconciler live-mock integrity/tamper regression; staged parent R8/R11 per-change review",
+      "size_bytes": 8706,
+      "sha256": "c4bc5adfc89d2628cf3f0ff99aa01a7515c6f457b80219f2cd6339eab36b3301",
+      "purpose": "Approved C001 publisher/reconciler TOC regression; C002 adjusts malformed-JSON tamper rejection assertion to documented throw",
       "history": [
         {
           "sha256": "9c51f8ddb80816b78db9d8f75ead44bdfaae731bf36a9a813032dced4c7f8e6c",
           "size_bytes": 6588,
           "purpose": "Issue #8 read-only refresh and seeded adversarial evaluation, staged R8/R9/R10 for job 6452132288",
           "source_commit": "3341a8a7ea4550641baddd4dc5232066560dee90"
+        },
+        {
+          "sha256": "0827e4c2f8083f5ff0d45c37d2beb33a4a04f410090cd023574b5625a1020cf1",
+          "size_bytes": 8686,
+          "purpose": "Issue8 publisher→reconciler live-mock integrity/tamper regression; staged parent R8/R11 per-change review",
+          "source_commit": "fbd53bc01f87266e4d71e438f7db679ee2fddf43"
         }
       ]
     },

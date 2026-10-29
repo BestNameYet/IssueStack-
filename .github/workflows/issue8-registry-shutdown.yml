@@ -1,0 +1,212 @@
+name: IssueStack - Shut down Issue 8 Context Registry
+
+# Deliberately manual and destructive. No push, schedule, or issue-comment trigger.
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Enter DELETE_ISSUE_8_AND_ABORT_ACR_JOBS exactly'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+
+concurrency:
+  group: issuestack-issue8-registry-shutdown
+  cancel-in-progress: false
+
+jobs:
+  shutdown:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verify scope, terminate Issue 2 registry jobs, then delete Issue 8 comments
+        uses: actions/github-script@v7
+        env:
+          CONFIRMATION: \${{ inputs.confirmation }}
+        with:
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const crypto = require('node:crypto');
+            const { owner, repo } = context.repo;
+            const TARGET_ISSUE = 8;
+            const QUEUE_ISSUE = 2;
+            const CONFIRM = 'DELETE_ISSUE_8_AND_ABORT_ACR_JOBS';
+            const REFRESH_WORKFLOW = 'issue8-context-refresh.yml';
+            const expected = new Map([
+              [6452132288, 'issuestack-agent-context-registry-issue8-20261027-v1'],
+              [6456834930, 'issuestack-acr-architecture-source-parallel-20261027-v1'],
+              [6456843391, 'issuestack-acr-decisions-invariants-parallel-20261027-v1'],
+              [6456858192, 'issuestack-acr-retrieval-config-parallel-20261027-v1'],
+              [6456876636, 'issuestack-acr-runtime-refresh-parallel-20261027-v1'],
+              [6456898709, 'issuestack-acr-benchmark-parallel-20261027-v1'],
+              [6456926266, 'issuestack-acr-acceptance-security-audit-parallel-20261027-v1'],
+            ]);
+            const active = new Set(['pending', 'running', 'blocked']);
+            const isRegistryNonce = nonce =>
+              nonce === expected.get(6452132288) ||
+              (typeof nonce === 'string' && nonce.startsWith('issuestack-acr-'));
+            const digest = text => crypto.createHash('sha256').update(text).digest('hex');
+            const list = (issue_number) => github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100,
+            });
+            const fail = message => { throw Error(message); };
+            if (process.env.CONFIRMATION !== CONFIRM) {
+              fail('Incorrect confirmation. No deletion or job change permitted.');
+            }
+
+            // Preflight ALL targets before the first mutation. Do not infer job
+            // membership from the fact that multiple projects share Issue #2.
+            const [target, queue, issue] = await Promise.all([
+              list(TARGET_ISSUE), list(QUEUE_ISSUE),
+              github.rest.issues.get({owner, repo, issue_number: TARGET_ISSUE}),
+            ]);
+            if (issue.data.number !== TARGET_ISSUE || issue.data.pull_request) {
+              fail('Issue #8 identity check failed.');
+            }
+            if (new Set(target.map(c => c.id)).size !== target.length) {
+              fail('Duplicate Issue #8 comment IDs in the fetched list.');
+            }
+            const identified = new Map();
+            for (const comment of queue) {
+              let job;
+              try { job = JSON.parse(comment.body); } catch { continue; }
+              const nonce = job?.['nonce[string]'];
+              if (!isRegistryNonce(nonce)) continue;
+              if (!expected.has(comment.id) || expected.get(comment.id) !== nonce) {
+                fail('Unexpected registry job/nonce: ' + comment.id + '. Update the reviewed allowlist before running.');
+              }
+              if (job['schema[string]'] !== 'issuestack.task.v3' ||
+                  !job['source[object<Source>]'] ||
+                  !job['execution[object<Execution>]'] ||
+                  !job['completion[object<Completion>]']) {
+                fail('Invalid typed job schema at comment ' + comment.id);
+              }
+              const source = job['source[object<Source>]'];
+              if (source['issue[number]'] !== 1 ||
+                  !Number.isSafeInteger(source['comment_id[number|null]'])) {
+                fail('Job has invalid Issue #1 source: ' + comment.id);
+              }
+              const state = job['execution[object<Execution>]']['status[string]'];
+              if (!active.has(state) && state !== 'succeeded' && state !== 'failed') {
+                fail('Unknown execution state for ' + comment.id + ': ' + state);
+              }
+              identified.set(comment.id, { comment, job, state });
+            }
+            for (const id of expected.keys()) {
+              if (!identified.has(id)) fail('Missing expected registry job ' + id);
+            }
+            const toAbort = [...identified].filter(([, entry]) => active.has(entry.state));
+            const digestLog = target.map(c => ({ id: c.id, sha256: digest(c.body || '') }));
+            core.info(JSON.stringify({ preflight: 'passed', issue8_comment_count: target.length,
+              issue8_comments: digestLog, active_job_ids: toAbort.map(([id]) => id),
+              preserved_terminal_job_ids: [...identified].filter(([, entry]) => !active.has(entry.state)).map(([id]) => id) }));
+
+            // Prevent the registry audit from continuing in GitHub Actions.
+            // Only the named registry workflow is disabled/cancelled.
+            const wf = await github.rest.actions.getWorkflow({ owner, repo,
+              workflow_id: REFRESH_WORKFLOW });
+            await github.rest.actions.disableWorkflow({ owner, repo,
+              workflow_id: REFRESH_WORKFLOW });
+            const runs = await github.paginate(github.rest.actions.listWorkflowRunsForWorkflow, {
+              owner, repo, workflow_id: REFRESH_WORKFLOW, per_page: 100,
+            });
+            for (const run of runs) {
+              if (!['queued', 'in_progress', 'waiting', 'requested', 'pending'].includes(run.status)) continue;
+              try {
+                await github.rest.actions.cancelWorkflowRun({ owner, repo, run_id: run.id });
+                core.info('Cancellation requested for registry Actions run ' + run.id);
+              } catch (e) {
+                // A run may finish between listing and cancellation.
+                const current = await github.rest.actions.getWorkflowRun({ owner, repo, run_id: run.id });
+                if (current.data.status !== 'completed') throw e;
+              }
+            }
+            const disabled = await github.rest.actions.getWorkflow({ owner, repo,
+              workflow_id: REFRESH_WORKFLOW });
+            if (disabled.data.state !== 'disabled_manually') {
+              fail('Registry workflow disable readback failed: ' + disabled.data.state);
+            }
+
+            // IssueStack's typed task schema has no "cancelled" execution enum.
+            // Terminal failed/false + the explicit cancellation reason is used.
+            for (const [id] of toAbort) {
+              const latest = await github.rest.issues.getComment({ owner, repo, comment_id: id });
+              const job = JSON.parse(latest.data.body);
+              if (job['nonce[string]'] !== expected.get(id)) fail('Nonce changed for job ' + id);
+              const execution = job['execution[object<Execution>]'];
+              const completion = job['completion[object<Completion>]'];
+              if (!active.has(execution['status[string]'])) {
+                if (['failed', 'succeeded'].includes(execution['status[string]'])) continue;
+                fail('Job state changed unexpectedly: ' + id);
+              }
+              const now = new Date().toISOString();
+              const reason = 'Cancelled by user request: discontinue Issue #8 Agent Context Registry.';
+              execution['status[string]'] = 'failed';
+              execution['finished_at[string|null]'] = now;
+              if (!execution['worker[string|null]']) {
+                execution['worker[string|null]'] = 'GitHub Actions Issue #8 registry shutdown';
+              }
+              completion['success[boolean|null]'] = false;
+              completion['summary[string|null]'] = reason +
+                ' Prior artifacts, evidence and partial acceptance records are retained.';
+              completion['errors[array<ErrorEntry>]'].push({ 'message[string]': reason });
+              const source = job['source[object<Source>]'];
+              completion['receipt[object<Receipt>|null]'] = {
+                'nonce[string]': job['nonce[string]'],
+                'source_issue[number]': source['issue[number]'],
+                'source_comment_id[number]': source['comment_id[number|null]'],
+                'queue_issue[number]': QUEUE_ISSUE,
+                'queue_comment_id[number]': id,
+                'executor[string]': 'GitHub Actions Issue #8 registry shutdown',
+                'started_at[string|null]': execution['started_at[string|null]'],
+                'finished_at[string|null]': now,
+                'run_id[string|null]': String(context.runId),
+              };
+              const updated = JSON.stringify(job, null, 2);
+              if (Buffer.byteLength(updated, 'utf8') > 65000) {
+                fail('Updated job comment exceeds conservative size guard: ' + id);
+              }
+              await github.rest.issues.updateComment({ owner, repo, comment_id: id, body: updated });
+              const readback = await github.rest.issues.getComment({ owner, repo, comment_id: id });
+              if (readback.data.body !== updated) fail('Job readback mismatch: ' + id);
+              core.info('Cancelled and verified Issue #2 job ' + id);
+            }
+
+            // Recheck Issue #2 before deleting Issue #8. Unknown new registry jobs
+            // block deletion rather than permitting an incomplete cancellation.
+            const queueAfter = await list(QUEUE_ISSUE);
+            const stillActive = [];
+            for (const c of queueAfter) {
+              let job;
+              try { job = JSON.parse(c.body); } catch { continue; }
+              if (isRegistryNonce(job?.['nonce[string]']) &&
+                  active.has(job?.['execution[object<Execution>]']?.['status[string]'])) {
+                stillActive.push(c.id);
+              }
+            }
+            if (stillActive.length) fail('Registry jobs still active: ' + stillActive.join(', '));
+
+            // Re-enumerate immediately before deletion. Every comment in Issue #8
+            // (not comments in other issues) is an explicit deletion target.
+            const toDelete = await list(TARGET_ISSUE);
+            for (const c of toDelete) {
+              await github.rest.issues.deleteComment({ owner, repo, comment_id: c.id });
+              try {
+                await github.rest.issues.getComment({ owner, repo, comment_id: c.id });
+                fail('Deleted comment remains accessible: ' + c.id);
+              } catch (e) {
+                if (e.status !== 404) throw e;
+              }
+              core.info('Deleted Issue #8 comment ' + c.id);
+            }
+            const remaining = await list(TARGET_ISSUE);
+            if (remaining.length !== 0) fail('Issue #8 deletion incomplete: ' + remaining.length);
+            core.info(JSON.stringify({result: 'verified', issue8_remaining_comments: 0,
+              registry_jobs_active: 0, jobs_cancelled_this_run: toAbort.length,
+              terminal_jobs_preserved: identified.size - toAbort.length,
+              issue8_comments_deleted: toDelete.length,
+              note: 'Scratchpads, archived job evidence, other issues and source code retained.'}));

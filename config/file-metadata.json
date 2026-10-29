@@ -267,6 +267,18 @@
       "size_bytes": 4240,
       "sha256": "661ff3a460f7a55b9671ef60b7ef71eb9e2658e8ee9ac5643fd5b007cc3cf1e2",
       "purpose": "Independent runtime/refresh evidence and verified staged R4/R8 handoff for child job 6456876636"
+    },
+    {
+      "path": ".github/workflows/issue8-nonce-registry.yml",
+      "size_bytes": 6583,
+      "sha256": "4f9918b5f3cb40e95d88e97205206e2995d82a329b3fce0f53b4b5938a615eff",
+      "purpose": "Issue #8 registry: enforce five fields and unique tasks, add prewrite conflict check (staged job 6489162957; atomic race remains unresolved)"
+    },
+    {
+      "path": "test/issue8-nonce-registry.test.cjs",
+      "size_bytes": 6639,
+      "sha256": "f00de7359870a718af95b987e3d0340e7d730cc15d63d7a2cbd714b116b4e737",
+      "purpose": "Job 6489162957 isolated Node regression tests; intentional red update-time concurrency case is unresolved"
     }
   ]
 }

@@ -26,9 +26,9 @@ jobs:
       - name: Verify scope, terminate Issue 2 registry jobs, then delete Issue 8 comments
         uses: actions/github-script@v7
         env:
-          CONFIRMATION: \${{ inputs.confirmation }}
+          CONFIRMATION: ${{ inputs.confirmation }}
         with:
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const crypto = require('node:crypto');
             const { owner, repo } = context.repo;

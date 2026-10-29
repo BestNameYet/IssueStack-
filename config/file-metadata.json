@@ -267,6 +267,12 @@
       "size_bytes": 4240,
       "sha256": "661ff3a460f7a55b9671ef60b7ef71eb9e2658e8ee9ac5643fd5b007cc3cf1e2",
       "purpose": "Independent runtime/refresh evidence and verified staged R4/R8 handoff for child job 6456876636"
+    },
+    {
+      "path": ".github/workflows/issue8-registry-shutdown.yml",
+      "size_bytes": 11655,
+      "sha256": "be412fcd55b59b8513590be9b113e6b0bc725983690eb234b37c0f869e42bf87",
+      "purpose": "User-requested, manually confirmed retirement of Issue #8 Agent Context Registry and six active project jobs; shutdown job #6481463931"
     }
   ]
 }

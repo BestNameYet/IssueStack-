@@ -1,0 +1,61 @@
+name: Clear Issue 8 comments to a single invisible tag
+
+on:
+  push:
+    branches:
+      - stage/issue8-clear-comments-tags-only-20261028
+    paths:
+      - .github/workflows/issue8-clear-comments.yml
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  clear:
+    if: github.repository == 'BestNameYet/IssueStack-' && github.ref == 'refs/heads/stage/issue8-clear-comments-tags-only-20261028'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Replace every Issue 8 comment body
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = 8;
+            const tag = '<!-- ISSUESTACK_ISSUE8_CLEARED -->';
+            if (context.eventName !== 'push' ||
+                context.ref !== 'refs/heads/stage/issue8-clear-comments-tags-only-20261028' ||
+                owner !== 'BestNameYet' || repo !== 'IssueStack-') {
+              throw new Error('Unexpected repository or trigger');
+            }
+            const before = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100
+            });
+            if (before.length !== 8) {
+              throw new Error('Expected 8 Issue 8 comments, found ' + before.length);
+            }
+            for (const comment of before) {
+              if (comment.body !== tag) {
+                await github.rest.issues.updateComment({
+                  owner, repo, comment_id: comment.id, body: tag
+                });
+              }
+              const result = await github.rest.issues.getComment({
+                owner, repo, comment_id: comment.id
+              });
+              if (result.data.body !== tag) {
+                throw new Error('Comment readback mismatch: ' + comment.id);
+              }
+              core.info('Cleared and verified comment ' + comment.id);
+            }
+            const after = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100
+            });
+            if (after.length !== before.length ||
+                after.some(c => c.body !== tag) ||
+                before.some(c => !after.some(a => a.id === c.id))) {
+              throw new Error('Final verification failed');
+            }
+            core.info('VERIFIED: ' + after.length + ' Issue 8 comments contain only the invisible tag');

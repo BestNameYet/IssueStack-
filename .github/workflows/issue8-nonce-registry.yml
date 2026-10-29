@@ -74,18 +74,20 @@ jobs:
               .replace(/\x60/g, '&#96;');
             function validateTasks(value, key) {
               if (!Array.isArray(value) || value.length > 30 ||
-                  value.some(v => typeof v !== 'string' || v.length > 300)) {
+                  value.some(v => typeof v !== 'string' || v.length > 300) ||
+                  new Set(value).size !== value.length) {
                 throw new Error('Invalid ' + key + ' array');
               }
               return value;
             }
             const rows = records.map(record => {
               if (!record || typeof record !== 'object' || Array.isArray(record) ||
+                  Object.keys(record).length !== keys.size ||
                   Object.keys(record).some(k => !keys.has(k))) {
                 throw new Error('Invalid agent record structure');
               }
               const { nonce, name, current_tasks, completed_tasks } = record;
-              const trust = record.trust_level === undefined ? 'limited' : record.trust_level;
+              const trust = record.trust_level;
               if (typeof nonce !== 'string' ||
                   !/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(nonce) ||
                   seen.has(nonce) ||
@@ -110,6 +112,15 @@ jobs:
             if (next === body) {
               core.info('Verified nonce registry already matches JSON (' + rows.length + ' rows)');
               return;
+            }
+            // Re-read immediately before publication. GitHub's issue-comment
+            // PATCH does not provide a documented atomic compare-and-swap.
+            // Fail closed on observable changes rather than knowingly overwrite.
+            const latest = await github.rest.issues.getComment({
+              owner, repo, comment_id: commentId
+            });
+            if (latest.data.body !== body) {
+              throw new Error('Registry changed during projection; stale write aborted');
             }
             await github.rest.issues.updateComment({
               owner, repo, comment_id: commentId, body: next

@@ -1,0 +1,123 @@
+name: IssueStack Issue 8 Nonce Registry Projection
+
+on:
+  issue_comment:
+    types: [edited]
+
+permissions:
+  issues: write
+
+concurrency:
+  group: issue8-nonce-registry-projection
+  cancel-in-progress: false
+
+jobs:
+  project-registry:
+    if: ${{ github.event_name == 'issue_comment' && github.event.issue.number == 8 && github.event.comment.id == 6453773625 && !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate agent JSON and update bot-owned registry table
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const commentId = 6453773625;
+            if (owner !== 'BestNameYet' || repo !== 'IssueStack-' ||
+                context.eventName !== 'issue_comment' ||
+                context.payload.action !== 'edited' ||
+                context.payload.issue?.number !== 8 ||
+                context.payload.comment?.id !== commentId) {
+              throw new Error('Unexpected repository, issue, comment, or event');
+            }
+            const response = await github.rest.issues.getComment({
+              owner, repo, comment_id: commentId
+            });
+            const body = response.data.body;
+            function region(startTag, endTag) {
+              const a = body.indexOf(startTag);
+              const b = body.indexOf(endTag);
+              if (a < 0 || b <= a + startTag.length ||
+                  body.indexOf(startTag, a + startTag.length) !== -1 ||
+                  body.indexOf(endTag, b + endTag.length) !== -1) {
+                throw new Error('Missing, reversed, or duplicate region markers');
+              }
+              return { from: a + startTag.length, to: b };
+            }
+            const bot = region('<!-- ISSUESTACK_NONCE_BOT_START -->',
+                               '<!-- ISSUESTACK_NONCE_BOT_END -->');
+            const table = region('<!-- ISSUESTACK_NONCE_TABLE_START -->',
+                                 '<!-- ISSUESTACK_NONCE_TABLE_END -->');
+            const edits = region('<!-- ISSUESTACK_NONCE_AGENT_JSON_START -->',
+                                 '<!-- ISSUESTACK_NONCE_AGENT_JSON_END -->');
+            if (table.from <= bot.from || table.to >= bot.to ||
+                edits.from <= bot.to) {
+              throw new Error('Region ownership boundaries are invalid');
+            }
+            const input = body.slice(edits.from, edits.to).trim();
+            const match = /^\x60{3}json\r?\n([\s\S]*?)\r?\n\x60{3}$/.exec(input);
+            if (!match) throw new Error('Agent input must be one fenced JSON array');
+            const records = JSON.parse(match[1]);
+            if (!Array.isArray(records) || records.length > 100) {
+              throw new Error('Expected an array of no more than 100 agent records');
+            }
+            const keys = new Set(['nonce','name','current_tasks','completed_tasks','trust_level']);
+            const levels = new Set(['untrusted','limited','trusted']);
+            const seen = new Set();
+            const escapeCell = value => String(value)
+              .replace(/&/g, '&amp;')
+              .replace(/\|/g, '&#124;')
+              .replace(/\r?\n/g, ' ')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/\x60/g, '&#96;');
+            function validateTasks(value, key) {
+              if (!Array.isArray(value) || value.length > 30 ||
+                  value.some(v => typeof v !== 'string' || v.length > 300)) {
+                throw new Error('Invalid ' + key + ' array');
+              }
+              return value;
+            }
+            const rows = records.map(record => {
+              if (!record || typeof record !== 'object' || Array.isArray(record) ||
+                  Object.keys(record).some(k => !keys.has(k))) {
+                throw new Error('Invalid agent record structure');
+              }
+              const { nonce, name, current_tasks, completed_tasks } = record;
+              const trust = record.trust_level === undefined ? 'limited' : record.trust_level;
+              if (typeof nonce !== 'string' ||
+                  !/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(nonce) ||
+                  seen.has(nonce) ||
+                  typeof name !== 'string' || !name.trim() || name.length > 80 ||
+                  !levels.has(trust)) {
+                throw new Error('Invalid nonce, name, duplicate, or trust level');
+              }
+              seen.add(nonce);
+              validateTasks(current_tasks, 'current_tasks');
+              validateTasks(completed_tasks, 'completed_tasks');
+              return '| ' + [
+                nonce, name, JSON.stringify(current_tasks),
+                JSON.stringify(completed_tasks), trust
+              ].map(escapeCell).join(' | ') + ' |';
+            });
+            const newTable = '\n| nonce | name | current_tasks | completed_tasks | trust_level |\n' +
+              '|---|---|---|---|---|\n' + (rows.length ? rows.join('\n') + '\n' : '');
+            const next = body.slice(0, table.from) + newTable + body.slice(table.to);
+            if (Buffer.byteLength(next, 'utf8') > 65000) {
+              throw new Error('Rendered comment exceeds safe size limit');
+            }
+            if (next === body) {
+              core.info('Verified nonce registry already matches JSON (' + rows.length + ' rows)');
+              return;
+            }
+            await github.rest.issues.updateComment({
+              owner, repo, comment_id: commentId, body: next
+            });
+            const readback = await github.rest.issues.getComment({
+              owner, repo, comment_id: commentId
+            });
+            if (readback.data.body !== next) {
+              throw new Error('Rendered registry readback mismatch');
+            }
+            core.info('Verified nonce registry updated from JSON: ' + rows.length + ' rows');

@@ -24,6 +24,68 @@
 
 **Binary size constraint:** the 62,749,520-byte top-level literature ZIP and the 47,573,911-byte nested reference ZIP require ~83.7 MB and ~63.4 MB of base64 payload, respectively. They are **not** assumed transferable through a single connected tool call; use an independently authorized large-file transport or archive splitting/LFS process if needed. This runbook makes no claim that such a transport is currently configured.
 
+
+### 1.1 Mandatory transfer-fidelity rules by content class
+
+These rules apply **before and after every `T` or `B` action in section 4**. The filename extension is a useful hint but is never definitive; classification must be based on actual bytes and whether an exact UTF-8 round trip is possible. Do not convert a binary file to text merely to use a convenient GitHub tool.
+
+| Test / requirement | Text (`T`) | Binary (`B`) |
+|---|---|---|
+| Examples | Markdown, `.txt`, `.json`, source code, valid UTF-8 README/LICENSE/VERSION | PDF, ZIP, `.xlsx`/`.docx`, PNG, audio/video, unknown encoding, raw bytes |
+| Source read | `Path.read_bytes()` followed by **strict** UTF-8 decoding | `Path.read_bytes()` only; never decode the payload as text |
+| Invariant | `original_bytes == decoded_text.encode("utf-8")` | Every uploaded byte equals the original byte at the same offset |
+| Connected upload | `mcp__GitHub__create_file` or guarded `update_file` with the **entire exact decoded text** | `mcp__GitHub__create_blob({encoding:"base64"})` followed by tree, commit and ref update (method `B`) |
+| Verification | Local SHA-256 and byte count must match the final GitHub bytes | Same, **plus** validate blob base64 decoding / binary round trip |
+| If validation fails | Reclassify as `B` or report blocked; never use lossy decoding | Stop; never substitute a filename, URL, excerpt, thumbnail, pointer, or placeholder for actual bytes |
+
+**Rules specific to text transfers**
+
+1. Perform UTF-8 decoding with error mode `strict`. **Do not** use `errors="replace"`, `errors="ignore"`, Unicode normalization, case conversion, automatic reformatting, or an editor that rewrites original contents. Files in Latin-1, UTF-16, or other encodings remain `B` unless the user explicitly authorizes conversion and the converted output receives its own new hash/identity.
+2. Preserve exact line endings (`CRLF`, `LF`, or `CR`), trailing newline presence, whitespace, tabs, JSON key ordering, Markdown fences, and UTF-8 byte-order mark when present. `Path.read_text()` in a newline-translating mode and `.decode("utf-8-sig")` may alter bytes; for source preservation use `Path.read_bytes().decode("utf-8")`.
+3. A valid UTF-8 file can still contain embedded NULs or control bytes; treat such files as `B` unless a documented content-specific exception has been tested. An extension of `.txt` is insufficient to override byte inspection.
+4. Do not parse and reserialize the transfer source (`json.dumps`, Markdown formatting, XML prettifying) to create its upload payload. Validation may parse a separate in-memory view, but the committed artifact must match its original byte sequence. For editable derivatives, create a separate derivative file with distinct provenance.
+5. `mcp__GitHub__create_file` takes a UTF-8 **string** for `content`; it base64-encodes it internally. Its `content` field does **not** accept a base64-encoded binary stream or a local filesystem path. Use `fetch_file` followed by `update_file` with the exact current blob SHA for existing destinations.
+
+**Rules specific to binary transfers**
+
+1. PDFs, spreadsheets (`.xlsx` is a ZIP-based **binary** container), ZIP archives, images, and audio must remain opaque bytes. Never run `decode()`, `read_text()`, string interpolation, newline conversion, image recompression, PDF re-export, or office-document resave on the original to make it fit a text upload API.
+2. For `create_blob`, pass **standard RFC 4648 base64** of the entire raw byte stream using `encoding:"base64"`. Do not pass `str(bytes)`, hexadecimal data, the `/mnt/data` pathname, a URL, a `data:` URI, a URL-safe base64 alphabet, or a string already escaped as JSON source. The connection must actually be able to receive the complete payload; writing code that references a local path in `functions.exec` does not transmit that file.
+3. Preserve ZIP member bytes and archive originals **separately** if both are in scope. An extracted file's SHA-256 differs in identity from the enclosing ZIP's SHA-256; nested archives are independently listed. Do not rewrite ZIP entries, timestamps, compression methods, or central-directory metadata when transferring the **original archive**. To stage members, extract them to new paths using the vetted section 3 routine.
+4. ZIP extraction must reject path traversal, absolute member paths, symlinks/unsafe member types, destination collisions, malformed archives, CRC failures, and unexpectedly excessive inflated size; verify member size and SHA-256 after extraction. Inspect trusted/untrusted archive origin and available disk capacity before processing a possible ZIP bomb. Never execute scripts from an archive to perform extraction.
+5. Binary blobs committed through Git data actions are not automatically Git LFS objects. A Git LFS pointer without a successfully uploaded matching LFS object is **not** a completed transfer. LFS requires separately verified configuration, authenticated binary transport, pointer `oid sha256`/size, and an actual remote-object fetch test; no LFS transport is assumed to exist in this workspace.
+6. Files with identical SHA-256 may be deduplicated **only under an explicit storage policy**. Preserve each original source locator and its provenance, even when multiple locators resolve to one Git object.
+
+**Common size, integrity, and publication rules**
+
+- **GitHub size policy (GitHub.com):** ordinary Git files above **50 MiB** generate a warning and files above **100 MiB** are blocked; browser uploads are capped at **25 MiB**. These are GitHub platform constraints, **not** guarantees that this connected tool can accept an equivalently large request. The current 62,749,520-byte literature archive is approximately **59.84 MiB** and the 47,573,911-byte nested ZIP is approximately **45.37 MiB**; base64 inflates each payload to roughly 4/3 its raw size, before message overhead. Do not attempt a large transfer unless the actual transport limit has been verified. See [GitHub large-file limits](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github), [browser upload limits](https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository), and [LFS semantics](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage).
+- **Filesystem versus connector separation:** `/mnt/data` belongs to the local execution runtime. `tools.files__materialize` returns a verified local artifact path when it succeeds, but `functions.exec` GitHub tool calls do not thereby acquire local filesystem access. Prepare a supported bridge that passes real bytes; never fabricate a `file://` or HTTP download URL, and never claim a transfer succeeded because a file exists locally.
+- **Preflight:** verify source identity, byte count and SHA-256; type/classify it; validate a safe destination under `workspaces/confined-fluid-dynamics/sources/`; check for existing destinations; check publication rights. Since IssueStack is a **public** repository, copyrighted papers, private recordings, personally identifying information, and any non-redistributable files require rights/privacy review *before* upload. Base64 is encoding, **not encryption**.
+- **Branch integrity:** use the observed base commit/tree and an expected-head check for the ref update (`force:false`). Stop on a conflict and reconcile, rather than force-pushing, replaying a stale tree or overwriting another agent's changes. Batch independent blobs into a tree only when their paths/hashes are verified.
+- **Postflight:** check the resulting GitHub path/tree and commit receipt; fetch or otherwise independently decode the **actual remote object**, then compare its raw byte length and SHA-256 to the local original. A Git blob SHA is an object identifier, not a substitute for SHA-256 of the source bytes. A GitHub commit ID, API success response, or LFS pointer alone does not establish byte-for-byte transfer success.
+- **Accounting:** after verified publication update `config/file-metadata.json` with true byte count, SHA-256, purpose, and relevant provenance; update `SOURCE_MANIFEST.md` from `pending` to `present` **only** after confirmed readback. A partial upload, placeholder, external link, or incompatible transformation must be recorded as `blocked`, `partial`, or `derivative`, not `present`. Keep a transfer receipt with the local path, GitHub target, content hash, blob identity and commit SHA, where known.
+
+**Safe, source-preserving local classification example (not an upload):**
+
+```python
+from pathlib import Path
+import hashlib
+
+source = Path("/mnt/data/REPLACE_WITH_VERIFIED_SOURCE")
+data = source.read_bytes()  # read exactly once; no newline conversion
+sha256 = hashlib.sha256(data).hexdigest()
+try:
+    text = data.decode("utf-8", errors="strict")
+    is_text = b"\x00" not in data and text.encode("utf-8") == data
+except UnicodeDecodeError:
+    is_text = False
+method = "T" if is_text else "B"
+print({"path": str(source), "bytes": len(data), "sha256": sha256, "method": method})
+# For T: supply `text` as the create_file content after all checks.
+# For B: supply base64.b64encode(data).decode("ascii") to create_blob
+#        ONLY via a verified transport capable of carrying the full payload.
+```
+
+
 ## 2. Exact GitHub integration call templates
 
 The following are *reference call shapes*, not automatic local-file readers. `literalUtf8Contents`, `literalBase64Bytes`, and `repositoryPath` must be replaced with the **actual** file contents and target path from the corresponding table row. Run within the connected `functions.exec` context, where `tools` is available. Do not run GitHub API writes through local Python as an undocumented substitute.

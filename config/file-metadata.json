@@ -285,6 +285,12 @@
       "size_bytes": 19046,
       "sha256": "6c7d080e08399e2ab52b5c98352697f7a30b17590602b78b09506f537fd09129",
       "purpose": "Confined Fluid Dynamics project source inventory; mounted artifacts, archive members, SHA-256 provenance and deduplication (direct user-authorized bootstrap without Issue #2 job)"
+    },
+    {
+      "path": "workspaces/confined-fluid-dynamics/SOURCE_TRANSFER_ENDPOINTS.md",
+      "size_bytes": 60764,
+      "sha256": "31f0ce4a511570613c1348483c6173a1b0db00e5689c686dbd1555fec3bde52d",
+      "purpose": "Byte-verified inventory of 85 CFD source references, runtime mount/materialization paths, archive staging instructions, GitHub destination endpoints and connector call contracts"
     }
   ]
 }

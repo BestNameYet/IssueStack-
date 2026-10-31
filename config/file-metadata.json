@@ -288,9 +288,9 @@
     },
     {
       "path": "workspaces/confined-fluid-dynamics/SOURCE_TRANSFER_ENDPOINTS.md",
-      "size_bytes": 60764,
-      "sha256": "31f0ce4a511570613c1348483c6173a1b0db00e5689c686dbd1555fec3bde52d",
-      "purpose": "Byte-verified inventory of 85 CFD source references, runtime mount/materialization paths, archive staging instructions, GitHub destination endpoints and connector call contracts"
+      "size_bytes": 70084,
+      "sha256": "2b57cbabbeecab9aef3fbf8e108dd4a662c029cd44cb985c33eab945516f46c9",
+      "purpose": "CFD source localization and GitHub endpoints for 85 references; exact-byte text/binary transfer rules, archive safety, LFS/size policies, rights screening and SHA-256 verification"
     }
   ]
 }

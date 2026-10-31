@@ -1,0 +1,126 @@
+name: Export Issue 3 Scratchpads
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/export-issue3-scratchpads.yml'
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  export:
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        github.event_name == 'push' ||
+        (github.event_name == 'issue_comment' &&
+         github.event.issue.number == 30 &&
+         contains(github.event.comment.body, '<!-- issue3-scratchpad-export-run:v1 -->'))
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Retrieve each Issue 3 scratchpad and produce manifest
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+            const { owner, repo } = context.repo;
+            const out = 'issue3-scratchpads';
+            const files = path.join(out, 'scratchpads');
+            fs.mkdirSync(files, { recursive: true });
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number: 3, per_page: 100,
+            });
+            if (!comments.length) throw new Error('Issue #3 returned no comments');
+
+            const ids = new Set();
+            const entries = [];
+            for (const comment of comments) {
+              if (ids.has(comment.id)) throw new Error('Duplicate comment ID ' + comment.id);
+              ids.add(comment.id);
+              if (typeof comment.body !== 'string') {
+                throw new Error('Missing text body for comment ID ' + comment.id);
+              }
+              const match = comment.body.match(/<!--\s*ISSUESTACK_PAD_JOB:(\d+)\s*-->/);
+              const jobId = match ? match[1] : null;
+              const file = 'scratchpads/' + (jobId ? jobId + '__' : '') + comment.id + '.md';
+              const data = Buffer.from(comment.body, 'utf8');
+              fs.writeFileSync(path.join(out, file), data);
+              const sha256 = crypto.createHash('sha256').update(data).digest('hex');
+              entries.push({
+                comment_id: comment.id,
+                job_comment_id: jobId,
+                file,
+                url: comment.html_url,
+                author: comment.user?.login ?? null,
+                created_at: comment.created_at,
+                updated_at: comment.updated_at,
+                bytes: data.length,
+                sha256,
+              });
+            }
+            entries.sort((a,b) => a.comment_id - b.comment_id);
+            const manifest = {
+              schema: 'issuestack.issue3-scratchpad-archive.v1',
+              repository: owner + '/' + repo,
+              issue_number: 3,
+              exported_at: new Date().toISOString(),
+              total_comments: comments.length,
+              total_files: entries.length,
+              total_body_bytes: entries.reduce((n,c) => n + c.bytes, 0),
+              scratchpads: entries,
+            };
+            fs.writeFileSync(path.join(out, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
+            fs.writeFileSync(path.join(out, 'README.txt'),
+              'IssueStack Issue #3 scratchpad snapshot.\n' +
+              'Each .md file is the complete original GitHub comment body.\n' +
+              'See manifest.json for permanent job/comment IDs, source URLs, byte counts, and SHA-256 digests.\n');
+            fs.writeFileSync(path.join(out, 'all-comments.json'),
+              JSON.stringify(comments.map(c => ({
+                comment_id: c.id, html_url: c.html_url, created_at: c.created_at,
+                updated_at: c.updated_at, user: c.user?.login ?? null, body: c.body,
+              })), null, 2) + '\n');
+            core.info('Exported ' + manifest.total_files + ' scratchpads; ' +
+                      manifest.total_body_bytes + ' UTF-8 body bytes.');
+      - name: Create and verify ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip -qr issue3-scratchpads.zip issue3-scratchpads
+          python3 - <<'PY'
+          import json, zipfile, hashlib
+          root = 'issue3-scratchpads'
+          with open(root + '/manifest.json', encoding='utf-8') as f:
+              m = json.load(f)
+          assert m['total_comments'] == m['total_files'] == len(m['scratchpads'])
+          assert len({x['comment_id'] for x in m['scratchpads']}) == m['total_files']
+          with zipfile.ZipFile('issue3-scratchpads.zip') as archive:
+              total = 0
+              for item in m['scratchpads']:
+                  data = archive.read(root + '/' + item['file'])
+                  assert hashlib.sha256(data).hexdigest() == item['sha256']
+                  assert len(data) == item['bytes']
+                  total += len(data)
+              assert total == m['total_body_bytes']
+              assert len([n for n in archive.namelist()
+                          if n.startswith(root + '/scratchpads/') and n.endswith('.md')]) == m['total_files']
+              assert archive.testzip() is None
+          print(f"Verified {m['total_files']} complete scratchpads, {total} body bytes, all SHA-256 hashes.")
+          PY
+      - name: Upload complete archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue3-scratchpads-export
+          path: issue3-scratchpads.zip
+          retention-days: 30
+          if-no-files-found: error

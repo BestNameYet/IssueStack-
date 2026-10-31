@@ -291,6 +291,402 @@
       "size_bytes": 70084,
       "sha256": "2b57cbabbeecab9aef3fbf8e108dd4a662c029cd44cb985c33eab945516f46c9",
       "purpose": "CFD source localization and GitHub endpoints for 85 references; exact-byte text/binary transfer rules, archive safety, LFS/size policies, rights screening and SHA-256 verification"
+    },
+    {
+      "path": ".github/workflows/publish-issue3-scratchpads-workspace.yml",
+      "size_bytes": 9021,
+      "sha256": "145a181c67a6dabe44d9cb48e1da9f7bf5dcdfb13e7e879c46a6b6e44f5cc15f",
+      "purpose": "Reproducible Issue #3 scratchpad workspace exporter"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/README.md",
+      "size_bytes": 539,
+      "sha256": "a679d9664f889c642c16153f19663405a3b873891165a38da658dad3ac0f866f",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/manifest.json",
+      "size_bytes": 29362,
+      "sha256": "1f9509a7f16e8313609c85db77601d102623fc5c787f0921f4504504bae09952",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/all-comments.json",
+      "size_bytes": 817324,
+      "sha256": "0ed1c5a4424da0dbd5fd38891b0f03916c079c64eb5a5912165fbc22d61fda59",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/issue3-scratchpads.zip",
+      "size_bytes": 516045,
+      "sha256": "69b51e3b719d550f1174cb846ab71e0adedbae8e508866fec2c6a29aa6985132",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6392921985__6392967045.md",
+      "size_bytes": 386,
+      "sha256": "e1858eb616f0156d82e559954a86cc93ccb302c684da820ff648f221571b7847",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6392956620__6392956798.md",
+      "size_bytes": 524,
+      "sha256": "321900a6de0545897b4f87e6b4dad4ed2d353e20caa5b3c38125b605eb9bdb54",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6393231376__6393231610.md",
+      "size_bytes": 1217,
+      "sha256": "fe94596dd6200699db8f8aeb80a7dc3376341e84a245232c13943acdc705961c",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6393261916__6393262149.md",
+      "size_bytes": 3754,
+      "sha256": "c42f3fb6d712722caf6fd978a791739088dd10c337ac363668726e70d746a902",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6393355626__6393355850.md",
+      "size_bytes": 1179,
+      "sha256": "0c4b97fa9deaeefdbe415430d0e5fd0555a5e0e5d615252d021d928656fe1bfe",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6393373331__6393373530.md",
+      "size_bytes": 4373,
+      "sha256": "02cc61036c4daf74f414a61a8596792a60277a36ec87d089abdbbdc96b6b9924",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6393473530__6393473753.md",
+      "size_bytes": 7697,
+      "sha256": "7fe36e7ccc491fd50e02cf4f68bbabb5a057e38a93a2ae3675aa7ad03e5987f5",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6393531689__6393531955.md",
+      "size_bytes": 2012,
+      "sha256": "4fd5eca4b12b6f2aa94bba62807d8c6b442dfd172eec8890040356f05784688a",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6393570362__6393570557.md",
+      "size_bytes": 2000,
+      "sha256": "75be5c25edf3d11f5083876e5c6b773628078aafdad1d72a16e389658f72881b",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6394997586__6394997792.md",
+      "size_bytes": 4641,
+      "sha256": "2e3b0a6716018c5ae680b620444363b798ab840b8065720830b949369f6488f9",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6395098572__6395098805.md",
+      "size_bytes": 1330,
+      "sha256": "08582149b8f0c1543f65ba770d1bc4bdf4ce601a7999776c98282be0f06d274f",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6395165162__6395165441.md",
+      "size_bytes": 3992,
+      "sha256": "7a84cd3fc4e4bcdea3dfdcafb20e17a060b2ac8ba80daa6fafb50710278ec1b1",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6395284531__6395284749.md",
+      "size_bytes": 2705,
+      "sha256": "6205dc7f1d8cbc87f8b9f75d273f479ee546fb03ce1474e7a9c80207a89a08f0",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6401891567__6401891870.md",
+      "size_bytes": 27744,
+      "sha256": "5aadf737992d58cd2ac0709a8810e97381f927ddcc7f8192b4ce534ce7a38af9",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402266923__6402267200.md",
+      "size_bytes": 342,
+      "sha256": "c8ac39eb119082358db5a8e79677ef6dac0ee50d520d0a167036c2bef6e6ce19",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402291557__6402291792.md",
+      "size_bytes": 24482,
+      "sha256": "b5fb3b56ccea1952b820941d3a33dd65c7782a12702e2dbe3698310840ca2a79",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402303846__6402304122.md",
+      "size_bytes": 14976,
+      "sha256": "1a6e5b537b5b20c57d94ce9c3809f0277a686f4386f519806eeb52da86d5c5dd",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402311944__6402312150.md",
+      "size_bytes": 350,
+      "sha256": "c6d9d0dd3faf90426c0021786aeda67fbd4c95206abbf2bbdcdaf6878ee6de2f",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402321205__6402321503.md",
+      "size_bytes": 348,
+      "sha256": "d64822133d5daddf289b4fa855d5895f794d9d0009243b87da833306b5c3a43b",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402323973__6402324254.md",
+      "size_bytes": 45308,
+      "sha256": "3113d73f4875ae02b99b0dae278765726d5d294905b578bac37ad5cb64718064",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402493407__6402493637.md",
+      "size_bytes": 14503,
+      "sha256": "25697d9a49c453fd015435c79ab857e3351eb9a9fbe3540c945380bae17d127b",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6402593059__6402593392.md",
+      "size_bytes": 21020,
+      "sha256": "d3d7505a66040e722cb2041daae4baf4c283389d6c648c074264608b5118379f",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6404239702__6404240085.md",
+      "size_bytes": 3205,
+      "sha256": "9b189d0772afb1db3cb7b5e6b5ed2cb585ed00b1493883a33bab187cdd3ef06f",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6404281939__6404282281.md",
+      "size_bytes": 4006,
+      "sha256": "0bbbe6c20f56c0228f537948e346110b3045e75b8ead224e7660a6e35177d258",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6404892872__6404893110.md",
+      "size_bytes": 10488,
+      "sha256": "9de20f0b358a8e11166a26221654cc09d02c35b7f94b95699f58274f26b39623",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6409038530__6409038861.md",
+      "size_bytes": 26309,
+      "sha256": "a3366e1ec9893887325eb2aa9a5d41ec14f61e247ed801724e2f5e9470d20cc5",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6409323551__6409323932.md",
+      "size_bytes": 13972,
+      "sha256": "7df308d50425e6b793074547912765088f710dee706c8b235c6a616fd3bc0574",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6409463096__6409463438.md",
+      "size_bytes": 9139,
+      "sha256": "03e59744b3381575354548e297b37a5f39cb63f49d3957cd00eac810e0216fa3",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6409649724__6409650059.md",
+      "size_bytes": 2298,
+      "sha256": "7bff52228bb55c0820ecad918ffaba7539ac525b0647615b823ea9e3a61cbb61",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6409699519__6409699861.md",
+      "size_bytes": 5213,
+      "sha256": "5f5073dd0e9d494c536c5fd9abba5c6455f1dac2dbafcb0267b40944a6f1d084",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6409744635__6409745027.md",
+      "size_bytes": 5356,
+      "sha256": "c892ee11711ab0f36fd74c8eca82fb8d8d7f6bc11566f79adf5f8222a4650935",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6411094141__6411094604.md",
+      "size_bytes": 25625,
+      "sha256": "8a44f9dd21bfe93b08180b08a04306a1508ca15371db6431c6bc92248a495860",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6413148135__6413148633.md",
+      "size_bytes": 20707,
+      "sha256": "072a5981c6b04400098b8659ddd324754164fc0d67d2b41845e95063d58fe7d4",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6418283367__6418284174.md",
+      "size_bytes": 10921,
+      "sha256": "fa9dcf572dbef3d3d7ccdab0ab20c2a7068523e38bfe9ccc824fb88c4de4291f",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6430079426__6430427791.md",
+      "size_bytes": 41878,
+      "sha256": "b0ba9452f111a4635bed32612e6e758657de22b718ff73327cac3af632053273",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6437031149__6437031705.md",
+      "size_bytes": 6283,
+      "sha256": "3d34f5efa34af8e124ee6a14bffd86be788f645fe47611d725959aafc22c30e5",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6437560304__6437560946.md",
+      "size_bytes": 7916,
+      "sha256": "d377bcf774a1a5ab1a584e84dd567b3cf77c8491a2fee1ecb978c57a14d23d21",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6437737210__6437737679.md",
+      "size_bytes": 7016,
+      "sha256": "6f04d1bfa28b89ce012f8675bd69fe19b25b11c4b973b523dc0523c225b7247c",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6439026505__6439027340.md",
+      "size_bytes": 5081,
+      "sha256": "e4d09138509e66e1cf3b37b9417f9823129d221fe3a2e5bbb735051f5e3e0fd0",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6439112408__6439113164.md",
+      "size_bytes": 5991,
+      "sha256": "87ac1509334fb00e8697053446f9a0bb3b854064c04db8ce1585f6d1048f6b41",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6439198174__6439198670.md",
+      "size_bytes": 46575,
+      "sha256": "b5a4978b20ab90829c119cbc3741a81aac4d85a2f5d92fc6d68b4d97b1cca0f5",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6440236926__6440237600.md",
+      "size_bytes": 7624,
+      "sha256": "af9b3b68c141788d5dddcf90acb421e99c40fa6596be9e1cf7c30d618817e2fd",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6449290116__6449291003.md",
+      "size_bytes": 356,
+      "sha256": "ae12628f0776fc9ae18efd9cbad6563861b395142ff8348322b146d55dd92be2",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6451109030__6451109633.md",
+      "size_bytes": 4323,
+      "sha256": "ca333e70e8a02a42045267bf7de3d463fc36b0e44975646e79b74de8b1552779",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6451918481__6451919157.md",
+      "size_bytes": 49168,
+      "sha256": "4d214d6baab8e8ad3574515eef19e4246ba83ce9ec7885aebfcd1d66c6f379e4",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6452132288__6452132821.md",
+      "size_bytes": 69592,
+      "sha256": "ebeec239e6faf59f2317f3df342635a9df10aefd7bab3c07339ae5bfaa7eddbf",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6454561684__6454562324.md",
+      "size_bytes": 57515,
+      "sha256": "ee72504aeddca04f4acfc3a4e6852a5e6d03dd304bea02628dfc6129222a4504",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6456834930__6456835605.md",
+      "size_bytes": 25176,
+      "sha256": "42edcbf13392be8bc5f7d205bfcf46d903eb2350078b77cdb1c3cbe5ff3dd010",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6456843391__6456844299.md",
+      "size_bytes": 5950,
+      "sha256": "359011fb1da232357c181eefb2d3bfe70f14d23da32a6d8cce6e5ae2b0e97076",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6456858192__6456859156.md",
+      "size_bytes": 779,
+      "sha256": "c0a0f201f09f8abb4958e7c622ba6e3b6b503e5894cc0f7b7b68ec4a0e07afd0",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6456876636__6456877407.md",
+      "size_bytes": 21552,
+      "sha256": "e040a68fdf3952b88aa29e1239004f9ca5c5963973f9b6bf15d6279b2553645e",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6456898709__6456899659.md",
+      "size_bytes": 765,
+      "sha256": "9db09c8bf08a12bb679c58c090221ee7a2f4487312ac53a247050529822b37ba",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6456926266__6456927052.md",
+      "size_bytes": 28724,
+      "sha256": "d1b661624cc6f1f545d0f14992036a6e0b0644ddc5ad0043844bcf455e1f964c",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6481463931__6481464548.md",
+      "size_bytes": 3234,
+      "sha256": "f97b2f7c81a52b6b491fe6879e5e5a9353732b454d878fe7726544f17c92ec0c",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6483012375__6483012988.md",
+      "size_bytes": 5495,
+      "sha256": "813aedda66980f0d27614113fb6b5a15c2d5b49fbf9a0a8c0538456ae006f500",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6483106298__6483106814.md",
+      "size_bytes": 352,
+      "sha256": "06a188f1139eed97d1b9d8f98fa04fd4fd90fe13911de8399ade9e91921988fb",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6483253992__6483254498.md",
+      "size_bytes": 9338,
+      "sha256": "bde7298f8a27de45312b24452d3add928257cb02114a3c94b17024723c601331",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6489162957__6489163494.md",
+      "size_bytes": 13979,
+      "sha256": "45b6dde63deda79f389ecb856cfa7677b0f030dace304708287fc57d8b115c18",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6510931041__6510931645.md",
+      "size_bytes": 5204,
+      "sha256": "21a69b966c084e21c69577135ab3a80a30703cae807583a351a54ddd701cfebd",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6538772059__6538772489.md",
+      "size_bytes": 29997,
+      "sha256": "b8e9f7162f87cacee3d0bead39c91e1cd81d585315ad66b1992d5edd358ebc8c",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/issue3-scratchpads/scratchpads/6539930096__6539930293.md",
+      "size_bytes": 1486,
+      "sha256": "301119264ff6b96ff8130cab8fab42fb59518edd7d3278940d94fa181cfc657c",
+      "purpose": "Full Issue #3 scratchpad workspace snapshot"
     }
   ]
 }

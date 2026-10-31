@@ -1,0 +1,179 @@
+name: Publish Issue 3 Scratchpads Workspace
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/publish-issue3-scratchpads-workspace.yml'
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: issuestack-publish-issue3-scratchpads
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ github.repository == 'BestNameYet/IssueStack-' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch complete Issue 3 scratchpads into workspace
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+            const { owner, repo } = context.repo;
+            const target = 'workspaces/issue3-scratchpads';
+            const folder = path.join(target, 'scratchpads');
+            const issue = (await github.rest.issues.get({ owner, repo, issue_number: 3 })).data;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number: 3, per_page: 100,
+            });
+            if (comments.length !== issue.comments) {
+              throw Error('Pagination mismatch: expected ' + issue.comments + ' got ' + comments.length);
+            }
+            if (!comments.length) throw Error('Issue #3 returned no comments');
+            fs.rmSync(target, { recursive: true, force: true });
+            fs.mkdirSync(folder, { recursive: true });
+            const ids = new Set();
+            const jobIds = new Set();
+            const items = [];
+            const original = [];
+            for (const comment of comments) {
+              if (ids.has(comment.id)) throw Error('Duplicate scratchpad ID ' + comment.id);
+              ids.add(comment.id);
+              if (typeof comment.body !== 'string') throw Error('Missing comment body ' + comment.id);
+              const match = comment.body.match(/ISSUESTACK_PAD_JOB:([0-9]+)/);
+              if (!match) throw Error('Missing scratchpad job marker ' + comment.id);
+              const jobId = match[1];
+              if (jobIds.has(jobId)) throw Error('Duplicate job ID ' + jobId);
+              jobIds.add(jobId);
+              const file = 'scratchpads/' + jobId + '__' + comment.id + '.md';
+              const body = Buffer.from(comment.body, 'utf8');
+              fs.writeFileSync(path.join(target, file), body);
+              items.push({
+                job_comment_id: Number(jobId),
+                scratchpad_comment_id: comment.id,
+                source_url: comment.html_url,
+                file,
+                author: comment.user && comment.user.login,
+                created_at: comment.created_at,
+                updated_at: comment.updated_at,
+                bytes: body.length,
+                sha256: crypto.createHash('sha256').update(body).digest('hex'),
+              });
+              original.push({
+                job_comment_id: Number(jobId),
+                scratchpad_comment_id: comment.id,
+                source_url: comment.html_url,
+                body: comment.body,
+              });
+            }
+            items.sort((a,b) => a.scratchpad_comment_id-b.scratchpad_comment_id);
+            original.sort((a,b) => a.scratchpad_comment_id-b.scratchpad_comment_id);
+            const manifest = {
+              schema: 'issuestack.issue3-scratchpad-workspace.v1',
+              repository: owner + '/' + repo,
+              issue_number: 3,
+              snapshot_at: new Date().toISOString(),
+              issue_comment_count: issue.comments,
+              files: items.length,
+              body_bytes: items.reduce((sum,x) => sum+x.bytes,0),
+              scratchpads: items,
+            };
+            fs.writeFileSync(path.join(target,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+            fs.writeFileSync(path.join(target,'all-comments.json'),JSON.stringify(original,null,2)+'\n');
+            fs.writeFileSync(path.join(target,'README.md'),
+              '# Issue #3 Scratchpad Workspace\n\n' +
+              'Snapshot of all comments from [Issue #3](https://github.com/BestNameYet/IssueStack-/issues/3).\n\n' +
+              '- `scratchpads/`: individual original GitHub comment bodies, unchanged (UTF-8).\n' +
+              '- `manifest.json`: permanent comment and job IDs, URLs, sizes and SHA-256 digests.\n' +
+              '- `all-comments.json`: the same original comment bodies in machine-readable form.\n' +
+              '- `issue3-scratchpads.zip`: portable snapshot with all of the preceding files.\n\n' +
+              'To refresh, run the GitHub Actions workflow `Publish Issue 3 Scratchpads Workspace`.\n');
+            core.info('Fetched ' + items.length + ' scratchpad comments (' + manifest.body_bytes + ' UTF-8 body bytes).');
+      - name: Package and verify workspace archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd workspaces/issue3-scratchpads
+          zip -q -r issue3-scratchpads.zip scratchpads manifest.json all-comments.json README.md
+          python3 - <<'PY'
+          import json,hashlib,zipfile,pathlib
+          root=pathlib.Path('.')
+          manifest=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
+          original=json.loads((root/'all-comments.json').read_text(encoding='utf-8'))
+          assert manifest['files']==manifest['issue_comment_count']==len(original)==len(manifest['scratchpads'])
+          bodies={o['scratchpad_comment_id']:o for o in original}
+          total=0
+          with zipfile.ZipFile('issue3-scratchpads.zip') as z:
+              for item in manifest['scratchpads']:
+                  raw=(root/item['file']).read_bytes()
+                  assert raw==bodies[item['scratchpad_comment_id']]['body'].encode('utf-8')
+                  assert len(raw)==item['bytes']
+                  assert hashlib.sha256(raw).hexdigest()==item['sha256']
+                  assert z.read(item['file'])==raw
+                  total+=len(raw)
+              assert z.testzip() is None
+              assert len([n for n in z.namelist() if n.endswith('.md') and n.startswith('scratchpads/')])==manifest['files']
+          assert total==manifest['body_bytes']
+          print('Verified',manifest['files'],'scratchpads and',total,'bytes, all SHA-256 digests and ZIP members.')
+          PY
+      - name: Update file metadata for new workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'JS'
+          const fs=require('fs'),path=require('path'),crypto=require('crypto');
+          const metadataPath='config/file-metadata.json';
+          const metadata=JSON.parse(fs.readFileSync(metadataPath,'utf8'));
+          if(metadata.schema!=='issuestack.file-metadata.v1'||!Array.isArray(metadata.files)) {
+            throw new Error('Unexpected file-metadata schema');
+          }
+          const base='workspaces/issue3-scratchpads';
+          const targetPaths=[
+            '.github/workflows/publish-issue3-scratchpads-workspace.yml',
+            base+'/README.md',base+'/manifest.json',base+'/all-comments.json',base+'/issue3-scratchpads.zip',
+            ...fs.readdirSync(base+'/scratchpads').filter(x=>x.endsWith('.md')).map(x=>base+'/scratchpads/'+x)
+          ];
+          const replace=new Set(targetPaths);
+          metadata.files=metadata.files.filter(x=>!replace.has(x.path));
+          for(const p of targetPaths){
+            const bytes=fs.readFileSync(p);
+            metadata.files.push({
+              path:p, size_bytes:bytes.length,
+              sha256:crypto.createHash('sha256').update(bytes).digest('hex'),
+              purpose:p.startsWith('.github/')?'Reproducible Issue #3 scratchpad workspace exporter':'Full Issue #3 scratchpad workspace snapshot',
+            });
+          }
+          fs.writeFileSync(metadataPath,JSON.stringify(metadata,null,2)+'\n');
+          console.log('Registered',targetPaths.length,'workspace/workflow files in metadata.');
+          JS
+      - name: Commit workspace snapshot to repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add workspaces/issue3-scratchpads config/file-metadata.json
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo "Workspace snapshot unchanged."
+          else
+            git commit -m "Publish complete Issue #3 scratchpad workspace"
+            git push origin HEAD:main
+          fi
+      - name: Upload workspace ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue3-workspace-zip
+          path: workspaces/issue3-scratchpads/issue3-scratchpads.zip
+          if-no-files-found: error
+          retention-days: 30

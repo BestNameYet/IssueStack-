@@ -163,7 +163,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add workspaces/issue3-scratchpads config/file-metadata.json
-          git diff --cached --check
+          # Original issue comment bodies must be retained byte-for-byte, including trailing whitespace.
           if git diff --cached --quiet; then
             echo "Workspace snapshot unchanged."
           else

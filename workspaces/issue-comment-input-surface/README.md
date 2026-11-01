@@ -2,7 +2,7 @@
 
 This workspace specifies JSON instructions for a GitHub Issue-comment writer operating in `BestNameYet/IssueStack-`.
 
-Only JSON files placed in `instructions/` are executable inputs. The schema under `schema/` and examples in this README are documentation, not instructions. No workflow is installed or enabled by this contract alone.
+Only JSON files placed in `instructions/` are executable inputs. The schema under `schema/`, the test report, and examples in this README are documentation, not instructions. The GitHub Actions input workflow is enabled for owner-authored instruction-file pushes and explicit workflow dispatch. The Issue #8 secondary workflow is **not** integrated; unsupported Issue/action combinations do not dispatch a secondary workflow.
 
 ## Required instruction object
 
@@ -45,3 +45,7 @@ The existing IssueStack Issue #1 intake and Issue #5 conversation handling are n
 ## Workflow trigger inventory
 
 [comment-triggered-workflows.json](comment-triggered-workflows.json) lists the GitHub Actions workflow files on `main` that directly declare `issue_comment` triggers, their created/edited event types, Issue filters, and source blob identities. The list is a configuration snapshot: enabled/disabled status in GitHub Actions could not be verified. No workflow is installed or changed by this inventory.
+
+## Live integration tests (2026-11-01)
+
+[Read verified route-test results](route-test-results-20261101.json). Issue #1 (edit), Issue #2 (edit), Issue #5 (edit), Issue #7 (edit), Issue #13 (edit), and Issue #30 (create/export) passed through the JSON input surface and secondary jobs. Issue #8 remains unintegrated. Other created/edited combinations are untested. The report records failed initial attempts, their causes, residual pending receipt, and retained temporary Issue #30 test comments.

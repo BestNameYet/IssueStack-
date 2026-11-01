@@ -29,8 +29,8 @@ jobs:
     timeout-minutes: 15
     env:
       SHARE_URL: "${{ github.event.inputs.share_url || 'https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain' }}"
-      EXPORT_DIR: '${{ runner.temp }}/conversation-export'
-      FIXTURE_DIR: '${{ runner.temp }}/conversation-regression'
+      EXPORT_DIR: /tmp/conversation-export
+      FIXTURE_DIR: /tmp/conversation-regression
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -114,7 +114,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: chatgpt-conversation-${{ github.run_id }}
-          path: '${{ runner.temp }}/conversation-export/'
+          path: /tmp/conversation-export/
           if-no-files-found: error
           retention-days: 90
 

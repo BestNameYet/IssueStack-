@@ -1,0 +1,98 @@
+{
+  "schema": "issuestack.issue-comment-workflow-inventory.v1",
+  "repository": "BestNameYet/IssueStack-",
+  "source_branch": "main",
+  "checked_date": "2026-11-01",
+  "scope": "Direct issue_comment events declared in GitHub Actions workflow YAML files",
+  "status_note": "Definitions verified on main; enabled/disabled state from the Actions workflow registry could not be independently retrieved.",
+  "workflow_files_examined": 24,
+  "summary": {
+    "comment_created": 4,
+    "comment_edited": 5,
+    "either": 6
+  },
+  "workflows": [
+    {
+      "name": "Export Issue 3 Scratchpads",
+      "workflow_file": ".github/workflows/export-issue3-scratchpads.yml",
+      "source_blob_sha": "ba2dca8e7e13d8eb8dfad524d1fd3503518a548b",
+      "event": "issue_comment",
+      "comment_actions": [
+        "created"
+      ],
+      "target_issue_numbers": [
+        30
+      ],
+      "job_condition_summary": "Comment contains <!-- issue3-scratchpad-export-run:v1 -->"
+    },
+    {
+      "name": "IssueStack Declared Procedures",
+      "workflow_file": ".github/workflows/interactive-procedures.yml",
+      "source_blob_sha": "eb3849f7b2423a0b087edb536a26026078dfa647",
+      "event": "issue_comment",
+      "comment_actions": [
+        "edited"
+      ],
+      "target_issue_numbers": [
+        13
+      ],
+      "job_condition_summary": "Exclude pull requests; actor must be repository owner"
+    },
+    {
+      "name": "IssueStack Issue 1 Intake",
+      "workflow_file": ".github/workflows/issue-1-intake.yml",
+      "source_blob_sha": "1a1ba0925b5c8fe0244264317ef3ad4187be6384",
+      "event": "issue_comment",
+      "comment_actions": [
+        "created",
+        "edited"
+      ],
+      "target_issue_numbers": [
+        1
+      ],
+      "job_condition_summary": "Exclude pull requests and github-actions[bot]"
+    },
+    {
+      "name": "IssueStack Issue 2 Scratchpad Completion",
+      "workflow_file": ".github/workflows/issue-2-scratchpad-completion.yml",
+      "source_blob_sha": "72d82ca72bd4a504ba9525d7b51a3df5126e1212",
+      "event": "issue_comment",
+      "comment_actions": [
+        "created",
+        "edited"
+      ],
+      "target_issue_numbers": [
+        2
+      ],
+      "job_condition_summary": "Exclude pull requests, index comment 6392250512, and github-actions[bot]"
+    },
+    {
+      "name": "IssueStack Issue5 Conversation Projection",
+      "workflow_file": ".github/workflows/issue5-projection.yml",
+      "source_blob_sha": "af7c11d2d4db73964a86fa947207648e5589d983",
+      "event": "issue_comment",
+      "comment_actions": [
+        "created",
+        "edited"
+      ],
+      "target_issue_numbers": [
+        5,
+        7
+      ],
+      "job_condition_summary": "Actor must be repository owner; also handles issues.edited (Issue body, not comment edit)"
+    },
+    {
+      "name": "IssueStack Issue 8 Nonce Registry Projection",
+      "workflow_file": ".github/workflows/issue8-nonce-registry.yml",
+      "source_blob_sha": "e46441f7d6c756a38358807bacdcc3fa1f14534b",
+      "event": "issue_comment",
+      "comment_actions": [
+        "edited"
+      ],
+      "target_issue_numbers": [
+        8
+      ],
+      "job_condition_summary": "Exact comment ID 6453773625; exclude pull requests"
+    }
+  ]
+}

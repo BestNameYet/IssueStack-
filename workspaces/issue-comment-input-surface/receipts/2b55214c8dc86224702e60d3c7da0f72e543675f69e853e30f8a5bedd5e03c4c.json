@@ -1,0 +1,13 @@
+{
+  "schema": "issuestack.issue-comment-write-receipt.v1",
+  "status": "pending",
+  "source_commit": "2db9661ba47ac3477f1a9697d8f59276c521fd08",
+  "instruction_file": "workspaces/issue-comment-input-surface/instructions/route-issue30-create-20261101.json",
+  "issue_number": 30,
+  "requested_comment_id": "new",
+  "operation": "replace",
+  "action": "created",
+  "old_body_sha256": null,
+  "intended_body_sha256": "11139f9eb47156931591a4b0323ee5a7980ec967196553550b7675f6fa9f3161",
+  "comment_id": null
+}

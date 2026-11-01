@@ -224,8 +224,12 @@ function adaptContext(context, encoded, allowed) {
       typeof event.body !== 'string' ||
       (event.action === 'edited' && typeof event.previous_body !== 'string'))
     throw new Error('Invalid routed Issue-comment event');
+  // github-script's Context exposes repo/eventName/sha through prototype getters.
+  // Object spread does not retain them, so materialize the interface explicitly.
   return {
-    ...context, eventName: 'issue_comment', actor: context.repo.owner,
+    repo: {owner: context.repo.owner, repo: context.repo.repo},
+    actor: context.actor, eventName: 'issue_comment',
+    sha: context.sha, ref: context.ref,
     payload: {
       action: event.action,
       issue: {number: event.issue_number},

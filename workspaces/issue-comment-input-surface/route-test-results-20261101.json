@@ -1,0 +1,135 @@
+{
+  "schema": "issuestack.issue-comment-input-surface.route-tests.v1",
+  "checked_on": "2026-11-01",
+  "repository": "BestNameYet/IssueStack-",
+  "workspace": "workspaces/issue-comment-input-surface/",
+  "test_method": "GitHub Actions push-triggered JSON input instructions, live comment readback, workflow job conclusions, and receipt verification",
+  "summary": {
+    "secondary_workflows_configured": 6,
+    "secondary_workflows_verified": 5,
+    "route_event_cases_verified": 6,
+    "secondary_workflows_not_integrated": 1
+  },
+  "routes": [
+    {
+      "issue_number": 1,
+      "event": "edited",
+      "comment_id": 6392352070,
+      "workflow": "issue-1-intake.yml",
+      "run_id": 41327280699,
+      "status": "pass",
+      "expected_result": "Invalid-schema input rejected with validation error",
+      "verified_result": "Secondary intake succeeded and annotated comment with ISSUESTACK_ERROR"
+    },
+    {
+      "issue_number": 2,
+      "event": "edited",
+      "comment_id": 6540250595,
+      "workflow": "issue-2-scratchpad-completion.yml",
+      "run_id": 41327765799,
+      "status": "pass",
+      "expected_result": "Pending task left unchanged",
+      "verified_result": "Secondary archive-scratchpad succeeded; comment body preserved"
+    },
+    {
+      "issue_number": 5,
+      "event": "edited",
+      "comment_id": 6515836622,
+      "workflow": "issue5-projection.yml",
+      "run_id": 41327845949,
+      "status": "pass",
+      "expected_result": "Paired prompt preserved",
+      "verified_result": "Secondary projection succeeded; comment body preserved"
+    },
+    {
+      "issue_number": 7,
+      "event": "edited",
+      "comment_id": 6515854625,
+      "workflow": "issue5-projection.yml",
+      "run_id": 41327924197,
+      "status": "pass",
+      "expected_result": "Valid stored second return re-evaluated",
+      "verified_result": "Secondary projection succeeded; comment body preserved"
+    },
+    {
+      "issue_number": 13,
+      "event": "edited",
+      "comment_id": 6395079815,
+      "workflow": "interactive-procedures.yml",
+      "run_id": 41328003762,
+      "status": "pass",
+      "expected_result": "Empty-answer procedure remains unadvanced",
+      "verified_result": "Secondary transition succeeded; procedure body preserved"
+    },
+    {
+      "issue_number": 30,
+      "event": "created",
+      "comment_id": 6560892928,
+      "workflow": "export-issue3-scratchpads.yml",
+      "run_id": 41328078313,
+      "status": "pass",
+      "expected_result": "Export Issue #3 scratchpad archive",
+      "verified_result": "Secondary export job succeeded; artifact issue3-scratchpads-export id 13092345569"
+    },
+    {
+      "issue_number": 8,
+      "event": "edited",
+      "comment_id": 6453773625,
+      "workflow": "issue8-nonce-registry.yml",
+      "run_id": null,
+      "status": "not_tested",
+      "reason": "Secondary Issue #8 workflow lacks workflow_call input; attempted modification was blocked by platform safety checks. No executable router for Issue #8 was activated."
+    }
+  ],
+  "prior_failures": [
+    {
+      "run_id": 41327171354,
+      "issue_number": 1,
+      "reason": "Virtual adapter lost context.repo due object-spread getter semantics; corrected and retested successfully"
+    },
+    {
+      "run_id": 41327639067,
+      "issue_number": 2,
+      "reason": "Concurrent main-branch commits caused HTTP 409 during receipt write; a pending receipt remains from the failed attempt; isolated retest succeeded"
+    },
+    {
+      "run_id": 41327642707,
+      "issue_number": 5,
+      "reason": "Cancelled while multiple input commits competed for one concurrency group"
+    },
+    {
+      "run_id": 41327657118,
+      "issue_number": 7,
+      "reason": "Cancelled while multiple input commits competed for one concurrency group"
+    },
+    {
+      "run_id": 41327660777,
+      "issue_number": 13,
+      "reason": "Cancelled while multiple input commits competed for one concurrency group"
+    },
+    {
+      "run_id": 41327673608,
+      "issue_number": 30,
+      "reason": "Secondary verification lacked actions/checkout; corrected and retested successfully"
+    }
+  ],
+  "test_comments_retained": [
+    {
+      "issue_number": 30,
+      "comment_id": 6560839280,
+      "purpose": "Initial failed export-route test"
+    },
+    {
+      "issue_number": 30,
+      "comment_id": 6560892928,
+      "purpose": "Successful export-route retest"
+    }
+  ],
+  "limitations": [
+    "Only the listed event combinations were exercised live; created/edited variants outside these cases remain unverified.",
+    "Issue #8 secondary workflow is not integrated or tested.",
+    "Prior unsuccessful Issue #2 run left a pending receipt, not an applied comment edit.",
+    "Temporary Issue #30 test comments remain visible; the available GitHub integration does not expose comment deletion.",
+    "Workflow job success does not establish that all downstream application semantics or later asynchronous workflows succeeded."
+  ]
+}

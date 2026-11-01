@@ -7,7 +7,7 @@ on:
         description: Public https://chatgpt.com/share/<uuid> conversation URL
         required: true
         type: string
-        default: "https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain"
+        default: "https://chatgpt.com/share/6ae7113d-3fe8-83e8-9c36-d268d435e974"
   push:
     branches:
       - main
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SHARE_URL: "${{ github.event.inputs.share_url || 'https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain' }}"
+      SHARE_URL: "${{ github.event.inputs.share_url || 'https://chatgpt.com/share/6ae7113d-3fe8-83e8-9c36-d268d435e974' }}"
       EXPORT_DIR: /tmp/conversation-export
       FIXTURE_DIR: /tmp/conversation-regression
     steps:
@@ -131,7 +131,7 @@ jobs:
           const id = url.pathname.split("/")[2].toLowerCase();
           if (!/^[a-f0-9-]{36}$/.test(id)) throw Error("Invalid share ID");
           const source = process.env.EXPORT_DIR;
-          const target = path.join("workspaces/chatgpt-share-html-extractor/exports", id);
+          const target = id === "6ae7113d-3fe8-83e8-9c36-d268d435e974" ? "workspaces/issuescratch-stateless-runtime" : path.join("workspaces/chatgpt-share-html-extractor/exports", id);
           fs.mkdirSync(target,{recursive:true});
           const files = ["conversation.md","conversation.json","response.html","receipt.json"];
           for (const file of files) {

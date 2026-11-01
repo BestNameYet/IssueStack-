@@ -1,0 +1,51 @@
+name: Issue Comment Input Surface
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workspaces/issue-comment-input-surface/instructions/*.json'
+  workflow_dispatch:
+    inputs:
+      instruction_file:
+        description: 'Path to one JSON instruction under the workspace instructions directory'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: issuestack-issue-comment-input-surface
+  cancel-in-progress: false
+
+jobs:
+  enumerate:
+    if: ${{ github.actor == github.repository_owner }}
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.inventory.outputs.files }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enumerate changed JSON instruction files
+        id: inventory
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runtime = require('./workspaces/issue-comment-input-surface/issue-comment-runtime.js');
+            const paths = await runtime.enumerate({github, context});
+            core.info('Queued ' + paths.length + ' JSON instructions');
+            core.setOutput('files', JSON.stringify(paths));
+
+  process:
+    needs: enumerate
+    if: ${{ needs.enumerate.outputs.files != '' && needs.enumerate.outputs.files != '[]' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        instruction_file: ${{ fromJSON(needs.enumerate.outputs.files) }}
+    uses: ./.github/workflows/issue-comment-write-and-dispatch.yml
+    with:
+      instruction_file: ${{ matrix.instruction_file }}

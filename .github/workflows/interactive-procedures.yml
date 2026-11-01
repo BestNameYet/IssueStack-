@@ -1,6 +1,11 @@
 name: IssueStack Declared Procedures
 
 on:
+  workflow_call:
+    inputs:
+      comment_event:
+        required: true
+        type: string
   issue_comment:
     types: [edited]
   push:
@@ -23,21 +28,26 @@ concurrency:
 
 jobs:
   transition:
-    if: ${{ github.event_name == 'issue_comment' && github.event.issue.number == 13 && !github.event.issue.pull_request && github.actor == github.repository_owner }}
+    if: ${{ (github.event_name == 'issue_comment' && github.event.issue.number == 13 && !github.event.issue.pull_request && github.actor == github.repository_owner) || (inputs.comment_event != '' && github.actor == github.repository_owner) }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Verify agent-only edit, check return type and commit next procedure state
         uses: actions/github-script@v7
+        env:
+          COMMENT_EVENT: ${{ inputs.comment_event }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const processor = require('./src/procedure-documents.js');
-            await processor.run({github, context, core});
+            const runtime = require('./workspaces/issue-comment-input-surface/issue-comment-runtime.js');
+            const routed = runtime.adaptContext(context, process.env.COMMENT_EVENT,
+              {issues:[13], actions:['edited']});
+            await processor.run({github, context:routed, core});
 
   test:
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ inputs.comment_event == '' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

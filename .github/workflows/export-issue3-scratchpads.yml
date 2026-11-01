@@ -33,6 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v4
+        if: ${{ inputs.comment_event != '' }}
       - name: Verify routed Issue-comment event
         if: ${{ inputs.comment_event != '' }}
         uses: actions/github-script@v7

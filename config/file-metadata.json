@@ -738,14 +738,14 @@
     },
     {
       "path": "workspaces/chatgpt-share-html-extractor/render-chronological-conversation.js",
-      "size_bytes": 7290,
-      "sha256": "00b24669cacae15432ad7e89dd75f6139ad81ff3f502a413dde61c3aa66b93f5",
+      "size_bytes": 7940,
+      "sha256": "2e3dfb7efbca0ae182a437158757041f2d8d76c4cb3408915186b703b6685e89",
       "purpose": "JavaScript source-HTML parser for chronologically ordered user/commentary/final-only Markdown"
     },
     {
       "path": "workspaces/chatgpt-share-html-extractor/conversation-user-commentary-final.md",
-      "size_bytes": 100675,
-      "sha256": "c7938661244cf043b80f20cbbeb5dd8563b16a5b1ffd0fe4aeae85c5e7ad82ba",
+      "size_bytes": 98574,
+      "sha256": "8e431ff1a6dd1829f4274e459006d609e299b59797a613f815ceb770de7999fa",
       "purpose": "Human-readable chronological Markdown of only user messages and assistant commentary/final messages from saved HTML"
     }
   ]

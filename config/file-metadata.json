@@ -693,6 +693,12 @@
       "size_bytes": 958,
       "sha256": "82eb5f430e10701d6f91665b86fa2f5ed5adc478884550411da10cfd08873ae0",
       "purpose": "IssueStack job 6553039875 workspace for ChatGPT shared conversation raw HTML capture and later extraction"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/chatgpt-share-html-41271181453.zip",
+      "size_bytes": 407368,
+      "sha256": "0726de6b74168dfe0cebe2660b9ce2e73477f75f2a8ac8ca0115a3f849b33b18",
+      "purpose": "Original GitHub Actions HTML capture artifact 13068414790 (run 41271181453), copied byte-for-byte from GitHub Actions"
     }
   ]
 }

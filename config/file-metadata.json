@@ -189,7 +189,7 @@
         {
           "sha256": "0827e4c2f8083f5ff0d45c37d2beb33a4a04f410090cd023574b5625a1020cf1",
           "size_bytes": 8686,
-          "purpose": "Issue8 publisher→reconciler live-mock integrity/tamper regression; staged parent R8/R11 per-change review",
+          "purpose": "Issue8 publisher\u2192reconciler live-mock integrity/tamper regression; staged parent R8/R11 per-change review",
           "source_commit": "fbd53bc01f87266e4d71e438f7db679ee2fddf43"
         }
       ]
@@ -711,6 +711,12 @@
       "size_bytes": 439,
       "sha256": "704bbfb98041ed38b11f3373d47e9c66bad112ed585bba0299718d83a2629d45",
       "purpose": "Unpacked original GitHub Actions artifact 13068414790 (run 41271181453); raw captured response, no conversation processing"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/html-tags-alphabetical.json",
+      "size_bytes": 2809143,
+      "sha256": "0e22d34f0980c45ed694de47966e425ea532571c0d30fea1dec064c0ea5a6822",
+      "purpose": "Alphabetically grouped recursive HTML tag data and source-order tree references from the captured response; no transcript extraction"
     }
   ]
 }

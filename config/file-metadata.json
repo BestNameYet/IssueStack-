@@ -813,6 +813,12 @@
       "size_bytes": 425487,
       "sha256": "f7126237d61e9020bde7a545447a03172ea4a3862396843c213a770b1848343e",
       "purpose": "User-invocable GitHub Actions HTML-to-Markdown-and-JSON workflow"
+    },
+    {
+      "path": "workspaces/issuescratch-stateless-runtime/runtime-design-specification.md",
+      "size_bytes": 19804,
+      "sha256": "f653c0d891d659e57aa3cf4bb4096a8b254e9663e79c1644eb55e5a41aaa6f0f",
+      "purpose": "Current corrected IssueScratch stateless architecture and gap matrix, job 6560092235"
     }
   ]
 }

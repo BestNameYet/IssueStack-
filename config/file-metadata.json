@@ -780,9 +780,33 @@
     },
     {
       "path": ".github/workflows/chatgpt-share-to-conversation.yml",
-      "size_bytes": 8540,
-      "sha256": "75f96e341e698d2871a6aac6ebd2a6146718767a8f12e13c92fe2dd7368a8b70",
+      "size_bytes": 8610,
+      "sha256": "ffa55c47113738c4982a020d0507c5f1991f5e5e1d69dc2919ca8c600bfacebc",
       "purpose": "User-invocable GitHub Actions HTML-to-Markdown-and-JSON workflow"
+    },
+    {
+      "path": "workspaces/issuescratch-stateless-runtime/conversation.md",
+      "size_bytes": 393240,
+      "sha256": "225a4ab76692faee0c02438e00881214b9b121da4b32b4c4f2275440640e2876",
+      "purpose": "Human-readable conversation (user, assistant commentary and final)"
+    },
+    {
+      "path": "workspaces/issuescratch-stateless-runtime/conversation.json",
+      "size_bytes": 425487,
+      "sha256": "f7126237d61e9020bde7a545447a03172ea4a3862396843c213a770b1848343e",
+      "purpose": "JSON representation of the same ordered user/assistant conversation"
+    },
+    {
+      "path": "workspaces/issuescratch-stateless-runtime/response.html",
+      "size_bytes": 4504382,
+      "sha256": "f164d4ec76eaa294a2d3a1868aeb00429b080edac163e4d612c0e1516729d7f6",
+      "purpose": "Original HTML fetched from the public shared-conversation URL"
+    },
+    {
+      "path": "workspaces/issuescratch-stateless-runtime/receipt.json",
+      "size_bytes": 691,
+      "sha256": "39297c880209ac1ba8454b3cf9d49a3841a40def6b220619bd1109f6db067297",
+      "purpose": "Capture source and output hashes and message counts"
     }
   ]
 }

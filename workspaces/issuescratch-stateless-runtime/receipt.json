@@ -1,0 +1,25 @@
+{
+  "share_id": "6ae7113d-3fe8-83e8-9c36-d268d435e974",
+  "source_url": "https://chatgpt.com/share/6ae7113d-3fe8-83e8-9c36-d268d435e974",
+  "http_status": 200,
+  "chain_nodes": 1784,
+  "counts": {
+    "user": 120,
+    "commentary": 47,
+    "final": 137
+  },
+  "files": {
+    "response.html": {
+      "bytes": 4504382,
+      "sha256": "f164d4ec76eaa294a2d3a1868aeb00429b080edac163e4d612c0e1516729d7f6"
+    },
+    "conversation.md": {
+      "bytes": 393240,
+      "sha256": "225a4ab76692faee0c02438e00881214b9b121da4b32b4c4f2275440640e2876"
+    },
+    "conversation.json": {
+      "bytes": 425487,
+      "sha256": "f7126237d61e9020bde7a545447a03172ea4a3862396843c213a770b1848343e"
+    }
+  }
+}

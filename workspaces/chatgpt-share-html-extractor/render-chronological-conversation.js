@@ -147,14 +147,30 @@ if (retained.some(x=> !["User","Assistant · Commentary","Assistant · Final"].i
   throw Error("Output contains disallowed role/channel");
 }
 
-// Message bodies are preserved verbatim (except trailing blank lines).
-// No tool outputs, internal records, message IDs, diagnostic fields or JSON
-// are emitted in the human-readable Markdown.
-const sections = retained.map((message, index) =>
-  "## " + String(index + 1).padStart(3, "0") + " — " + message.label +
-  "\n\n" + message.text
-);
-const markdown = "# User and Assistant Conversation\n\n" + sections.join("\n\n---\n\n") + "\n";
+// Preserve original message bodies, including their Markdown formatting, while
+// making the conversation visually readable. A user turn starts a new block;
+// every assistant commentary/final message stays in its chronological position.
+// GitHub renders quoted text with a subtle left rule and indented paragraphs.
+function quoteMarkdown(messageText) {
+  return messageText.split("\n").map(line => line.length ? "> " + line : ">").join("\n");
+}
+const turns = [];
+let currentTurn = [];
+for (const message of retained) {
+  if (message.role === "user" && currentTurn.length) {
+    turns.push(currentTurn.join("\n\n"));
+    currentTurn = [];
+  }
+  if (message.role === "user") {
+    currentTurn.push("**You**\n\n" + quoteMarkdown(message.text));
+  } else if (message.channel === "commentary") {
+    currentTurn.push("**Assistant · Commentary**\n\n" + quoteMarkdown(message.text));
+  } else {
+    currentTurn.push("**Assistant**\n\n" + message.text);
+  }
+}
+if (currentTurn.length) turns.push(currentTurn.join("\n\n"));
+const markdown = "# Conversation\n\n" + turns.join("\n\n---\n\n") + "\n";
 fs.writeFileSync(output, markdown, "utf8");
 const bytes = fs.readFileSync(output);
 const countsTotal = counts.user + counts.commentary + counts.final;

@@ -1,0 +1,178 @@
+name: Export ChatGPT Shared Conversation to Markdown and JSON
+
+on:
+  workflow_dispatch:
+    inputs:
+      share_url:
+        description: Public https://chatgpt.com/share/<uuid> conversation URL
+        required: true
+        type: string
+        default: "https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain"
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/chatgpt-share-to-conversation.yml
+      - workspaces/chatgpt-share-html-extractor/build-shared-conversation.js
+
+permissions:
+  contents: write
+
+concurrency:
+  group: issue-stack-chatgpt-share-exports
+  cancel-in-progress: false
+
+jobs:
+  export:
+    name: Capture source and build both conversation formats
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SHARE_URL: '${{ github.event.inputs.share_url || 'https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain' }}'
+      EXPORT_DIR: '${{ runner.temp }}/conversation-export'
+      FIXTURE_DIR: '${{ runner.temp }}/conversation-regression'
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify HTML decoding and Markdown parity against known capture
+        shell: bash
+        run: |
+          set -euo pipefail
+          SAMPLE_URL='https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain'
+          node workspaces/chatgpt-share-html-extractor/build-shared-conversation.js \
+            --url "$SAMPLE_URL" \
+            --html workspaces/chatgpt-share-html-extractor/response.html \
+            --out "$FIXTURE_DIR"
+          node <<'NODE'
+          "use strict";
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const fixture = process.env.FIXTURE_DIR;
+          const parsed = JSON.parse(fs.readFileSync(path.join(fixture, "conversation.json"), "utf8"));
+          const want = {user:85, commentary:40, final:61};
+          if (JSON.stringify(parsed.counts) !== JSON.stringify(want)) {
+            throw Error("Known-capture role regression: "+JSON.stringify(parsed.counts));
+          }
+          if (parsed.messages.length !== 186 ||
+              parsed.messages.some(m => !(
+                m.role === "user" && m.channel === null ||
+                m.role === "assistant" && ["commentary","final"].includes(m.channel)
+              )) ||
+              parsed.messages.some(m => typeof m.text !== "string" || !m.text.trim())) {
+            throw Error("Invalid included message types or contents");
+          }
+          const reference = fs.readFileSync(
+            "workspaces/chatgpt-share-html-extractor/conversation-user-commentary-final.md"
+          );
+          const rendered = fs.readFileSync(path.join(fixture,"conversation.md"));
+          if (!reference.equals(rendered)) {
+            throw Error("Readable Markdown no longer matches the verified prior capture");
+          }
+          console.log("Fixture PASS: 85 user, 40 commentary, 61 final; Markdown byte-for-byte parity.");
+          NODE
+
+      - name: Download user-provided shared conversation and produce both formats
+        shell: bash
+        run: |
+          set -euo pipefail
+          node workspaces/chatgpt-share-html-extractor/build-shared-conversation.js \
+            --url "$SHARE_URL" --out "$EXPORT_DIR"
+
+      - name: Verify exported JSON and Markdown
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          "use strict";
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const base = process.env.EXPORT_DIR;
+          const parsed = JSON.parse(fs.readFileSync(path.join(base, "conversation.json"), "utf8"));
+          const markdown = fs.readFileSync(path.join(base, "conversation.md"),"utf8");
+          const labels = Array.from(markdown.matchAll(/^(\*\*You\*\*|\*\*Assistant · Commentary\*\*|\*\*Assistant\*\*)$/gm), match=>match[1]);
+          const n = parsed.counts;
+          const total = n.user + n.commentary + n.final;
+          if (!total || parsed.messages.length !== total || labels.length !== total ||
+              !parsed.messages.every(m => m.role === "user" && m.channel === null ||
+                                        m.role === "assistant" && ["commentary","final"].includes(m.channel)) ||
+              labels.filter(x=>x==="**You**").length !== n.user ||
+              labels.filter(x=>x==="**Assistant · Commentary**").length !== n.commentary ||
+              labels.filter(x=>x==="**Assistant**").length !== n.final ||
+              /^## \d+ — /m.test(markdown)) throw Error("Export parity or formatting failed");
+          console.log(JSON.stringify({message_count:total,roles:n,output_files:["conversation.md","conversation.json"]}));
+          NODE
+
+      - name: Upload original HTML and both conversation outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatgpt-conversation-${{ github.run_id }}
+          path: '${{ runner.temp }}/conversation-export/'
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Save Markdown and JSON to the repository with source capture
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          "use strict";
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const crypto = require("node:crypto");
+          const url = new URL(process.env.SHARE_URL);
+          const id = url.pathname.split("/")[2].toLowerCase();
+          if (!/^[a-f0-9-]{36}$/.test(id)) throw Error("Invalid share ID");
+          const source = process.env.EXPORT_DIR;
+          const target = path.join("workspaces/chatgpt-share-html-extractor/exports", id);
+          fs.mkdirSync(target,{recursive:true});
+          const files = ["conversation.md","conversation.json","response.html","receipt.json"];
+          for (const file of files) {
+            fs.copyFileSync(path.join(source,file), path.join(target,file));
+          }
+          const registryPath = "config/file-metadata.json";
+          const registry = JSON.parse(fs.readFileSync(registryPath,"utf8"));
+          if (!Array.isArray(registry.files)) throw Error("Invalid file-metadata registry");
+          const tracked = [
+            ...files.map(f=>path.join(target,f)),
+            "workspaces/chatgpt-share-html-extractor/build-shared-conversation.js",
+            ".github/workflows/chatgpt-share-to-conversation.yml"
+          ];
+          for (const filename of tracked) {
+            const bytes = fs.readFileSync(filename);
+            const entry = {
+              path: filename.replaceAll("\\","/"),
+              size_bytes: bytes.length,
+              sha256: crypto.createHash("sha256").update(bytes).digest("hex"),
+              purpose: filename.endsWith(".md") ? "Human-readable conversation (user, assistant commentary and final)" :
+                       filename.endsWith("conversation.json") ? "JSON representation of the same ordered user/assistant conversation" :
+                       filename.endsWith("response.html") ? "Original HTML fetched from the public shared-conversation URL" :
+                       filename.endsWith("receipt.json") ? "Capture source and output hashes and message counts" :
+                       filename.endsWith(".js") ? "Node.js public-share URL capture and HTML conversation parser" :
+                       "User-invocable GitHub Actions HTML-to-Markdown-and-JSON workflow"
+            };
+            const current = registry.files.find(x=>x.path===entry.path);
+            if (current) Object.assign(current,entry);
+            else registry.files.push(entry);
+          }
+          fs.writeFileSync(registryPath,JSON.stringify(registry,null,2)+"\n");
+          fs.writeFileSync(process.env.RUNNER_TEMP+"/export-path.txt",target+"\n");
+          console.log(JSON.stringify({export_path:target,tracked:tracked.length}));
+          NODE
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          DEST="$(cat "$RUNNER_TEMP/export-path.txt")"
+          git add -- "$DEST" config/file-metadata.json
+          if git diff --cached --quiet; then
+            echo "Outputs already match the committed files."
+          else
+            git commit -m "Export ChatGPT share conversation as HTML, Markdown and JSON"
+            git push origin HEAD:main
+          fi

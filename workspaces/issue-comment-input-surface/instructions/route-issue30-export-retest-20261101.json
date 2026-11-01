@@ -1,0 +1,6 @@
+{
+  "issue_number": 30,
+  "comment_id": "new",
+  "text": "<!-- issue3-scratchpad-export-run:v1 -->\nTemporary export-route verification following the runner checkout fix. This comment is an integration test and not a failure report.",
+  "operation": "replace"
+}

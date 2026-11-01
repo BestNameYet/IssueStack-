@@ -816,9 +816,9 @@
     },
     {
       "path": "workspaces/issue-comment-input-surface/README.md",
-      "size_bytes": 2741,
-      "sha256": "601a2e9e169b63ea97060e40cd591950facff5b640da9e49fb7541a10ecb7d94",
-      "purpose": "Workspace instructions and link to Issue-comment workflow inventory"
+      "size_bytes": 3446,
+      "sha256": "08abeeb1d396354e422248923246969fa677119a475ac3c1b492252d1ae1c0fb",
+      "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
     },
     {
       "path": "workspaces/issue-comment-input-surface/schema/comment-write.schema.json",
@@ -885,6 +885,30 @@
       "size_bytes": 615,
       "sha256": "4365085cbebbbfc8d83e332b1b922360f0385332c40cba5979a5184c4428aed5",
       "purpose": "Durable pending/completed execution receipt for a single Issue-comment instruction"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/issue-comment-runtime.js",
+      "size_bytes": 11034,
+      "sha256": "bd012f97896b76df0ec8a91c3c1de53e84ee31d8ecc1caa4626e758379313401",
+      "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/route-test-results-20261101.json",
+      "size_bytes": 4969,
+      "sha256": "162bd1461a88253489059c44fc559c39225104bbcdf9924665dee5d43257c97e",
+      "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
+    },
+    {
+      "path": ".github/workflows/issue-comment-input.yml",
+      "size_bytes": 1553,
+      "sha256": "ab66dc59a1dbe0649ad3ca7557cffef1b8dc2a26073f42967537827e406de639",
+      "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
+    },
+    {
+      "path": ".github/workflows/issue-comment-write-and-dispatch.yml",
+      "size_bytes": 2659,
+      "sha256": "b7f8d3d2a79bc24c483232a18231559b35d152837e511a275b8e3726ceb060a1",
+      "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
     }
   ]
 }

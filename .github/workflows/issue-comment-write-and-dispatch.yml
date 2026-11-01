@@ -58,13 +58,6 @@ jobs:
     with:
       comment_event: ${{ needs.write.outputs.event }}
 
-  issue-8-registry:
-    needs: write
-    if: ${{ needs.write.outputs.applied == 'true' && needs.write.outputs.issue_number == '8' && needs.write.outputs.action == 'edited' && needs.write.outputs.comment_id == '6453773625' }}
-    uses: ./.github/workflows/issue8-nonce-registry.yml
-    with:
-      comment_event: ${{ needs.write.outputs.event }}
-
   issue-13-procedures:
     needs: write
     if: ${{ needs.write.outputs.applied == 'true' && needs.write.outputs.issue_number == '13' && needs.write.outputs.action == 'edited' }}

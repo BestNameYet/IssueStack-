@@ -1,0 +1,13 @@
+{
+  "schema": "issuestack.issue-comment-write-receipt.v1",
+  "status": "pending",
+  "source_commit": "49b3da06a6495317df05fa80c9c9b8a6779b6795",
+  "instruction_file": "workspaces/issue-comment-input-surface/instructions/route-issue2-edit-20261101.json",
+  "issue_number": 2,
+  "requested_comment_id": 6540250595,
+  "operation": "replace",
+  "action": "edited",
+  "old_body_sha256": "54642ac94af8edc7406981d8613ee45afe57b8ea1c8cba459507ea156e7370b8",
+  "intended_body_sha256": "54642ac94af8edc7406981d8613ee45afe57b8ea1c8cba459507ea156e7370b8",
+  "comment_id": 6540250595
+}

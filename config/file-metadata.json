@@ -735,6 +735,18 @@
       "size_bytes": 110027,
       "sha256": "997073eeb0c0f98406ec5897108523725123745afcf003208d936a693c710716",
       "purpose": "Provisional user/assistant conversation reconstructed from original HTML script by JS, for review"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/render-chronological-conversation.js",
+      "size_bytes": 7290,
+      "sha256": "00b24669cacae15432ad7e89dd75f6139ad81ff3f502a413dde61c3aa66b93f5",
+      "purpose": "JavaScript source-HTML parser for chronologically ordered user/commentary/final-only Markdown"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/conversation-user-commentary-final.md",
+      "size_bytes": 100675,
+      "sha256": "c7938661244cf043b80f20cbbeb5dd8563b16a5b1ffd0fe4aeae85c5e7ad82ba",
+      "purpose": "Human-readable chronological Markdown of only user messages and assistant commentary/final messages from saved HTML"
     }
   ]
 }

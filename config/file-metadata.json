@@ -813,6 +813,18 @@
       "size_bytes": 425487,
       "sha256": "f7126237d61e9020bde7a545447a03172ea4a3862396843c213a770b1848343e",
       "purpose": "User-invocable GitHub Actions HTML-to-Markdown-and-JSON workflow"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/README.md",
+      "size_bytes": 2307,
+      "sha256": "0a3f42ffae8487b1dbdd499d11e1ebc038f6442ee016387344cba4b07a5988e9",
+      "purpose": "Issue-comment JSON input contract, edit semantics and execution boundary"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/schema/comment-write.schema.json",
+      "size_bytes": 976,
+      "sha256": "0a8341104e70e4088330b7638dd5a5a164787a7529a8de7354c5ae2c3d6914e9",
+      "purpose": "Strict four-field JSON Schema for Issue-comment write instructions"
     }
   ]
 }

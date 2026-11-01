@@ -1,6 +1,11 @@
 name: Export Issue 3 Scratchpads
 
 on:
+  workflow_call:
+    inputs:
+      comment_event:
+        required: true
+        type: string
   workflow_dispatch:
   push:
     paths:
@@ -16,15 +21,36 @@ jobs:
   export:
     if: >-
       ${{
-        github.event_name == 'workflow_dispatch' ||
-        github.event_name == 'push' ||
-        (github.event_name == 'issue_comment' &&
-         github.event.issue.number == 30 &&
-         contains(github.event.comment.body, '<!-- issue3-scratchpad-export-run:v1 -->'))
+        (inputs.comment_event != '' && github.actor == github.repository_owner) ||
+        (inputs.comment_event == '' && (
+          github.event_name == 'workflow_dispatch' ||
+          github.event_name == 'push' ||
+          (github.event_name == 'issue_comment' &&
+           github.event.issue.number == 30 &&
+           contains(github.event.comment.body, '<!-- issue3-scratchpad-export-run:v1 -->'))
+        ))
       }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Verify routed Issue-comment event
+        if: ${{ inputs.comment_event != '' }}
+        uses: actions/github-script@v7
+        env:
+          COMMENT_EVENT: ${{ inputs.comment_event }}
+        with:
+          script: |
+            const runtime = require('./workspaces/issue-comment-input-surface/issue-comment-runtime.js');
+            const routed = runtime.adaptContext(context, process.env.COMMENT_EVENT,
+              {issues:[30], actions:['created']});
+            if (!routed.payload.comment.body.includes('<!-- issue3-scratchpad-export-run:v1 -->'))
+              throw new Error('Missing requested export marker');
+            const live = await github.rest.issues.getComment({
+              ...context.repo, comment_id: routed.payload.comment.id
+            });
+            if (live.data.body !== routed.payload.comment.body ||
+                !live.data.issue_url.endsWith('/issues/30'))
+              throw new Error('Routed comment does not match live Issue #30 comment');
       - name: Retrieve each Issue 3 scratchpad and produce manifest
         uses: actions/github-script@v7
         with:

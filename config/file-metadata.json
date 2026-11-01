@@ -747,6 +747,42 @@
       "size_bytes": 98574,
       "sha256": "8e431ff1a6dd1829f4274e459006d609e299b59797a613f815ceb770de7999fa",
       "purpose": "Human-readable chronological Markdown of only user messages and assistant commentary/final messages from saved HTML"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/exports/6ae6b576-9fa8-83e8-a040-4091fe0218e3/conversation.md",
+      "size_bytes": 98574,
+      "sha256": "8e431ff1a6dd1829f4274e459006d609e299b59797a613f815ceb770de7999fa",
+      "purpose": "Human-readable conversation (user, assistant commentary and final)"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/exports/6ae6b576-9fa8-83e8-a040-4091fe0218e3/conversation.json",
+      "size_bytes": 111631,
+      "sha256": "f06e5ffedf7b31739c65fb2c86dbf5dfdd2e71e66f640978481cb61e9bcfbda9",
+      "purpose": "JSON representation of the same ordered user/assistant conversation"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/exports/6ae6b576-9fa8-83e8-a040-4091fe0218e3/response.html",
+      "size_bytes": 2260408,
+      "sha256": "1f75332dc4b2cb93bf93197cd0deaf0b29f9c65f56763ad7e6b09e48079d757b",
+      "purpose": "Original HTML fetched from the public shared-conversation URL"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/exports/6ae6b576-9fa8-83e8-a040-4091fe0218e3/receipt.json",
+      "size_bytes": 700,
+      "sha256": "9fa83825c9403b5617a253279839d723598e84c0babb3689c65555995fab577a",
+      "purpose": "Capture source and output hashes and message counts"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/build-shared-conversation.js",
+      "size_bytes": 9914,
+      "sha256": "2022f2a98baae8e1a6fd1f0bb721b5e339913ccc97fa974240188d2996c6fe51",
+      "purpose": "Node.js public-share URL capture and HTML conversation parser"
+    },
+    {
+      "path": ".github/workflows/chatgpt-share-to-conversation.yml",
+      "size_bytes": 8540,
+      "sha256": "75f96e341e698d2871a6aac6ebd2a6146718767a8f12e13c92fe2dd7368a8b70",
+      "purpose": "User-invocable GitHub Actions HTML-to-Markdown-and-JSON workflow"
     }
   ]
 }

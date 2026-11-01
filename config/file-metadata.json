@@ -876,8 +876,8 @@
     },
     {
       "path": "workspaces/issue-comment-input-surface/receipts/5e54a8de4c493244713b128665a3a1ebf0fe16475cf74d16581206d37b6476ad.json",
-      "size_bytes": 575,
-      "sha256": "44f9723076010bf7422b87d0ed1db2e3ce5707adc3fba6a4c112df0a9eba3fd4",
+      "size_bytes": 672,
+      "sha256": "a0be6beb4a0c959fdbb9684e0b2f0abd26c78da3f5bfa14311866fe1a64b6afa",
       "purpose": "Durable pending/completed execution receipt for a single Issue-comment instruction"
     }
   ]

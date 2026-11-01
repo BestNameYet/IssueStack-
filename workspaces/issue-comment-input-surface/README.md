@@ -41,3 +41,7 @@ The workflow must not insert implicit separators, spaces, or newlines; include t
 Schema: `schema/comment-write.schema.json` (JSON Schema Draft 2020-12). Reject missing fields, unknown fields, invalid operation values, and invalid identifiers. Validate actual target-Issue ownership for existing comments before writes, and verify the created or edited comment by reading it back. Do not process the schema file or README as commands. A future workflow must define its own trigger, deterministic file ordering, idempotency and execution receipts before it is considered operational.
 
 The existing IssueStack Issue #1 intake and Issue #5 conversation handling are not modified by this specification.
+
+## Workflow trigger inventory
+
+[comment-triggered-workflows.json](comment-triggered-workflows.json) lists the GitHub Actions workflow files on `main` that directly declare `issue_comment` triggers, their created/edited event types, Issue filters, and source blob identities. The list is a configuration snapshot: enabled/disabled status in GitHub Actions could not be verified. No workflow is installed or changed by this inventory.

@@ -1,0 +1,80 @@
+name: Issue Comment Write and Secondary Dispatch
+
+on:
+  workflow_call:
+    inputs:
+      instruction_file:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  write:
+    if: ${{ github.actor == github.repository_owner }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      applied: ${{ steps.writer.outputs.applied }}
+      issue_number: ${{ steps.writer.outputs.issue_number }}
+      comment_id: ${{ steps.writer.outputs.comment_id }}
+      action: ${{ steps.writer.outputs.action }}
+      export_marker: ${{ steps.writer.outputs.export_marker }}
+      event: ${{ steps.writer.outputs.event }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate, write, read back, and record execution receipt
+        id: writer
+        uses: actions/github-script@v7
+        env:
+          INPUT_INSTRUCTION_FILE: ${{ inputs.instruction_file }}
+        with:
+          script: |
+            const runtime = require('./workspaces/issue-comment-input-surface/issue-comment-runtime.js');
+            await runtime.writeInstruction({
+              github, context, core, instructionFile: process.env.INPUT_INSTRUCTION_FILE
+            });
+
+  issue-1-intake:
+    needs: write
+    if: ${{ needs.write.outputs.applied == 'true' && needs.write.outputs.issue_number == '1' }}
+    uses: ./.github/workflows/issue-1-intake.yml
+    with:
+      comment_event: ${{ needs.write.outputs.event }}
+
+  issue-2-completion:
+    needs: write
+    if: ${{ needs.write.outputs.applied == 'true' && needs.write.outputs.issue_number == '2' }}
+    uses: ./.github/workflows/issue-2-scratchpad-completion.yml
+    with:
+      comment_event: ${{ needs.write.outputs.event }}
+
+  issue-5-projection:
+    needs: write
+    if: ${{ needs.write.outputs.applied == 'true' && (needs.write.outputs.issue_number == '5' || needs.write.outputs.issue_number == '7') }}
+    uses: ./.github/workflows/issue5-projection.yml
+    with:
+      comment_event: ${{ needs.write.outputs.event }}
+
+  issue-8-registry:
+    needs: write
+    if: ${{ needs.write.outputs.applied == 'true' && needs.write.outputs.issue_number == '8' && needs.write.outputs.action == 'edited' && needs.write.outputs.comment_id == '6453773625' }}
+    uses: ./.github/workflows/issue8-nonce-registry.yml
+    with:
+      comment_event: ${{ needs.write.outputs.event }}
+
+  issue-13-procedures:
+    needs: write
+    if: ${{ needs.write.outputs.applied == 'true' && needs.write.outputs.issue_number == '13' && needs.write.outputs.action == 'edited' }}
+    uses: ./.github/workflows/interactive-procedures.yml
+    with:
+      comment_event: ${{ needs.write.outputs.event }}
+
+  issue-30-export:
+    needs: write
+    if: ${{ needs.write.outputs.applied == 'true' && needs.write.outputs.issue_number == '30' && needs.write.outputs.action == 'created' && needs.write.outputs.export_marker == 'true' }}
+    uses: ./.github/workflows/export-issue3-scratchpads.yml
+    with:
+      comment_event: ${{ needs.write.outputs.event }}

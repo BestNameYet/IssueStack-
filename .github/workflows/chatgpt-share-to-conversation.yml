@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SHARE_URL: '${{ github.event.inputs.share_url || 'https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain' }}'
+      SHARE_URL: "${{ github.event.inputs.share_url || 'https://chatgpt.com/share/6ae6b576-9fa8-83e8-a040-4091fe0218e3?ogimg=plain' }}"
       EXPORT_DIR: '${{ runner.temp }}/conversation-export'
       FIXTURE_DIR: '${{ runner.temp }}/conversation-regression'
     steps:

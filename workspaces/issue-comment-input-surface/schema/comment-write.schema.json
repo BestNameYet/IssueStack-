@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/BestNameYet/IssueStack-/blob/main/workspaces/issue-comment-input-surface/schema/comment-write.schema.json",
+  "title": "IssueStack GitHub Issue-comment write instruction",
+  "description": "One instruction for creating or editing a GitHub Issue comment in BestNameYet/IssueStack-.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "issue_number",
+    "comment_id",
+    "text",
+    "operation"
+  ],
+  "properties": {
+    "issue_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "comment_id": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "const": "new"
+        }
+      ]
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "prepend",
+        "replace",
+        "append"
+      ]
+    }
+  }
+}

@@ -849,6 +849,12 @@
       "size_bytes": 677,
       "sha256": "651633bf02c1dc88ecb017e854f8e7b21be19c245da2f5ebdd950d87795f22af",
       "purpose": "Durable pending/completed execution receipt for a single Issue-comment instruction"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/receipts/2b55214c8dc86224702e60d3c7da0f72e543675f69e853e30f8a5bedd5e03c4c.json",
+      "size_bytes": 505,
+      "sha256": "dd5cee291f6fb5542d07183d58b4f0c71ba5cd80a76ca3c52b214d1f8a546e75",
+      "purpose": "Durable pending/completed execution receipt for a single Issue-comment instruction"
     }
   ]
 }

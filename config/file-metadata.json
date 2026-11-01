@@ -699,6 +699,18 @@
       "size_bytes": 407368,
       "sha256": "0726de6b74168dfe0cebe2660b9ce2e73477f75f2a8ac8ca0115a3f849b33b18",
       "purpose": "Original GitHub Actions HTML capture artifact 13068414790 (run 41271181453), copied byte-for-byte from GitHub Actions"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/response.html",
+      "size_bytes": 2260577,
+      "sha256": "737b00b511f47c399020d1ce378c38678c794f55eb813c11f95d74cad5ed5468",
+      "purpose": "Unpacked original GitHub Actions artifact 13068414790 (run 41271181453); raw captured response, no conversation processing"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/response-metadata.json",
+      "size_bytes": 439,
+      "sha256": "704bbfb98041ed38b11f3373d47e9c66bad112ed585bba0299718d83a2629d45",
+      "purpose": "Unpacked original GitHub Actions artifact 13068414790 (run 41271181453); raw captured response, no conversation processing"
     }
   ]
 }

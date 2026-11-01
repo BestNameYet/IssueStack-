@@ -137,6 +137,10 @@ jobs:
           for (const file of files) {
             fs.copyFileSync(path.join(source,file), path.join(target,file));
           }
+          if (id === "6ae7113d-3fe8-83e8-9c36-d268d435e974") {
+            fs.copyFileSync(path.join(source,"conversation.json"), path.join(target,"chat-projection.json"));
+            files.push("chat-projection.json");
+          }
           const registryPath = "config/file-metadata.json";
           const registry = JSON.parse(fs.readFileSync(registryPath,"utf8"));
           if (!Array.isArray(registry.files)) throw Error("Invalid file-metadata registry");

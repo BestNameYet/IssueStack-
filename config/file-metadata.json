@@ -825,6 +825,12 @@
       "size_bytes": 976,
       "sha256": "0a8341104e70e4088330b7638dd5a5a164787a7529a8de7354c5ae2c3d6914e9",
       "purpose": "Strict four-field JSON Schema for Issue-comment write instructions"
+    },
+    {
+      "path": "workspaces/issuescratch-stateless-runtime/runtime-design-specification.md",
+      "size_bytes": 19804,
+      "sha256": "f653c0d891d659e57aa3cf4bb4096a8b254e9663e79c1644eb55e5a41aaa6f0f",
+      "purpose": "Current corrected IssueScratch stateless architecture and gap matrix, job 6560092235"
     }
   ]
 }

@@ -816,15 +816,21 @@
     },
     {
       "path": "workspaces/issue-comment-input-surface/README.md",
-      "size_bytes": 2307,
-      "sha256": "0a3f42ffae8487b1dbdd499d11e1ebc038f6442ee016387344cba4b07a5988e9",
-      "purpose": "Issue-comment JSON input contract, edit semantics and execution boundary"
+      "size_bytes": 2741,
+      "sha256": "601a2e9e169b63ea97060e40cd591950facff5b640da9e49fb7541a10ecb7d94",
+      "purpose": "Workspace instructions and link to Issue-comment workflow inventory"
     },
     {
       "path": "workspaces/issue-comment-input-surface/schema/comment-write.schema.json",
       "size_bytes": 976,
       "sha256": "0a8341104e70e4088330b7638dd5a5a164787a7529a8de7354c5ae2c3d6914e9",
       "purpose": "Strict four-field JSON Schema for Issue-comment write instructions"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/comment-triggered-workflows.json",
+      "size_bytes": 3228,
+      "sha256": "c6c15e61d66d8eb49e4ecf8ec118ef65b5646899c9cab72c9e81a78f287c28f6",
+      "purpose": "Verified inventory of six workflow definitions with issue_comment created or edited events"
     }
   ]
 }

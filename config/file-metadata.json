@@ -687,6 +687,12 @@
       "size_bytes": 1486,
       "sha256": "301119264ff6b96ff8130cab8fab42fb59518edd7d3278940d94fa181cfc657c",
       "purpose": "Full Issue #3 scratchpad workspace snapshot"
+    },
+    {
+      "path": "workspaces/chatgpt-share-html-extractor/README.md",
+      "size_bytes": 958,
+      "sha256": "82eb5f430e10701d6f91665b86fa2f5ed5adc478884550411da10cfd08873ae0",
+      "purpose": "IssueStack job 6553039875 workspace for ChatGPT shared conversation raw HTML capture and later extraction"
     }
   ]
 }

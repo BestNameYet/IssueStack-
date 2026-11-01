@@ -837,6 +837,12 @@
       "size_bytes": 19804,
       "sha256": "f653c0d891d659e57aa3cf4bb4096a8b254e9663e79c1644eb55e5a41aaa6f0f",
       "purpose": "Current corrected IssueScratch stateless architecture and gap matrix, job 6560092235"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/receipts/1ac3ac8a716236f7e0e348c5ff63d9d9c1df879f9417657b514f795a32ef9c28.json",
+      "size_bytes": 580,
+      "sha256": "9089394485fd18ed1586d11b636dd6f7916cacfb84c142946b501ec4c940879c",
+      "purpose": "Durable pending/completed execution receipt for a single Issue-comment instruction"
     }
   ]
 }

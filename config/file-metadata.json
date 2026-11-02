@@ -816,9 +816,9 @@
     },
     {
       "path": "workspaces/issue-comment-input-surface/README.md",
-      "size_bytes": 3446,
-      "sha256": "08abeeb1d396354e422248923246969fa677119a475ac3c1b492252d1ae1c0fb",
-      "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
+      "size_bytes": 3820,
+      "sha256": "8f764dfe0f27ee9ba2ca8f8bf0328ff53eebe22868a44511507ae7b25de65a96",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
     },
     {
       "path": "workspaces/issue-comment-input-surface/schema/comment-write.schema.json",
@@ -888,9 +888,9 @@
     },
     {
       "path": "workspaces/issue-comment-input-surface/issue-comment-runtime.js",
-      "size_bytes": 11034,
-      "sha256": "bd012f97896b76df0ec8a91c3c1de53e84ee31d8ecc1caa4626e758379313401",
-      "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
+      "size_bytes": 11084,
+      "sha256": "d569b7a92de98bb543f8f5bc8404e078ebf1cfeb20e405795dfc105615424d40",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
     },
     {
       "path": "workspaces/issue-comment-input-surface/route-test-results-20261101.json",
@@ -909,6 +909,48 @@
       "size_bytes": 2659,
       "sha256": "b7f8d3d2a79bc24c483232a18231559b35d152837e511a275b8e3726ceb060a1",
       "purpose": "Issue-comment input-surface implementation or verified route-test evidence"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/TESTING.md",
+      "size_bytes": 5970,
+      "sha256": "7390202c710a29aead2f450bd87a6c09875f32c320b45723bf81b94d3cc826ad",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/tests/fake-github.js",
+      "size_bytes": 4939,
+      "sha256": "fa0e4c997b3f860e49818665dfce756f1f28941de143e6cc57a220c9a763c579",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/tests/runtime.test.js",
+      "size_bytes": 13833,
+      "sha256": "b03667aba1b62741c64366f06809ed1c2a053edbb70b1f51bc969db464ad93e6",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/tests/routes.test.js",
+      "size_bytes": 6678,
+      "sha256": "e44e77576b0227d88daacf9a59ce0bcd799815239afc11474d777496e0b2cced",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/tests/coverage-matrix.json",
+      "size_bytes": 3977,
+      "sha256": "6b68a23d3d4db7ddeba3c13110e3fe501b425517dfdb4956fa3ceac276eadd0c",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/tests/last-ci-result.json",
+      "size_bytes": 1115,
+      "sha256": "10c2756a93caed64ca6dff7e0ff8e5bf8ce6b35021c5e8f548cbb26f9d1bab23",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
+    },
+    {
+      "path": ".github/workflows/issue-comment-input-tests.yml",
+      "size_bytes": 1755,
+      "sha256": "dd7648b2ed4dfacd484737393a1a3d8ecd1d814522829dc5d615816c6d53c30c",
+      "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
     }
   ]
 }

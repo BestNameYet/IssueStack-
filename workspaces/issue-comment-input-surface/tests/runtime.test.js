@@ -244,33 +244,29 @@ test('receipt publication failure stops before comment write',async()=>{
   assert.equal(h.comments.get(111).body,'original');
 });
 
-test('all Issue/action × comment-mode × operation permutations behave deterministically in isolation',async()=>{
+test('all Issue × comment-mode × operation permutations behave deterministically in isolation',async()=>{
   const matrix=require('./coverage-matrix.json');
   let checked=0;
   for(const route of matrix.cases){
-    for(const action of route.actions){
-      for(const op of matrix.instructions.operations){
-        for(const mode of matrix.instructions.comment_id_modes){
-          const id=mode==='new'?'new':111;
-          const instruction={issue_number:route.issue_number,comment_id:id,text:'Δ\n',operation:op};
-          const h=makeHarness({issueNumber:route.issue_number,instruction});
-          const result=await runtime.writeInstruction({...h,instructionFile:path});
-          assert.equal(result.event.issue_number,route.issue_number);
-          const isCreated=mode==='new';
-          assert.equal(result.event.action,isCreated?'created':'edited');
-          assert.equal(h.receipts()[0].record.status,'completed');
-          const expected=isCreated?'Δ\n':op==='prepend'?'Δ\noriginal':
-            op==='replace'?'Δ\n':'originalΔ\n';
-          assert.equal(h.comments.get(result.event.comment_id).body,expected);
-          assert.equal(h.outputs.applied,'true');
-          // Action denotes the actual write, not a user-supplied claim.
-          assert.equal(result.event.action,isCreated?'created':'edited');
-          checked++;
-        }
+    for(const op of matrix.instructions.operations){
+      for(const mode of matrix.instructions.comment_id_modes){
+        const id=mode==='new'?'new':111;
+        const instruction={issue_number:route.issue_number,comment_id:id,text:'Δ\n',operation:op};
+        const h=makeHarness({issueNumber:route.issue_number,instruction});
+        const result=await runtime.writeInstruction({...h,instructionFile:path});
+        assert.equal(result.event.issue_number,route.issue_number);
+        const isCreated=mode==='new';
+        assert.equal(result.event.action,isCreated?'created':'edited');
+        assert.equal(h.receipts()[0].record.status,'completed');
+        const expected=isCreated?'Δ\n':op==='prepend'?'Δ\noriginal':
+          op==='replace'?'Δ\n':'originalΔ\n';
+        assert.equal(h.comments.get(result.event.comment_id).body,expected);
+        assert.equal(h.outputs.applied,'true');
+        checked++;
       }
     }
   }
-  assert.equal(checked,66);
+  assert.equal(checked,42);
 });
 test('zero Issue IDs cannot be virtualized',()=>{
   const h=makeHarness();

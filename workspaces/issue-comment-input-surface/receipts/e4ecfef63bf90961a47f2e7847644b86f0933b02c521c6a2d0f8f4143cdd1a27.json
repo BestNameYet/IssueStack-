@@ -1,0 +1,13 @@
+{
+  "schema": "issuestack.issue-comment-write-receipt.v1",
+  "status": "pending",
+  "source_commit": "7ddac7e507373a97d9b86ef950182485254325dc",
+  "instruction_file": "workspaces/issue-comment-input-surface/instructions/solver-design-scratchpad-20261101-v1.json",
+  "issue_number": 1,
+  "requested_comment_id": 6392385256,
+  "operation": "replace",
+  "action": "edited",
+  "old_body_sha256": "d8fbe7fa14f57545cf935b339cb6045c79f39b8a0a6cc27c7c704245921955b5",
+  "intended_body_sha256": "1e7bcddcff966c5bc89d84beea36722e9721f7d2865628144604fefb52701877",
+  "comment_id": 6392385256
+}

@@ -49,3 +49,7 @@ The existing IssueStack Issue #1 intake and Issue #5 conversation handling are n
 ## Live integration tests (2026-11-01)
 
 [Read verified route-test results](route-test-results-20261101.json). Issue #1 (edit), Issue #2 (edit), Issue #5 (edit), Issue #7 (edit), Issue #13 (edit), and Issue #30 (create/export) passed through the JSON input surface and secondary jobs. Issue #8 remains unintegrated. Other created/edited combinations are untested. The report records failed initial attempts, their causes, residual pending receipt, and retained temporary Issue #30 test comments.
+
+## Comprehensive test suite
+
+[TESTING.md](TESTING.md) documents the read-only GitHub Actions suite, all seven Issue targets, 42 simulated writer combinations, event and routing contracts, regression tests, and the release criteria for full live coverage. The suite deliberately reports the missing Issue #8 secondary workflow as a failure rather than silently omitting it.

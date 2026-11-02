@@ -1,0 +1,48 @@
+name: Issue Comment Input Surface - Full Coverage Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workspaces/issue-comment-input-surface/tests/**'
+      - 'workspaces/issue-comment-input-surface/issue-comment-runtime.js'
+      - 'workspaces/issue-comment-input-surface/schema/**'
+      - '.github/workflows/issue-comment-input.yml'
+      - '.github/workflows/issue-comment-write-and-dispatch.yml'
+      - '.github/workflows/issue-1-intake.yml'
+      - '.github/workflows/issue-2-scratchpad-completion.yml'
+      - '.github/workflows/issue5-projection.yml'
+      - '.github/workflows/interactive-procedures.yml'
+      - '.github/workflows/issue8-nonce-registry.yml'
+      - '.github/workflows/export-issue3-scratchpads.yml'
+      - '.github/workflows/issue-comment-input-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: issue-comment-input-tests-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deterministic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run writer, routing, validation, and existing consumer regression suites
+        run: |
+          node --test --experimental-test-coverage \
+            workspaces/issue-comment-input-surface/tests/*.test.js \
+            src/issue-1-intake.test.js \
+            src/issue5-projection.test.js \
+            src/issue5-projection-workflow.test.js \
+            src/issue5-presentation.test.js \
+            src/issue5-presentation-integration.test.js \
+            src/interactive-procedures.test.js \
+            test/agent-context-registry.test.js \
+            test/issue8-context-reconciler.test.js

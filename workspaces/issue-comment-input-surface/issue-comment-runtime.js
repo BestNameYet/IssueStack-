@@ -216,8 +216,8 @@ function adaptContext(context, encoded, allowed) {
       context.actor !== context.repo.owner)
     throw new Error('Only owner-authored workflow calls may synthesize Issue-comment events');
   const event = JSON.parse(encoded);
-  if (!event || !Number.isSafeInteger(event.issue_number) ||
-      !Number.isSafeInteger(event.comment_id) ||
+  if (!event || !Number.isSafeInteger(event.issue_number) || event.issue_number < 1 ||
+      !Number.isSafeInteger(event.comment_id) || event.comment_id < 1 ||
       !['created', 'edited'].includes(event.action) ||
       !allowed.issues.includes(event.issue_number) ||
       !allowed.actions.includes(event.action) ||

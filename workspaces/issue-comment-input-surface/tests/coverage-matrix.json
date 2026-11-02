@@ -1,0 +1,141 @@
+{
+  "schema": "issuestack.issue-comment-input-test-matrix.v1",
+  "repository": "BestNameYet/IssueStack-",
+  "description": "Required routing coverage for all currently declared Issue-comment consumer workflows. Missing implementations must fail the route-completeness gate rather than being counted as passing.",
+  "instructions": {
+    "comment_id_modes": [
+      "new",
+      "existing"
+    ],
+    "operations": [
+      "prepend",
+      "replace",
+      "append"
+    ],
+    "validation": [
+      "accepted",
+      "rejected"
+    ],
+    "idempotency": [
+      "new_receipt",
+      "completed_receipt",
+      "pending_receipt"
+    ],
+    "failures": [
+      "permission",
+      "wrong_issue",
+      "stale_body",
+      "readback_mismatch",
+      "write_failure",
+      "commit_conflict"
+    ]
+  },
+  "cases": [
+    {
+      "issue_number": 1,
+      "actions": [
+        "created",
+        "edited"
+      ],
+      "workflow": "issue-1-intake.yml",
+      "job": "issue-1-intake",
+      "allowed_targets": "Pinned owner-only slots; creation is structurally routed but forbidden by Issue #1 fixed-slot policy",
+      "fixture": "read-only or ephemeral mock only"
+    },
+    {
+      "issue_number": 2,
+      "actions": [
+        "created",
+        "edited"
+      ],
+      "workflow": "issue-2-scratchpad-completion.yml",
+      "job": "issue-2-completion",
+      "allowed_targets": "Exclude index comment 6392250512",
+      "fixture": "read-only or pending job no-op edit"
+    },
+    {
+      "issue_number": 5,
+      "actions": [
+        "created",
+        "edited"
+      ],
+      "workflow": "issue5-projection.yml",
+      "job": "issue-5-projection",
+      "allowed_targets": "Owner-authored paired conversation comments",
+      "fixture": "isolated mock or exact-body edit"
+    },
+    {
+      "issue_number": 7,
+      "actions": [
+        "created",
+        "edited"
+      ],
+      "workflow": "issue5-projection.yml",
+      "job": "issue-5-projection",
+      "allowed_targets": "Bot-created source pair; owner-edited agent return",
+      "fixture": "isolated mock or exact-body edit"
+    },
+    {
+      "issue_number": 8,
+      "actions": [
+        "edited"
+      ],
+      "workflow": "issue8-nonce-registry.yml",
+      "job": "issue-8-registry",
+      "comment_id": 6453773625,
+      "allowed_targets": "Registry pinned comment only",
+      "fixture": "isolated mock; never edit live registry automatically"
+    },
+    {
+      "issue_number": 13,
+      "actions": [
+        "edited"
+      ],
+      "workflow": "interactive-procedures.yml",
+      "job": "issue-13-procedures",
+      "allowed_targets": "Declared procedure only",
+      "fixture": "isolated mock or exact-body empty-answer edit"
+    },
+    {
+      "issue_number": 30,
+      "actions": [
+        "created"
+      ],
+      "workflow": "export-issue3-scratchpads.yml",
+      "job": "issue-30-export",
+      "required_text_marker": "<!-- issue3-scratchpad-export-run:v1 -->",
+      "allowed_targets": "New comment containing export marker",
+      "fixture": "mock by default; live test requires explicit opt-in"
+    }
+  ],
+  "negative_route_cases": [
+    {
+      "issue_number": 13,
+      "action": "created",
+      "expect": "no secondary workflow"
+    },
+    {
+      "issue_number": 30,
+      "action": "edited",
+      "expect": "no secondary workflow"
+    },
+    {
+      "issue_number": 30,
+      "action": "created",
+      "text": "without marker",
+      "expect": "no secondary workflow"
+    },
+    {
+      "issue_number": 8,
+      "action": "created",
+      "expect": "no secondary workflow"
+    },
+    {
+      "issue_number": 8,
+      "action": "edited",
+      "comment_id": 6453773626,
+      "expect": "no secondary workflow"
+    }
+  ],
+  "live_test_policy": "Tests must not mutate live Issues. The GitHub Actions validation job performs only read-only source inspection and local mocked runtime execution. Real write/dispatch tests must be invoked separately with explicit fixtures and receipt verification."
+}

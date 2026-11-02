@@ -951,6 +951,12 @@
       "size_bytes": 1755,
       "sha256": "dd7648b2ed4dfacd484737393a1a3d8ecd1d814522829dc5d615816c6d53c30c",
       "purpose": "Issue-comment input surface tests, CI evidence, documentation, or runtime implementation"
+    },
+    {
+      "path": "workspaces/issue-comment-input-surface/receipts/e4ecfef63bf90961a47f2e7847644b86f0933b02c521c6a2d0f8f4143cdd1a27.json",
+      "size_bytes": 583,
+      "sha256": "1cd389c8fcc24658c58847ce5e63cde0d13c7bb444cad984f4251156404f6dc9",
+      "purpose": "Durable pending/completed execution receipt for a single Issue-comment instruction"
     }
   ]
 }

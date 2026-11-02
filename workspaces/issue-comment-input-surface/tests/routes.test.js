@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 
-const root=path.resolve(__dirname,'../../../..');
+const root=path.resolve(__dirname,'../../..');
 const project=path.resolve(__dirname,'..');
 const matrix=require('./coverage-matrix.json');
 const dispatch=read('.github/workflows/issue-comment-write-and-dispatch.yml');

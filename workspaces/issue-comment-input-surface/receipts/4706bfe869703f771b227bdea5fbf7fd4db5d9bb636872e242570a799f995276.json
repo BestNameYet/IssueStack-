@@ -1,0 +1,13 @@
+{
+  "schema": "issuestack.issue-comment-write-receipt.v1",
+  "status": "pending",
+  "source_commit": "25e824c990da4507a55ae66b66e7bfa142b392f8",
+  "instruction_file": "workspaces/issue-comment-input-surface/instructions/retroactive-parent-20261102-v1.json",
+  "issue_number": 1,
+  "requested_comment_id": 6392385256,
+  "operation": "replace",
+  "action": "edited",
+  "old_body_sha256": "d8fbe7fa14f57545cf935b339cb6045c79f39b8a0a6cc27c7c704245921955b5",
+  "intended_body_sha256": "73780ba670bbe22f7962261c635db151f45eaa1f0422229a98099f36907fe443",
+  "comment_id": 6392385256
+}

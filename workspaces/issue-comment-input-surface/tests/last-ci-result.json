@@ -1,0 +1,25 @@
+{
+  "schema": "issuestack.issue-comment-input-suite-result.v1",
+  "tested_commit": "f7cce39745ef1f1921517ed29cc843f72df29f64",
+  "run_id": 41383886192,
+  "run_url": "https://github.com/BestNameYet/IssueStack-/actions/runs/41383886192",
+  "timestamp_utc": "2026-11-02",
+  "tests": {
+    "executed": 190,
+    "passed": 187,
+    "failed": 3
+  },
+  "runtime_coverage_percent": {
+    "lines": 99.18,
+    "branches": 96.8,
+    "functions": 100
+  },
+  "remaining_failures": [
+    "Issue #8 required secondary dispatch route is missing",
+    "Issue #8 pinned-comment routing guard is absent from dispatcher",
+    "Dispatcher has no Issue #8 job (matrix completeness)"
+  ],
+  "note": "All three assertions identify one integration gap; this CI run is intentionally red until Issue #8 workflow_call and dispatcher integration are implemented. Deterministic suite does not mutate production comments.",
+  "evidence_class": "GitHub Actions execution logs and observed failed assertion names",
+  "live_end_to_end": "Not performed by this suite; prior separate live tests cover Issues 1,2,5,7,13,30 for selected actions only."
+}

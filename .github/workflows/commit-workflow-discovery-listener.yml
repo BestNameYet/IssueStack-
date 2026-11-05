@@ -1,0 +1,15 @@
+name: Commit Workflow Discovery Listener
+
+on:
+  push:
+    paths:
+      - 'workspaces/commit-workflow-discovery-test/**'
+
+permissions: {}
+
+jobs:
+  listen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: No-op
+        run: ':'

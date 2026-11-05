@@ -963,6 +963,12 @@
       "size_bytes": 674,
       "sha256": "0cbf0c7a25462df7d435821c0ebd09a7e43efefb0ce7b8a08353c006c6aaf3e6",
       "purpose": "Durable pending/completed execution receipt for a single Issue-comment instruction"
+    },
+    {
+      "path": "workspaces/commit-workflow-discovery-test/README.md",
+      "size_bytes": 1109,
+      "sha256": "e6e045a4b977f0efd48f4929249d75949d29cf03468db5fe1ebfc92e7d401981",
+      "purpose": "Test workspace for commit SHA to GitHub Actions workflow-run discovery and connector filtering verification"
     }
   ]
 }

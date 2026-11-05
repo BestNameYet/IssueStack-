@@ -1,0 +1,3 @@
+Commit-to-workflow discovery trigger
+Event: push
+Purpose: invoke the path-scoped no-op workflow and compare GitHub REST and connector discovery.
